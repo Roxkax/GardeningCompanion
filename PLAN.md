@@ -64,7 +64,7 @@ All features are in scope for development. The last column only notes what could
 | Irrigation planner | See §3.11 | Free |
 | Weather alerts | See §3.12 | Free |
 | Improvement suggestions | A weekly AI review of the journal, photos, weather and plan | Premium |
-| AI assistant | Knows the user's garden, answers from the knowledge base and proposes actions to confirm | Premium (with free quota) |
+| AI assistant | See §3.17 | Premium (with free quota) |
 | Journal and timeline | See §3.8 | Free |
 | Tasks and reminders | See §3.9 | Free |
 | Guides | See §3.7 | Free (Ask AI and photo check: Premium) |
@@ -334,6 +334,28 @@ Decides which crop goes in which bed, when, and how many, for the coming season 
   - Rotation groups and companion pairings with evidence levels in the knowledge base.
   - Each bed's history, built from the activity log.
 
+### 3.17 AI assistant
+
+A gardening expert that knows the user's garden. It answers questions and proposes actions, which are applied only after the user confirms.
+
+- **Ask from anywhere:** a chat screen, plus an **"Ask about this"** button on any bed, plant, task, guide step, alert or diagnosis.
+- **Ways to ask:** text, voice (on-phone speech recognition) and photos (passed automatically to identification or diagnosis).
+- **Hands-free voice mode:** speech in, spoken answers out using the phone's built-in voice.
+- **Context:** plot, zones, crops, plantings, recent journal, weather, tasks and roadmap state, plus relevant knowledge-base content.
+- **Answers cite sources** from the knowledge base. It answers in the user's language (PT or EN).
+- **Proposed actions:** create or reschedule tasks, add crops, edit the season plan, adjust the watering schedule, log journal entries, add tools to get, open a guide. All need confirmation, are logged, and can be undone.
+- **Garden memory the user controls:** facts learned in conversation are saved as notes the user can see, edit and delete.
+- **Honesty and safety:** says when it doesn't know; never says a wild plant is safe to eat; never names chemical products; refers serious problems to the regional agricultural services.
+- **Offline:** questions are queued and answered when the device is back online, with a notification.
+- **Searchable conversation history** and **answer feedback** (thumbs up or down), which feeds the AI test set.
+- **Cost control:** a cheaper model for simple questions and a stronger one for complex reasoning (via Foundry), prompt caching for the repeated context, summarised long conversations, and usage limits by tier.
+- **Backend:**
+  - An assistant endpoint that streams answers.
+  - Assistant actions mapped to app commands that create pending proposals.
+  - A context builder (garden data plus knowledge-base search).
+  - Storage for garden memory and conversations.
+  - Usage limits, model routing, and logging of cost and feedback.
+
 ---
 
 ## 4. Backend architecture
@@ -474,7 +496,9 @@ Each milestone ships backend and app work together and ends with something usabl
 - [ ] An evaluation set of real photos from the plot, re-run whenever a prompt or model changes
 
 ### M5 — AI assistant and smart alerts
-- [ ] An assistant with garden context that answers from the knowledge base
+- [ ] Assistant: chat and "Ask about this", streamed answers with cited sources, context builder, text, voice and photo input, hands-free voice mode
+- [ ] Garden memory notes (view, edit, delete), queued offline questions, conversation history, answer feedback
+- [ ] Model routing (cheap vs strong), prompt caching, conversation summarisation
 - [ ] Tool use that creates pending proposals, a confirmation interface and an audit log
 - [ ] Roadmap engine, AI layer: ranking, adapting to deviations, explanations, time and cost estimates
 - [ ] Weather alerts: crop-aware limits, alert types including good-conditions alerts, actions as tasks, severity and confidence, quiet-hours override, follow-up after the event
