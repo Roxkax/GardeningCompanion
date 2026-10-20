@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>D5 Harvest check</title>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="frame.css">
+<style>
+  .nav { display: flex; align-items: center; justify-content: space-between; padding: 0 12px; height: 48px; flex: none; }
+  .nav .t { font-size: 17px; font-weight: 700; }
+  .navbtn { width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; }
+  .body { flex: 1; padding: 0 20px; display: flex; flex-direction: column; gap: 12px; }
+  .hero { position: relative; height: 150px; border-radius: 18px; overflow: hidden; }
+  .hero .cap { position: absolute; left: 12px; bottom: 10px; background: rgba(0,0,0,.55); color: #fff; font-size: 13px; font-weight: 700; padding: 5px 10px; border-radius: 8px; }
+  .verdict { background: var(--green); color: #fff; border-radius: 18px; padding: 14px 16px; display: flex; flex-direction: column; gap: 6px; }
+  .verdict .top { display: flex; align-items: center; gap: 10px; }
+  .verdict h1 { margin: 0; font-size: 26px; font-weight: 800; }
+  .verdict .pct { margin-left: auto; background: rgba(255,255,255,.18); font-size: 13.5px; font-weight: 800; padding: 4px 10px; border-radius: 999px; }
+  .verdict p { margin: 0; font-size: 14.5px; opacity: .92; line-height: 1.4; }
+  .sec { font-size: 13px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; padding: 0 2px; margin-bottom: -2px; }
+  .card { background: #fff; border: 1px solid var(--line); border-radius: 14px; }
+  .sign { display: flex; gap: 10px; align-items: center; padding: 9px 13px; border-bottom: 1px solid #EEF0EA; font-size: 15px; font-weight: 600; }
+  .sign:last-child { border-bottom: none; }
+  .ok { width: 22px; height: 22px; border-radius: 999px; background: var(--green-soft); display: flex; align-items: center; justify-content: center; flex: none; }
+  .how { padding: 11px 13px; font-size: 14.5px; line-height: 1.45; display: flex; flex-direction: column; gap: 6px; }
+  .how b { font-weight: 700; }
+  .warn { display: flex; gap: 10px; align-items: center; background: var(--orange-soft); border: 1px solid #F3C99A; border-radius: 14px; padding: 10px 13px; font-size: 14px; color: #7A3A08; font-weight: 600; }
+  .actions { padding: 10px 20px 34px; display: flex; gap: 10px; background: var(--bg); border-top: 1px solid var(--line); }
+</style>
+</head>
+<body>
+<div class="stage"><div class="phone"><div class="screen">
+  <div class="island"></div>
+  <div class="status">
+    <span>9:41</span>
+    <span class="icons">
+      <svg width="18" height="12" viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1" fill="#1F2A20"/><rect x="5" y="5.5" width="3" height="6.5" rx="1" fill="#1F2A20"/><rect x="10" y="3" width="3" height="9" rx="1" fill="#1F2A20"/><rect x="15" y="0" width="3" height="12" rx="1" fill="#1F2A20"/></svg>
+      <svg width="16" height="12" viewBox="0 0 16 12"><path d="M8 11.5l2.2-2.6a3.2 3.2 0 0 0-4.4 0z" fill="#1F2A20"/><path d="M3.6 6.9a6.3 6.3 0 0 1 8.8 0l-1.4 1.6a4.2 4.2 0 0 0-6 0z" fill="#1F2A20"/><path d="M1.2 4.2a9.7 9.7 0 0 1 13.6 0l-1.4 1.6a7.6 7.6 0 0 0-10.8 0z" fill="#1F2A20"/></svg>
+      <svg width="27" height="13" viewBox="0 0 27 13"><rect x="0.5" y="0.5" width="23" height="12" rx="3.5" fill="none" stroke="#1F2A20" opacity=".4"/><rect x="2" y="2" width="18" height="9" rx="2" fill="#1F2A20"/><path d="M25 4.5v4a2 2 0 0 0 0-4z" fill="#1F2A20" opacity=".4"/></svg>
+    </span>
+  </div>
+
+  <div class="nav">
+    <div class="navbtn" aria-label="Close"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1F2A20" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></div>
+    <span class="t">Harvest check</span>
+    <div class="navbtn" aria-label="Ask the assistant"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2D6A3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4z"/></svg></div>
+  </div>
+
+  <div class="body">
+    <div class="hero">
+      <svg width="353" height="150" viewBox="0 0 353 150" aria-hidden="true">
+        <defs><radialGradient id="l1" cx="50%" cy="45%" r="60%"><stop offset="0" stop-color="#D3EBA0"/><stop offset=".6" stop-color="#8DC25C"/><stop offset="1" stop-color="#4E8A32"/></radialGradient></defs>
+        <rect width="353" height="150" fill="#5B4630"/>
+        <rect width="353" height="40" fill="#6E5A40"/>
+        <g transform="translate(176 86)">
+          <ellipse rx="96" ry="52" fill="#4E8A32"/>
+          <path d="M-90 0 C -80 -50, -30 -60, 0 -56 C 30 -60, 80 -50, 90 0 C 70 30, 30 46, 0 46 C -30 46, -70 30, -90 0z" fill="#6FA845"/>
+          <ellipse rx="62" ry="38" fill="url(#l1)"/>
+          <path d="M-40 -10 C -20 -30, 20 -30, 40 -10 M-30 10 C -10 -6, 10 -6, 30 10" stroke="#B8DB86" stroke-width="3" fill="none"/>
+        </g>
+        <g fill="#4E8A32"><ellipse cx="22" cy="120" rx="34" ry="20"/><ellipse cx="335" cy="122" rx="34" ry="20"/></g>
+      </svg>
+      <span class="cap">Lettuce · bed A3 · sown 56 days ago</span>
+    </div>
+
+    <div class="verdict">
+      <div class="top">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.7 2.7L16 9.5"/></svg>
+        <h1>Ready now</h1>
+        <span class="pct">88% sure</span>
+      </div>
+      <p>Most lettuce of this kind is ready at 50–60 days. Yours looks firm and full.</p>
+    </div>
+
+    <div class="sec">Signs to check</div>
+    <div class="card">
+      <div class="sign"><span class="ok"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#1F5A2C" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"/></svg></span>The head feels firm when gently squeezed</div>
+      <div class="sign"><span class="ok"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#1F5A2C" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"/></svg></span>Outer leaves are full size</div>
+      <div class="sign"><span class="ok"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#1F5A2C" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"/></svg></span>No flower stalk in the centre yet</div>
+    </div>
+
+    <div class="sec">How to harvest</div>
+    <div class="card how">
+      <span><b>Whole head:</b> cut just above the soil with a knife, early in the morning.</span>
+      <span><b>Keep it producing:</b> pick only the outer leaves and leave the centre.</span>
+    </div>
+
+    <div class="warn">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9A4A0C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="M12 3l9.5 17h-19z"/><path d="M12 10v4M12 17.5v.01"/></svg>
+      Frost possible Thursday night. Pick before then.
+    </div>
+  </div>
+
+  <div class="actions">
+    <div class="btn secondary" style="width: 128px; font-size: 16px">Not yet</div>
+    <div class="btn primary" style="flex: 1">Log harvest</div>
+  </div>
+  <div class="home"></div>
+</div></div></div>
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>D1 Snap and Ask menu</title>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="frame.css">
+<style>
+  .content { padding: 4px 20px 0; display: flex; flex-direction: column; gap: 16px; }
+  .card { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 14px 16px; }
+  .dim { position: absolute; inset: 0; background: rgba(20,28,20,.48); z-index: 45; }
+  .sheet { position: absolute; left: 0; right: 0; bottom: 0; z-index: 55; background: #fff; border-radius: 26px 26px 0 0; padding: 10px 18px 34px; display: flex; flex-direction: column; gap: 6px; }
+  .grab { width: 40px; height: 5px; border-radius: 3px; background: #D3D7CE; align-self: center; margin-bottom: 6px; }
+  .shead { display: flex; justify-content: space-between; align-items: center; padding: 0 2px 6px; }
+  .shead h2 { margin: 0; font-size: 22px; font-weight: 800; }
+  .close { width: 36px; height: 36px; border-radius: 999px; background: #EEF0EA; display: flex; align-items: center; justify-content: center; }
+  .opt { display: flex; align-items: center; gap: 14px; padding: 11px 6px; min-height: 64px; border-bottom: 1px solid #EEF0EA; }
+  .opt:last-child { border-bottom: none; }
+  .oi { width: 46px; height: 46px; border-radius: 14px; background: var(--green-soft); display: flex; align-items: center; justify-content: center; flex: none; }
+  .opt b { display: block; font-size: 17px; font-weight: 700; }
+  .opt span.d { font-size: 14px; color: var(--muted); line-height: 1.35; }
+  .chev { margin-left: auto; flex: none; }
+  .tabbar { position: absolute; left: 0; right: 0; bottom: 0; background: #fff; border-top: 1px solid var(--line); padding: 8px 8px 28px; display: grid; grid-template-columns: repeat(5, minmax(0,1fr)); align-items: end; z-index: 30; }
+  .tab { display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 11.5px; font-weight: 600; color: var(--muted); }
+</style>
+</head>
+<body>
+<div class="stage"><div class="phone"><div class="screen">
+  <div class="island"></div>
+  <div class="status">
+    <span>9:41</span>
+    <span class="icons">
+      <svg width="18" height="12" viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1" fill="#1F2A20"/><rect x="5" y="5.5" width="3" height="6.5" rx="1" fill="#1F2A20"/><rect x="10" y="3" width="3" height="9" rx="1" fill="#1F2A20"/><rect x="15" y="0" width="3" height="12" rx="1" fill="#1F2A20"/></svg>
+      <svg width="16" height="12" viewBox="0 0 16 12"><path d="M8 11.5l2.2-2.6a3.2 3.2 0 0 0-4.4 0z" fill="#1F2A20"/><path d="M3.6 6.9a6.3 6.3 0 0 1 8.8 0l-1.4 1.6a4.2 4.2 0 0 0-6 0z" fill="#1F2A20"/><path d="M1.2 4.2a9.7 9.7 0 0 1 13.6 0l-1.4 1.6a7.6 7.6 0 0 0-10.8 0z" fill="#1F2A20"/></svg>
+      <svg width="27" height="13" viewBox="0 0 27 13"><rect x="0.5" y="0.5" width="23" height="12" rx="3.5" fill="none" stroke="#1F2A20" opacity=".4"/><rect x="2" y="2" width="18" height="9" rx="2" fill="#1F2A20"/><path d="M25 4.5v4a2 2 0 0 0 0-4z" fill="#1F2A20" opacity=".4"/></svg>
+    </span>
+  </div>
+
+  <!-- Today screen behind the sheet -->
+  <div class="content">
+    <div style="display: flex; justify-content: space-between; align-items: flex-end">
+      <div><div style="font-size: 15px; font-weight: 600; color: var(--muted)">Tuesday 20 October</div><div style="font-size: 34px; font-weight: 800">Today</div></div>
+      <div style="width: 44px; height: 44px; border-radius: 999px; background: var(--green); color: #fff; font-weight: 700; display: flex; align-items: center; justify-content: center">D</div>
+    </div>
+    <div class="card" style="height: 66px"><b>24° / 12° · Sunny</b><div style="font-size: 14px; color: var(--muted)">No rain for 6 days · next rain Saturday</div></div>
+    <div class="card" style="background: var(--orange-soft); border-color: #F3C99A; height: 110px"><b style="color: #7A3A08">Frost possible Thursday night</b></div>
+    <div style="font-size: 21px; font-weight: 800">Next actions</div>
+    <div class="card" style="height: 150px"><b>Spread compost on beds 1–3</b></div>
+  </div>
+  <div class="tabbar">
+    <div class="tab" style="color: var(--green); font-weight: 700"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2"/></svg>Today</div>
+    <div class="tab"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6l6-2.5 6 2.5 6-2.5v14l-6 2.5-6-2.5-6 2.5z"/><path d="M9 3.5v14M15 6v14"/></svg>Garden</div>
+    <div style="display: flex; justify-content: center"><span style="width: 58px; height: 58px; border-radius: 999px; background: var(--green); display: flex; align-items: center; justify-content: center; margin-top: -22px; border: 4px solid var(--bg)"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg></span></div>
+    <div class="tab"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>Plan</div>
+    <div class="tab"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z"/><path d="M9 9h6M9 13h6"/></svg>Journal</div>
+  </div>
+  <div class="dim"></div>
+
+  <div class="sheet">
+    <div class="grab"></div>
+    <div class="shead">
+      <h2>Snap &amp; Ask</h2>
+      <div class="close" aria-label="Close"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1F2A20" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></div>
+    </div>
+
+    <div class="opt">
+      <div class="oi"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2D6A3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21V11"/><path d="M12 11C12 6 8 4 4 4c0 4 2 7 8 7z"/><path d="M12 13c0-4 3-6 8-6 0 4-3 6-8 6z"/></svg></div>
+      <div><b>Identify a plant</b><span class="d">Crop, weed or something to keep?</span></div>
+      <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4E5A4C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+    </div>
+    <div class="opt">
+      <div class="oi"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2D6A3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/><path d="M11 8v3.5M11 14v.01"/></svg></div>
+      <div><b>Diagnose a problem</b><span class="d">Spots, holes, wilting or pests</span></div>
+      <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4E5A4C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+    </div>
+    <div class="opt">
+      <div class="oi"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2D6A3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10h16l-2 10H6z"/><path d="M8 10l4-6 4 6"/></svg></div>
+      <div><b>Check harvest</b><span class="d">Is it ready to pick?</span></div>
+      <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4E5A4C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+    </div>
+    <div class="opt">
+      <div class="oi"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2D6A3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6l6-2.5 6 2.5 6-2.5v14l-6 2.5-6-2.5-6 2.5z"/><path d="M9 3.5v14M15 6v14"/></svg></div>
+      <div><b>Assess a zone</b><span class="d">What to clear, keep and fix</span></div>
+      <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4E5A4C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+    </div>
+    <div class="opt">
+      <div class="oi" style="background: var(--green)"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4z"/><path d="M8.5 10.5h.01M12 10.5h.01M15.5 10.5h.01"/></svg></div>
+      <div><b>Ask the assistant</b><span class="d">Anything about your garden</span></div>
+      <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4E5A4C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+    </div>
+  </div>
+  <div class="home"></div>
+</div></div></div>
+</body>
+</html>
