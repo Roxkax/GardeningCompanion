@@ -52,6 +52,7 @@ The owner is used to Azure DevOps, so the same hierarchy is used, built with sub
 | 2026-10-20 | **Current best practice:** the knowledge base cites sources and has review dates. An AI job proposes content updates, and **a person reviews each update before it's published**. Nothing is published automatically from the web. |
 | 2026-10-20 | **All features are essential** during personal use. Premium is only a *potential* tier for later commercial use. |
 | 2026-10-20 | **Plot mapping:** boundary drawn by tapping or walking with GPS, zones and beds (on the map or by exact dimensions), points of interest, shade estimation, prevailing wind, layout designer, measuring tool, layout history. **Several plots per user is post-MVP** (the data model still treats the plot as its own entity). |
+| 2026-10-20 | **Site assessment has no soil analysis:** no soil tests, no lab tests, no judging the soil from photos. It covers vegetation to clear, problem plants, trees to keep, obstacles, terrain, visible water problems, infrastructure, wildlife pressure, fixed photo spots, walk-around video, equipment advice and re-assessments. The soil type estimate from SoilGrids in plot mapping stays. The well water test moves to the irrigation planner. |
 
 ## Open decisions
 - Embedding model for pgvector search

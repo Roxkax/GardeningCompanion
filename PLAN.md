@@ -52,14 +52,14 @@ All features are in scope for development. The last column only notes what could
 | Feature | Approach | Potential tier (commercial) |
 |---|---|---|
 | Plot mapping | See §3.3 | Free |
-| Site assessment by camera | Claude analyzes photos for weeds, stones, slope, shade and how the soil looks. Guided DIY soil tests (jar test, squeeze test), and a recommendation for a lab test. | Premium |
+| Site assessment by camera | See §3.4 | Premium |
 | When to plant what | A climate-driven calendar: crop rules based on temperature thresholds and frost risk, rather than fixed months, so it works anywhere | Free |
 | Harvest readiness | A photo, plus days since sowing and the variety's maturity, gives a verdict with a confidence level | Premium |
 | Future planting planner | Rules (season windows, crop rotation by family, spacing, companion plants, succession planting) generate the plan. The AI explains and adjusts it. | Free (rules) / Premium (AI) |
 | Plant identification | Claude vision first. A specialist plant-ID service is optional later. | Premium |
 | Pest and disease diagnosis | The same photo-analysis pipeline as identification | Premium |
 | Materials tracking | Inventory and a shopping list, generated automatically from plans (for example, an irrigation plan produces metres of drip line and fittings) | Free |
-| Irrigation planner | Water needs from evapotranspiration (ET₀) × a crop coefficient (Kc) × area − rain, giving a drip layout, run times and a materials list | Free |
+| Irrigation planner | Water needs from evapotranspiration (ET₀) × a crop coefficient (Kc) × area − rain, giving a drip layout, run times and a materials list. Includes a well water quality check (salinity and pH meter), which was moved here from site assessment. | Free |
 | Weather alerts | Frost, heatwave and wind warnings, and a notice to skip watering when rain is expected | Free |
 | Improvement suggestions | A weekly AI review of the journal, photos, weather and plan | Premium |
 | AI assistant | Knows the user's garden, answers from the knowledge base and proposes actions to confirm | Premium (with free quota) |
@@ -80,6 +80,25 @@ All features are in scope for development. The last column only notes what could
 - **Layout history:** each season's layout is kept as a version, which the crop rotation planner needs.
 - **Offline:** shapes and points can be edited offline, but the satellite images may not load, because Apple and Google limit offline caching.
 - **Later (not in MVP):** several plots per user. The data model includes the plot as its own entity from the start, so adding this later is cheap.
+
+### 3.4 Site assessment by camera
+
+For each zone, the app works out what's there now, what needs clearing or fixing, and how much effort it will take. **No soil analysis:** no soil tests, no lab tests, and no judging the soil from photos.
+
+- **The AI looks at photos of each zone for:**
+  - Vegetation to clear (type, density, height), with a suggested method (by hand, brush cutter or tractor) and a time and cost estimate.
+  - Problem plants that need special removal (brambles, Bermuda grass, giant cane).
+  - Trees and plants worth keeping (olive and fruit trees).
+  - Obstacles: stones, rubbish, old structures and debris.
+  - Terrain: slope, uneven ground, erosion, and whether terracing or levelling is needed.
+  - Visible water problems: pooling and runoff.
+  - Existing infrastructure: fences, gates and water points, and their condition.
+  - Wildlife pressure: rabbits, wild boar, birds and moles, which decide whether fencing or netting is needed.
+- **Guided photos with fixed photo spots** on the map, for before-and-after comparisons.
+- **Walk-around video:** the app picks the best frames for the AI.
+- **Equipment advice:** rent or buy, based on the work needed and the plot size.
+- **Re-assessments** at any time, to track progress.
+- **Backend:** a stored assessment for each zone, with photos, AI findings (each with a confidence level) and estimates. Every assessment is recorded in the activity log, so the roadmap updates.
 
 ---
 
