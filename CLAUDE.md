@@ -53,6 +53,7 @@ The owner is used to Azure DevOps, so the same hierarchy is used, built with sub
 | 2026-10-20 | **All features are essential** during personal use. Premium is only a *potential* tier for later commercial use. |
 | 2026-10-20 | **Plot mapping:** boundary drawn by tapping or walking with GPS, zones and beds (on the map or by exact dimensions), points of interest, shade estimation, prevailing wind, layout designer, measuring tool, layout history. **Several plots per user is post-MVP** (the data model still treats the plot as its own entity). |
 | 2026-10-20 | **Site assessment has no soil analysis:** no soil tests, no lab tests, no judging the soil from photos. It covers vegetation to clear, problem plants, trees to keep, obstacles, terrain, visible water problems, infrastructure, wildlife pressure, fixed photo spots, walk-around video, equipment advice and re-assessments. The soil type estimate from SoilGrids in plot mapping stays. The well water test moves to the irrigation planner. |
+| 2026-10-20 | **Planting calendar:** based on climate (temperature rules applied to local climate history), with direct sow, plant-out and harvest windows. Includes too-hot windows, forecast adjustment, zone fit, varieties, day length, harvest estimates from growing degree days, staggered sowing and export to the phone calendar. **No indoor seed starting, no microclimate correction, no lunar calendar.** |
 
 ## Open decisions
 - Embedding model for pgvector search
