@@ -51,7 +51,7 @@ All features are in scope for development. The last column only notes what could
 
 | Feature | Approach | Potential tier (commercial) |
 |---|---|---|
-| Plot mapping | Draw the plot and zones on a satellite base map (MapKit on iOS, Google Maps SDK on Android). The server calculates area and sun exposure, and adds slope from elevation data and estimated soil type from SoilGrids. | Free |
+| Plot mapping | See §3.3 | Free |
 | Site assessment by camera | Claude analyzes photos for weeds, stones, slope, shade and how the soil looks. Guided DIY soil tests (jar test, squeeze test), and a recommendation for a lab test. | Premium |
 | When to plant what | A climate-driven calendar: crop rules based on temperature thresholds and frost risk, rather than fixed months, so it works anywhere | Free |
 | Harvest readiness | A photo, plus days since sowing and the variety's maturity, gives a verdict with a confidence level | Premium |
@@ -65,6 +65,21 @@ All features are in scope for development. The last column only notes what could
 | AI assistant | Knows the user's garden, answers from the knowledge base and proposes actions to confirm | Premium (with free quota) |
 | Journal and timeline | Photos and actions for each bed, plus a harvest and yield log. This is what lets the AI get better over time. | Free |
 | Guides | Step-by-step guides in PT and EN, with illustrations and selected videos, downloadable for offline use | Free |
+
+### 3.3 Plot mapping
+
+- **Satellite map** centred on the user's location: MapKit on iOS, Google Maps SDK on Android.
+- **Plot boundary:** draw it by tapping corners on the map, or **walk the perimeter with GPS** (accurate to about 3–5 m, enough for the plot outline).
+- **Zones and beds** drawn inside the plot, with names. Beds can also be entered with **exact dimensions** (e.g. 1.2 m × 6 m), because satellite and GPS accuracy isn't enough for small beds.
+- **Points of interest:** water sources (well, tap, tank), electricity, gates and access, buildings, and trees with a rough height.
+- **Automatic enrichment (backend):** area, sun exposure from the location, slope from elevation data, and an estimated soil type from SoilGrids.
+- **Shade:** estimated from marked trees and buildings (height plus the sun's path over the day and year), and combined with shade the user has observed and marked (e.g. "afternoon shade").
+- **Prevailing wind** from weather data, used to suggest windbreaks.
+- **Layout designer:** beds with real dimensions, path widths and row direction (north–south suggested for even sun).
+- **Measuring tool:** distances on the map (e.g. from the well to zone A), which feed the materials list (metres of pipe).
+- **Layout history:** each season's layout is kept as a version, which the crop rotation planner needs.
+- **Offline:** shapes and points can be edited offline, but the satellite images may not load, because Apple and Google limit offline caching.
+- **Later (not in MVP):** several plots per user. The data model includes the plot as its own entity from the start, so adding this later is cheap.
 
 ---
 
@@ -166,8 +181,11 @@ Each milestone ships backend and app work together and ends with something usabl
 - [ ] Account deletion and data export endpoints, which the app stores require
 
 ### M1 — Plot and roadmap
-- [ ] Draw the plot and zones on a satellite map, stored in PostGIS
-- [ ] Enrichment: area, sun exposure, slope (elevation data) and soil estimate (SoilGrids)
+- [ ] Draw the plot boundary (tap or walk with GPS), zones and beds (on the map or by exact dimensions), stored in PostGIS
+- [ ] Points of interest: water, electricity, access, buildings and trees with heights
+- [ ] Enrichment: area, sun exposure, slope (elevation data), soil estimate (SoilGrids), prevailing wind
+- [ ] Shade estimation from obstacles, plus shade the user has observed
+- [ ] Layout designer (dimensions, paths, row direction), measuring tool, layout history by season
 - [ ] Activity log and zone state
 - [ ] Setup questions about what already exists
 - [ ] Roadmap engine, rules layer: next actions for each zone, with time windows and deviation handling

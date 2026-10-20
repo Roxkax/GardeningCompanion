@@ -51,6 +51,7 @@ The owner is used to Azure DevOps, so the same hierarchy is used, built with sub
 | 2026-10-20 | **Roadmap engine design:** an activity log where entries are never overwritten, a state view per zone, a rules layer plus an AI layer to produce next actions, recalculation on events plus a daily check, and traceability of the content version and model behind each recommendation |
 | 2026-10-20 | **Current best practice:** the knowledge base cites sources and has review dates. An AI job proposes content updates, and **a person reviews each update before it's published**. Nothing is published automatically from the web. |
 | 2026-10-20 | **All features are essential** during personal use. Premium is only a *potential* tier for later commercial use. |
+| 2026-10-20 | **Plot mapping:** boundary drawn by tapping or walking with GPS, zones and beds (on the map or by exact dimensions), points of interest, shade estimation, prevailing wind, layout designer, measuring tool, layout history. **Several plots per user is post-MVP** (the data model still treats the plot as its own entity). |
 
 ## Open decisions
 - Embedding model for pgvector search
