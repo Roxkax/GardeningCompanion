@@ -63,7 +63,7 @@ All features are in scope for development. The last column only notes what could
 | Tools | See §3.10 | Free |
 | Irrigation planner | See §3.11 | Free |
 | Weather alerts | See §3.12 | Free |
-| Improvement suggestions | A weekly AI review of the journal, photos, weather and plan | Premium |
+| Improvement suggestions | See §3.18 | Premium (statistics-only report: Free) |
 | AI assistant | See §3.17 | Premium (with free quota) |
 | Journal and timeline | See §3.8 | Free |
 | Tasks and reminders | See §3.9 | Free |
@@ -356,6 +356,27 @@ A gardening expert that knows the user's garden. It answers questions and propos
   - Storage for garden memory and conversations.
   - Usage limits, model routing, and logging of cost and feedback.
 
+### 3.18 Improvement suggestions
+
+A regular review of how the garden is going, with concrete ideas to improve it.
+
+- **Garden report** (weekly by default; fortnightly or monthly as options): what was done and harvested, a weather recap, problems and successes, before-and-after photos from the fixed photo spots, and a preview of next week. Delivered as a notification plus a report screen.
+- **Kinds of suggestions:** water (mulch, schedule tweaks), crops (better varieties, new crops to try), pest prevention, layout and paths, infrastructure (windbreak, shade cloth, rain tank), workload (plan less when many tasks are missed).
+- **Patterns over time:** insights across weeks and seasons (e.g. a bed that underperforms two seasons in a row).
+- **Each suggestion has:** a reason with **evidence** (links to journal entries and photos), and the expected impact and effort.
+- **User choices:**
+  - Accept: it becomes a proposal, and confirming creates tasks or plan changes.
+  - Dismiss with a reason, so it isn't repeated.
+  - Snooze.
+- **End-of-season review:** a retrospective (yields against expectations, what worked, what to change) that feeds the season planner's draft for next season.
+- **Cost control:** statistics are worked out first with fixed rules from the activity log, so there's one AI call per user per review with a compact summary. Without AI, the report still shows the statistics.
+- **Backend:**
+  - A scheduled review job.
+  - Statistics built from the activity log.
+  - A "review" task in the AI layer.
+  - Suggestions with a status (new, accepted, dismissed, snoozed).
+  - Dismissal reasons, stored so suggestions aren't repeated.
+
 ---
 
 ## 4. Backend architecture
@@ -503,7 +524,8 @@ Each milestone ships backend and app work together and ends with something usabl
 - [ ] Roadmap engine, AI layer: ranking, adapting to deviations, explanations, time and cost estimates
 - [ ] Weather alerts: crop-aware limits, alert types including good-conditions alerts, actions as tasks, severity and confidence, quiet-hours override, follow-up after the event
 - [ ] Weather screen with 7-day gardening forecast; IPMA official warnings
-- [ ] Weekly improvement review
+- [ ] Garden report (statistics from the activity log, before-and-after photos) and AI improvement suggestions with evidence, accept, dismiss or snooze
+- [ ] End-of-season review feeding the season planner draft
 
 ### M6 — Planning
 - [ ] Season planner engine: crops into beds, rotation, follow-on crops, cover crops, companion pairings with evidence levels, space check, perennials
