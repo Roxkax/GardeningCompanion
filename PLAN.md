@@ -57,7 +57,7 @@ All features are in scope for development. The last column only notes what could
 | Choosing your crops | See §3.6 | Free (rules) / Premium (AI explanation) |
 | When to plant what | See §3.5 | Free |
 | Harvest readiness | See §3.15 | Premium (checklists, notices and guides: Free) |
-| Future planting planner | Rules (season windows, crop rotation by family, spacing, companion plants, succession planting) generate the plan. The AI explains and adjusts it. | Free (rules) / Premium (AI) |
+| Season planner | See §3.16 | Free (rules) / Premium (AI goals) |
 | Plant identification | See §3.13 | Premium |
 | Pest and disease diagnosis | See §3.14 | Premium (risk warnings and scouting tasks: Free) |
 | Tools | See §3.10 | Free |
@@ -310,6 +310,30 @@ Knowing when to pick, and how, to harvest at the best moment.
 - **Later (not in MVP):** saving seeds from the user's own crops.
 - **Backend:** a "harvest readiness" task in the AI layer (crop, variety and planting date as context), harvest windows from the calendar, harvest-sign checklists and storage guides in the knowledge base, notifications when a window is approaching, and glut forecasts.
 
+### 3.16 Season planner
+
+Decides which crop goes in which bed, when, and how many, for the coming season and beyond.
+
+- **Inputs:** chosen crops (priority and quantity), beds (size and sun), each bed's history (crop families, disease flags) and calendar windows.
+- **Output:** for each bed, the crops, sowing or planting dates, number of plants, and a visual layout inside the bed (rows or grid with spacing).
+- **Year view of each bed:** a Gantt-style timeline of what occupies each bed, with empty periods highlighted.
+- **Follow-on crops** in the same bed (e.g. early potatoes, then autumn cabbages).
+- **Cover crops** for beds that would otherwise sit empty, such as broad beans or clover. This is soil care, not soil analysis.
+- **Crop rotation:** a 4-group rotation (legumes → brassicas → roots → fruiting crops), with warnings when it's broken, taking disease flags into account.
+- **Companion planting with evidence levels:** well supported vs folklore, clearly labelled.
+- **Space check:** warns when the crops need more space than is available, and fits the must-haves first.
+- **Perennial crops** (asparagus, strawberries, herbs, fruit trees) stay in their beds, and the planner works around them.
+- **Drag-and-drop editing**, with rotation, spacing and timing re-checked live.
+- **Draft and active plans:** next season is drafted while the current plan runs.
+- **Learning from last year:** quantities adjusted from the harvest log and journal notes.
+- **AI goals (potential premium):** the AI adjusts the plan for a goal (most harvest, least work, least water) and explains the trade-offs.
+- **Confirming a plan** creates planned plantings and tasks, and updates the roadmap.
+- **Backend:**
+  - A planning engine with fixed rules, possibly using Google OR-Tools (free, runs in .NET) to fit crops into beds.
+  - Plan versions (draft and active).
+  - Rotation groups and companion pairings with evidence levels in the knowledge base.
+  - Each bed's history, built from the activity log.
+
 ---
 
 ## 4. Backend architecture
@@ -458,7 +482,9 @@ Each milestone ships backend and app work together and ends with something usabl
 - [ ] Weekly improvement review
 
 ### M6 — Planning
-- [ ] Planner for rotation, succession and companion planting
+- [ ] Season planner engine: crops into beds, rotation, follow-on crops, cover crops, companion pairings with evidence levels, space check, perennials
+- [ ] Year view of each bed, layout inside each bed, drag-and-drop editing with live checks, draft and active plans
+- [ ] AI goals for the plan
 - [ ] Irrigation planner: water sources and bucket test, method per bed, system layout on the map, flow check and sectors, parts list (for information only)
 - [ ] Watering schedule from crop and season guidance, adjusted by the weather, with automatic watering tasks; hand-watering guidance
 - [ ] Mulching advice, rainwater harvesting estimate, seasonal irrigation reminders
