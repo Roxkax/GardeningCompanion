@@ -66,6 +66,7 @@ All features are in scope for development. The last column only notes what could
 | Improvement suggestions | A weekly AI review of the journal, photos, weather and plan | Premium |
 | AI assistant | Knows the user's garden, answers from the knowledge base and proposes actions to confirm | Premium (with free quota) |
 | Journal and timeline | See §3.8 | Free |
+| Tasks and reminders | See §3.9 | Free |
 | Guides | See §3.7 | Free (Ask AI and photo check: Premium) |
 
 ### 3.3 Plot mapping
@@ -185,6 +186,22 @@ The record of everything that happens in the garden, and what the AI and roadmap
 - **Search and filters**, and **export** to CSV or PDF.
 - **Backend:** the journal is the user-facing view of the **activity log**, so there's one source of truth and sync stays conflict-free. Photos go through the media service.
 
+### 3.9 Tasks and reminders
+
+The garden to-do list: what to do and when, with reminders. It works offline.
+
+- **Where tasks come from:** accepted roadmap next actions, the calendar, regular care (watering from the irrigation plan, feeding), weather alerts, confirmed AI proposals, and tasks the user adds.
+- **Each task has:** its zone, bed or planting; a **date range** rather than a fixed day; estimated time; priority; a link to the guide; and the **materials needed, checked against the inventory**, with a warning if something is missing.
+- **Completing tasks:** done, skipped, or couldn't do (with a reason). Each outcome goes into the activity log, so the roadmap adapts.
+- **Views:** Today, This week, and by zone.
+- **Weekend planner:** the user enters the hours available, and the app picks the most important tasks that fit, using the time estimates.
+- **Weather-aware rescheduling:** skip watering before rain, water early in a heatwave, postpone spraying in wind.
+- **Repeating tasks.**
+- **Missed tasks:** when a time-sensitive task is missed, the roadmap engine suggests an alternative.
+- **Reminders:** scheduled on the phone (works offline), push notifications from the server for weather-driven alerts, a daily morning summary instead of many notifications, and quiet hours.
+- **Later (not in MVP):** sharing tasks with family or helpers.
+- **Backend:** tasks are editable records (covered by the sync conflict policy) that remember where they came from. A scheduled job handles the morning summaries, weather rescheduling and push notifications.
+
 ---
 
 ## 4. Backend architecture
@@ -299,7 +316,9 @@ Each milestone ships backend and app work together and ends with something usabl
 - [ ] Journal on top of the activity log: quick and bulk logging, voice notes, automatic entries, weather on each day, changing the date
 - [ ] Photos (SAS upload and thumbnails), timeline views, photo time-lapse
 - [ ] Harvest log with comparison to expected yield and optional value; search, filters, CSV/PDF export
-- [ ] Tasks with reminders, materials inventory and shopping list
+- [ ] Tasks: sources, date ranges, materials check, outcomes recorded in the activity log, Today/Week/zone views, repeating tasks
+- [ ] Reminders: on-phone reminders, morning summary, quiet hours; weekend planner
+- [ ] Materials inventory and shopping list
 
 ### M3 — Knowledge base, calendar and guides
 - [ ] `content/` pipeline publishing to the database and Blob Storage, with offline packages
