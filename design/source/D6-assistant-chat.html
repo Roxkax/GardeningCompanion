@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>D6 Assistant chat</title>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="frame.css">
+<style>
+  .nav { display: flex; align-items: center; gap: 6px; padding: 0 12px; height: 56px; flex: none; border-bottom: 1px solid var(--line); }
+  .navbtn { width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; flex: none; }
+  .who { display: flex; align-items: center; gap: 10px; flex: 1; }
+  .av { width: 36px; height: 36px; border-radius: 999px; background: var(--green); display: flex; align-items: center; justify-content: center; }
+  .who b { display: block; font-size: 16.5px; } .who span { font-size: 13px; color: var(--muted); }
+  .chat { flex: 1; padding: 14px 16px 0; display: flex; flex-direction: column; gap: 12px; overflow: hidden; }
+  .day { align-self: center; font-size: 12.5px; font-weight: 700; color: var(--muted); }
+  .me { align-self: flex-end; max-width: 78%; background: var(--green); color: #fff; font-size: 15.5px; line-height: 1.4; padding: 10px 14px; border-radius: 18px 18px 6px 18px; }
+  .bot { align-self: flex-start; max-width: 92%; background: #fff; border: 1px solid var(--line); font-size: 15.5px; line-height: 1.45; padding: 11px 14px; border-radius: 18px 18px 18px 6px; display: flex; flex-direction: column; gap: 8px; }
+  .bot ol { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 4px; }
+  .src { display: flex; flex-wrap: wrap; gap: 6px; }
+  .src span { display: flex; align-items: center; gap: 5px; font-size: 12.5px; font-weight: 700; color: var(--blue-ink); background: var(--blue-soft); padding: 5px 9px; border-radius: 999px; }
+  .prop { align-self: flex-start; width: 92%; background: var(--green-soft); border: 1px solid #C5DEC1; border-radius: 16px; padding: 12px 14px; display: flex; flex-direction: column; gap: 8px; }
+  .prop small { font-size: 12.5px; font-weight: 800; color: var(--green-ink); text-transform: uppercase; letter-spacing: .06em; }
+  .chg { display: flex; gap: 10px; align-items: flex-start; font-size: 14.5px; line-height: 1.35; }
+  .chg b { display: block; font-size: 15px; }
+  .chg span { color: #2F4A33; font-size: 13.5px; }
+  .plus { width: 22px; height: 22px; border-radius: 7px; background: #fff; display: flex; align-items: center; justify-content: center; flex: none; margin-top: 1px; }
+  .input { padding: 10px 12px 34px; display: flex; gap: 8px; align-items: center; background: var(--bg); border-top: 1px solid var(--line); }
+  .ib { width: 44px; height: 44px; border-radius: 999px; background: #fff; border: 1px solid var(--line); display: flex; align-items: center; justify-content: center; flex: none; }
+  .field { flex: 1; height: 44px; border-radius: 22px; background: #fff; border: 1px solid var(--line); display: flex; align-items: center; padding: 0 16px; font-size: 15.5px; color: #6B7468; }
+</style>
+</head>
+<body>
+<div class="stage"><div class="phone"><div class="screen">
+  <div class="island"></div>
+  <div class="status">
+    <span>9:41</span>
+    <span class="icons">
+      <svg width="18" height="12" viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1" fill="#1F2A20"/><rect x="5" y="5.5" width="3" height="6.5" rx="1" fill="#1F2A20"/><rect x="10" y="3" width="3" height="9" rx="1" fill="#1F2A20"/><rect x="15" y="0" width="3" height="12" rx="1" fill="#1F2A20"/></svg>
+      <svg width="16" height="12" viewBox="0 0 16 12"><path d="M8 11.5l2.2-2.6a3.2 3.2 0 0 0-4.4 0z" fill="#1F2A20"/><path d="M3.6 6.9a6.3 6.3 0 0 1 8.8 0l-1.4 1.6a4.2 4.2 0 0 0-6 0z" fill="#1F2A20"/><path d="M1.2 4.2a9.7 9.7 0 0 1 13.6 0l-1.4 1.6a7.6 7.6 0 0 0-10.8 0z" fill="#1F2A20"/></svg>
+      <svg width="27" height="13" viewBox="0 0 27 13"><rect x="0.5" y="0.5" width="23" height="12" rx="3.5" fill="none" stroke="#1F2A20" opacity=".4"/><rect x="2" y="2" width="18" height="9" rx="2" fill="#1F2A20"/><path d="M25 4.5v4a2 2 0 0 0 0-4z" fill="#1F2A20" opacity=".4"/></svg>
+    </span>
+  </div>
+
+  <div class="nav">
+    <div class="navbtn" aria-label="Back"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1F2A20" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></div>
+    <div class="who">
+      <div class="av"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21V11"/><path d="M12 11C12 6 8 4 4 4c0 4 2 7 8 7z"/><path d="M12 13c0-4 3-6 8-6 0 4-3 6-8 6z"/></svg></div>
+      <div><b>Garden assistant</b><span>Knows your plot, crops and weather</span></div>
+    </div>
+    <div class="navbtn" aria-label="Garden memory"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1F2A20" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z"/><path d="M9 9h6M9 13h4"/></svg></div>
+  </div>
+
+  <div class="chat">
+    <div class="day">Today 09:38</div>
+    <div class="me">Will the frost on Thursday hurt my lettuce?</div>
+    <div class="bot">
+      <span>Probably, yes. Your plot could drop to <b>1 °C</b> on Thursday night, and young lettuce in bed A3 is damaged below about 2 °C.</span>
+      <ol>
+        <li>Pick the heads that are ready before Thursday.</li>
+        <li>Cover the rest with fleece on Wednesday evening.</li>
+      </ol>
+      <div class="src">
+        <span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#1E4E7A" stroke-width="2.6" stroke-linecap="round"><path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z"/></svg>Guide: frost protection</span>
+        <span>IPMA forecast</span>
+        <span>Crop guide: lettuce</span>
+      </div>
+    </div>
+    <div class="prop">
+      <small>Suggested changes</small>
+      <div class="chg"><span class="plus"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#1F5A2C" stroke-width="3" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span><div><b>Add task: cover bed A3 with fleece</b><span>Wednesday 22 Oct, evening · 15 min</span></div></div>
+      <div class="chg"><span class="plus"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#1F5A2C" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span><div><b>Move lettuce sowing to next week</b><span>From Thu 23 Oct to Tue 28 Oct</span></div></div>
+      <div class="btn primary" style="height: 46px; font-size: 16px">Review and confirm</div>
+    </div>
+  </div>
+
+  <div class="input">
+    <div class="ib" aria-label="Add a photo"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1F2A20" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg></div>
+    <div class="field">Ask about your garden…</div>
+    <div class="ib" style="background: var(--green); border-color: var(--green)" aria-label="Speak"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21"/></svg></div>
+  </div>
+  <div class="home"></div>
+</div></div></div>
+</body>
+</html>
