@@ -46,6 +46,7 @@ The owner is used to Azure DevOps, so the same hierarchy is used, built with sub
 | 2026-10-20 | **Cloud:** Azure, with costs kept minimal during the individual phase |
 | 2026-10-20 | **Business model:** freemium. Core features are free and AI features are premium. AI usage limits are tied to the plan tier from day one. |
 | 2026-10-20 | **Work tracking:** GitHub issues in an Epic → Feature → Task hierarchy, using sub-issues |
+| 2026-10-20 | **Roadmap is dynamic:** not a fixed list generated once. It continuously works out next actions from the garden's state, the actions done (including deviations) and current best practices. It covers each zone separately, is season-aware, starts from what already exists, and has time and cost estimates per action. |
 
 ## Open decisions
 - Embedding model for pgvector search

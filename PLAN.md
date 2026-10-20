@@ -30,7 +30,19 @@ A mobile app that guides a complete beginner from **unused land to a productive,
 
 ## 3. Features
 
-The **project roadmap** is the backbone of the app. It runs through these phases: Assess → Design → Prepare soil → Irrigation → Plant → Maintain → Harvest → Plan next season. Each phase has checklists and tasks that the AI adjusts as the user makes progress.
+### 3.1 Project roadmap (the backbone)
+
+The roadmap guides the user from bare land to a working garden. It is **not a fixed list of steps that is generated once and stored**. It is a **dynamic process**: it takes in the current state of the garden and everything the user has done (including deviations from the plan), and works out the next actions from that. It always reflects the current state and current best practices.
+
+- **Phases as orientation, not a script:** Assess → Design → Prepare soil → Irrigation → Plant → Maintain → Harvest → Plan next season. A zone's phase is **worked out from its state**, not tracked as a pointer through a list. After the first season, the cycle continues from "Plan next season".
+- **Per zone:** each zone can be at a different stage. For example, zone A is ready to plant while zone B is still being cleared.
+- **Starting point:** when setting up, the app asks what already exists (cleared land, irrigation, beds, plants), so experienced users don't start from zero.
+- **Season-aware:** actions have ideal time windows for the local climate (for example, preparing soil in autumn before the rains in Alentejo), and are scheduled around them.
+- **Time and cost estimates** for each action, to help plan weekends and a budget.
+- **Deviations:** the user can mark an action as done differently, skipped, not possible, or as having a problem. The next actions adapt to that.
+- Each action links to its guide, its tasks and the materials it needs.
+
+### 3.2 Other features
 
 | Feature | Approach | Tier |
 |---|---|---|
