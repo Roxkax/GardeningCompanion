@@ -6,9 +6,10 @@ A native mobile app that guides a complete beginner from unused land to a produc
 - **`PLAN.md`** is the detailed execution plan: features, architecture, milestones and cost.
 - **This file** holds the working agreements and the decision log. Record every decision the owner confirms here.
 
-## Current phase: PLANNING
-- **Do not write application code, scaffold projects or create GitHub issues** until the owner explicitly says planning is complete.
-- The plan is being reviewed **one feature at a time**. The owner may change or add features. Update `PLAN.md` and the decision log after each confirmed change.
+## Current phase: BACKLOG CREATED, READY FOR SPRINT 01
+- Planning is complete. The owner asked for the full backlog to be created on GitHub (2026-10-20).
+- The backlog source of truth is `planning/backlog/*.json`. To change it, edit the fragments, run `python3 planning/backlog/build.py`, and re-run the **Import backlog** workflow, which only creates missing issues. Edits to existing issues must be made on GitHub or with the GitHub tools.
+- Don't start application code until the owner says to start a sprint.
 
 ## Working agreements
 - **Language:** reply in English. The owner may write in Portuguese.
@@ -25,9 +26,10 @@ The owner is used to Azure DevOps, so the same hierarchy is used, built with sub
 - **Epic:** a big area. Use an Epic issue type if one is available, otherwise a Feature issue with an `epic` label.
 - **Feature:** the equivalent of a DevOps PBI. A user-facing capability with acceptance criteria. A sub-issue of an Epic.
 - **Task:** one concrete step to deliver a Feature. A sub-issue of a Feature.
-- **Labels** mark the area: `area:backend`, `area:ios`, `area:android`, `area:content`, `area:infra`.
-- **Milestones** are M0–M7 from `PLAN.md`.
-- The owner creates the milestones, the Project board and any Epic type in the GitHub UI. Claude creates the issues and sub-issue links, **only after the owner approves the written breakdown**.
+- **Labels:** release tier (`MVP`, `Good to have`, `Future improvement`), `epic`, and area (`area:backend`, `area:ios`, `area:android`, `area:content`, `area:infra`, `area:design`, `area:testing`).
+- **Milestones are sprints** (`Sprint 01`, …), each with a capacity of 100 effort points, where **1 point = 1 hour** including the owner's testing time.
+- Each task's estimate is in its body. Future improvement features have no tasks until they're scheduled.
+- Labels, sprint milestones and issues are created by the **Import backlog** GitHub Actions workflow (`.github/workflows/import-backlog.yml`). An optional Project board can be added by the owner in the GitHub UI.
 
 ## Decision log
 | Date | Decision |
@@ -73,6 +75,9 @@ The owner is used to Azure DevOps, so the same hierarchy is used, built with sub
 | 2026-10-20 | **Sync conflicts are resolved by the user:** the server keeps its version and returns both, and the app shows them side by side so the user keeps one or combines them field by field. Doesn't block other work (badge on "Today"), and every resolution is logged. Activity log entries never conflict. |
 | 2026-10-20 | **Knowledge base search:** OpenAI `text-embedding-3-small` (via Azure OpenAI / Foundry) in pgvector, plus PostgreSQL keyword search, from the start. Embeddings are generated when content is published. |
 | 2026-10-20 | **Image model:** OpenAI gpt-image via Azure OpenAI for guide illustrations and tool reference images, generated once when content is authored and reviewed by the owner |
+| 2026-10-20 | **Priorities set** in `planning/feature-priorities.xlsx` (the owner's choices, with suggestions for blank rows): 72 MVP, 68 Good to have, 45 Future improvement. Notable choices: **offline sync is Good to have** (the MVP is online-only but sync-ready), **Android is Good to have**, and guide offline download is Future. |
+| 2026-10-20 | **Milestones M0–M7 replaced by release tiers plus 100-point sprints** (1 point = 1 hour including testing). Backlog: 21 epics, 214 features, 890 tasks; MVP ≈ 1,558 h in 16 sprints, Good to have ≈ 976 h in 10 sprints. |
+| 2026-10-20 | **Basic owned-tools list is part of the MVP** (inside "Tools needed per action"), because MVP tool features need it. Reference images stay Good to have. **Manual sun selector per zone** in the MVP, until automatic sun calculation (Good to have). |
 
 ## Open decisions
 - None at the moment
