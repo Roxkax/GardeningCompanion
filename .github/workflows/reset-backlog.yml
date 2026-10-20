@@ -1,0 +1,36 @@
+name: Reset backlog
+
+# Permanently deletes every imported backlog issue (those with a backlog-key
+# marker) and the "Sprint NN" milestones. Needs the BACKLOG_ADMIN_TOKEN secret.
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: 'Type DELETE to confirm'
+        required: true
+      dry_run:
+        description: "List what would be deleted without deleting anything"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: import-backlog
+  cancel-in-progress: false
+
+jobs:
+  reset:
+    if: inputs.confirm == 'DELETE'
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+      - name: Delete backlog
+        run: python3 planning/backlog/reset_backlog.py
+        env:
+          ADMIN_TOKEN: ${{ secrets.BACKLOG_ADMIN_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DRY_RUN: ${{ inputs.dry_run }}
