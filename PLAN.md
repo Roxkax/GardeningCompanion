@@ -62,7 +62,7 @@ All features are in scope for development. The last column only notes what could
 | Pest and disease diagnosis | The same photo-analysis pipeline as identification | Premium |
 | Tools | See §3.10 | Free |
 | Irrigation planner | See §3.11 | Free |
-| Weather alerts | Frost, heatwave and wind warnings, and a notice to skip watering when rain is expected | Free |
+| Weather alerts | See §3.12 | Free |
 | Improvement suggestions | A weekly AI review of the journal, photos, weather and plan | Premium |
 | AI assistant | Knows the user's garden, answers from the knowledge base and proposes actions to confirm | Premium (with free quota) |
 | Journal and timeline | See §3.8 | Free |
@@ -239,6 +239,20 @@ Designs the watering system and says when, and roughly how long, to water. **No 
   - Watering guidance in the knowledge base.
   - A daily job that adjusts the schedule to the weather and creates watering tasks.
 
+### 3.12 Weather alerts
+
+Warns when weather is coming that could harm the garden, and says what to do about it.
+
+- **Alert types:** frost, heatwave, strong wind, heavy rain, hail and storms, long dry spells, rain coming (skip watering), and **good-conditions alerts** (e.g. "mild and overcast tomorrow, a good day to plant out").
+- **Only relevant alerts:** sent only when something actually planted is at risk, using each crop's limits from the knowledge base.
+- **Actions with each alert:** each action links to a guide and creates a task (e.g. "cover the peppers with fleece tonight").
+- **Advance warning and severity:** typically 1–3 days ahead, with watch and warning levels. Urgent alerts (e.g. frost tonight) can override quiet hours.
+- **Forecast confidence** is shown, since forecasts more than 3 days out are less reliable.
+- **Weather screen:** a 7-day forecast for the plot with gardening notes (good days to work, sow or spray).
+- **Follow-up after the event:** after a frost or storm, the app prompts the user to check plants and log damage in the journal.
+- **Official warnings:** IPMA (Portugal) in the MVP. Other countries later, via MeteoAlarm or national services (reuse terms to be checked).
+- **Backend:** a job fetches the forecast for each plot several times a day, plus official warnings. It compares them with the limits of the crops currently planted, removes duplicate alerts, sends push notifications, creates tasks, and schedules the follow-up after the event.
+
 ---
 
 ## 4. Backend architecture
@@ -377,7 +391,9 @@ Each milestone ships backend and app work together and ends with something usabl
 - [ ] An assistant with garden context that answers from the knowledge base
 - [ ] Tool use that creates pending proposals, a confirmation interface and an audit log
 - [ ] Roadmap engine, AI layer: ranking, adapting to deviations, explanations, time and cost estimates
-- [ ] Weather alerts and the weekly improvement review
+- [ ] Weather alerts: crop-aware limits, alert types including good-conditions alerts, actions as tasks, severity and confidence, quiet-hours override, follow-up after the event
+- [ ] Weather screen with 7-day gardening forecast; IPMA official warnings
+- [ ] Weekly improvement review
 
 ### M6 — Planning
 - [ ] Planner for rotation, succession and companion planting
@@ -398,6 +414,7 @@ Each milestone ships backend and app work together and ends with something usabl
 
 - Satellite map tiles (Apple, Google) may be displayed, but not analyzed by AI or stored.
 - Open-Meteo's free API is non-commercial only. It needs a paid plan or an alternative.
+- IPMA and MeteoAlarm warnings: check the reuse terms for commercial use.
 - SoilGrids is CC-BY, so it needs attribution. Check the API's rate limits.
 - Specialist plant-ID APIs (Pl@ntNet, Kindwise): their free tiers are non-commercial.
 - Check the availability and pricing of Claude models in Microsoft Foundry.
