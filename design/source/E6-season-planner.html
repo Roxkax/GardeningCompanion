@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>E6 Season planner</title>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="frame.css">
+<style>
+  .content { flex: 1; padding: 6px 20px 120px; display: flex; flex-direction: column; gap: 14px; overflow: hidden; }
+  .head { display: flex; justify-content: space-between; align-items: flex-end; }
+  .head h1 { margin: 0; font-size: 34px; font-weight: 800; line-height: 1.1; }
+  .avatar { width: 44px; height: 44px; border-radius: 999px; background: var(--green); color: #fff; font-size: 17px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+  .seg { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); background: #E6E9E0; border-radius: 12px; padding: 3px; }
+  .seg span { height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 9px; font-size: 14px; font-weight: 600; color: var(--muted); }
+  .seg span.on { background: #fff; color: var(--text); font-weight: 800; box-shadow: 0 1px 3px rgba(0,0,0,.12); }
+  .plans { display: flex; align-items: center; justify-content: space-between; }
+  .plans b { font-size: 19px; font-weight: 800; }
+  .pills { display: flex; gap: 6px; }
+  .pills span { font-size: 13px; font-weight: 700; padding: 6px 10px; border-radius: 999px; border: 1px solid var(--line); background: #fff; color: var(--muted); }
+  .pills span.on { background: var(--text); color: #fff; border-color: var(--text); }
+  .gantt { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 12px 10px; display: flex; flex-direction: column; gap: 8px; }
+  .grow { display: grid; grid-template-columns: 30px repeat(12, minmax(0, 1fr)); column-gap: 2px; align-items: center; }
+  .grow .bed { font-size: 13px; font-weight: 800; }
+  .mh span { font-size: 11px; font-weight: 700; color: var(--muted); text-align: center; }
+  .mh span.now { color: #fff; background: var(--text); border-radius: 5px; }
+  .bar { height: 30px; border-radius: 7px; color: #fff; font-size: 12px; font-weight: 700; display: flex; align-items: center; padding: 0 7px; white-space: nowrap; overflow: hidden; }
+  .leg { background: #2D6A3A; }
+  .bra { background: #2F6FB0; }
+  .roo { background: #7A4F1E; }
+  .fru { background: #9B3F64; }
+  .empty { height: 30px; border-radius: 7px; border: 1.5px dashed #B9C0B1; color: var(--muted); font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+  .legend { display: flex; flex-wrap: wrap; gap: 6px 12px; padding-top: 8px; border-top: 1px solid #EEF0EA; }
+  .legend span { display: flex; align-items: center; gap: 5px; font-size: 12.5px; font-weight: 600; color: var(--muted); }
+  .legend i { width: 12px; height: 12px; border-radius: 4px; display: inline-block; }
+  .warn { background: var(--orange-soft); border: 1px solid #F3C99A; border-radius: 14px; padding: 10px 12px; display: flex; gap: 10px; align-items: flex-start; font-size: 14px; color: #5C3A1A; line-height: 1.4; }
+  .warn b { color: #7A3A08; }
+  .space { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 12px 14px; display: flex; flex-direction: column; gap: 8px; }
+  .meter { height: 10px; border-radius: 5px; background: #E6E9E0; overflow: hidden; }
+  .meter i { display: block; height: 100%; width: 78%; background: var(--green); border-radius: 5px; }
+  .tabbar { position: absolute; bottom: 0; left: 0; right: 0; background: #fff; border-top: 1px solid var(--line); padding: 8px 8px 30px; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); align-items: end; z-index: 45; }
+  .tab { color: var(--muted); display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 11.5px; font-weight: 600; min-height: 48px; justify-content: flex-end; }
+  .tab.on { color: var(--green); font-weight: 700; }
+  .cam { display: flex; justify-content: center; }
+  .cam span { width: 58px; height: 58px; border-radius: 999px; background: var(--green); display: flex; align-items: center; justify-content: center; margin-top: -22px; border: 4px solid var(--bg); }
+</style>
+</head>
+<body>
+<div class="stage"><div class="phone"><div class="screen">
+  <div class="island"></div>
+  <div class="status">
+    <span>9:41</span>
+    <span class="icons">
+      <svg width="18" height="12" viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1" fill="#1F2A20"/><rect x="5" y="5.5" width="3" height="6.5" rx="1" fill="#1F2A20"/><rect x="10" y="3" width="3" height="9" rx="1" fill="#1F2A20"/><rect x="15" y="0" width="3" height="12" rx="1" fill="#1F2A20"/></svg>
+      <svg width="16" height="12" viewBox="0 0 16 12"><path d="M8 11.5l2.2-2.6a3.2 3.2 0 0 0-4.4 0z" fill="#1F2A20"/><path d="M3.6 6.9a6.3 6.3 0 0 1 8.8 0l-1.4 1.6a4.2 4.2 0 0 0-6 0z" fill="#1F2A20"/><path d="M1.2 4.2a9.7 9.7 0 0 1 13.6 0l-1.4 1.6a7.6 7.6 0 0 0-10.8 0z" fill="#1F2A20"/></svg>
+      <svg width="27" height="13" viewBox="0 0 27 13"><rect x="0.5" y="0.5" width="23" height="12" rx="3.5" fill="none" stroke="#1F2A20" opacity=".4"/><rect x="2" y="2" width="18" height="9" rx="2" fill="#1F2A20"/><path d="M25 4.5v4a2 2 0 0 0 0-4z" fill="#1F2A20" opacity=".4"/></svg>
+    </span>
+  </div>
+
+  <div class="content">
+    <div class="head"><h1>Plan</h1><div class="avatar">D</div></div>
+    <div class="seg"><span>Roadmap</span><span>Calendar</span><span>Crops</span><span class="on">Season</span></div>
+
+    <div class="plans">
+      <b>Zone A · Oct–Sep</b>
+      <div class="pills"><span class="on">Active</span><span>Draft</span></div>
+    </div>
+
+    <div class="gantt">
+      <div class="grow mh"><span></span><span class="now">O</span><span>N</span><span>D</span><span>J</span><span>F</span><span>M</span><span>A</span><span>M</span><span>J</span><span>J</span><span>A</span><span>S</span></div>
+      <div class="grow"><span class="bed">A1</span>
+        <span class="bar roo" style="grid-column: 2 / 11">Garlic</span>
+        <span class="empty" style="grid-column: 11 / 14">Empty</span></div>
+      <div class="grow"><span class="bed">A2</span>
+        <span class="bar leg" style="grid-column: 2 / 10">Broad beans</span>
+        <span class="bar fru" style="grid-column: 10 / 14">Tomatoes</span></div>
+      <div class="grow"><span class="bed">A3</span>
+        <span class="bar bra" style="grid-column: 2 / 7; box-shadow: 0 0 0 2px #D98A43">Cabbage</span>
+        <span class="empty" style="grid-column: 7 / 9">Empty</span>
+        <span class="bar fru" style="grid-column: 9 / 14">Peppers</span></div>
+      <div class="grow"><span class="bed">A4</span>
+        <span class="bar bra" style="grid-column: 2 / 4">Lett.</span>
+        <span class="bar roo" style="grid-column: 4 / 11">Onions</span>
+        <span class="empty" style="grid-column: 11 / 12"></span>
+        <span class="bar bra" style="grid-column: 12 / 14">Lett.</span></div>
+      <div class="legend">
+        <span><i style="background:#2D6A3A"></i>Legumes</span>
+        <span><i style="background:#2F6FB0"></i>Leafy and cabbages</span>
+        <span><i style="background:#7A4F1E"></i>Roots and onions</span>
+        <span><i style="background:#9B3F64"></i>Fruiting</span>
+      </div>
+    </div>
+
+    <div class="warn">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9A4A0C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex: none; margin-top: 1px"><path d="M12 3l9.5 17h-19z"/><path d="M12 10v4M12 17.5v.01"/></svg>
+      <span><b>Rotation:</b> cabbages were in bed A3 last season. Swap with A2 to avoid disease build-up. <b style="text-decoration: underline">Swap beds</b></span>
+    </div>
+
+    <div class="space">
+      <div style="display: flex; justify-content: space-between; align-items: baseline"><span style="font-size: 16px; font-weight: 800">Space check</span><span style="font-size: 14px; font-weight: 700; color: var(--muted)">22 of 28.8 m²</span></div>
+      <div class="meter"><i></i></div>
+      <div style="font-size: 14px; color: var(--muted); line-height: 1.4">All must-haves fit. Empty months in A1, A3 and A4 could take a quick crop or green cover.</div>
+    </div>
+  </div>
+
+  <nav class="tabbar">
+    <div class="tab"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2"/></svg>Today</div>
+    <div class="tab"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6l6-2.5 6 2.5 6-2.5v14l-6 2.5-6-2.5-6 2.5z"/><path d="M9 3.5v14M15 6v14"/></svg>Garden</div>
+    <div class="cam"><span><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg></span></div>
+    <div class="tab on"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>Plan</div>
+    <div class="tab"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z"/><path d="M9 9h6M9 13h6"/></svg>Journal</div>
+  </nav>
+  <div class="home"></div>
+</div></div></div>
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>E1 Roadmap</title>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="frame.css">
+<style>
+  .content { flex: 1; padding: 6px 20px 120px; display: flex; flex-direction: column; gap: 16px; overflow: hidden; }
+  .head { display: flex; justify-content: space-between; align-items: flex-end; }
+  .head h1 { margin: 0; font-size: 34px; font-weight: 800; line-height: 1.1; }
+  .avatar { width: 44px; height: 44px; border-radius: 999px; background: var(--green); color: #fff; font-size: 17px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+  .seg { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); background: #E6E9E0; border-radius: 12px; padding: 3px; }
+  .seg span { height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 9px; font-size: 14px; font-weight: 600; color: var(--muted); }
+  .seg span.on { background: #fff; color: var(--text); font-weight: 800; box-shadow: 0 1px 3px rgba(0,0,0,.12); }
+  .card { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 14px 14px 12px; display: flex; flex-direction: column; gap: 12px; }
+  .zhead { display: flex; align-items: center; gap: 10px; }
+  .dot { width: 12px; height: 12px; border-radius: 4px; flex: none; }
+  .zhead b { font-size: 17px; }
+  .zhead .meta { font-size: 13.5px; color: var(--muted); font-weight: 600; }
+  .zhead .chev { margin-left: auto; }
+  .track { display: flex; gap: 3px; }
+  .track i { flex: 1; height: 8px; border-radius: 4px; background: #E6E9E0; }
+  .track i.done { background: #9CC3A2; }
+  .track i.now { background: var(--green); }
+  .phase { display: flex; justify-content: space-between; align-items: baseline; font-size: 13px; color: var(--muted); font-weight: 600; margin-top: -6px; }
+  .phase b { color: var(--green-ink); font-size: 14px; font-weight: 800; }
+  .act { display: flex; gap: 12px; align-items: flex-start; padding-top: 10px; border-top: 1px solid #EEF0EA; }
+  .num { width: 24px; height: 24px; border-radius: 999px; background: var(--green-soft); color: var(--green-ink); font-size: 13px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex: none; margin-top: 1px; }
+  .act .t { font-size: 15.5px; font-weight: 700; line-height: 1.3; }
+  .act .w { font-size: 13.5px; color: var(--muted); margin-top: 2px; }
+  .act .w b { color: var(--text); font-weight: 700; }
+  .tabbar { position: absolute; bottom: 0; left: 0; right: 0; background: #fff; border-top: 1px solid var(--line); padding: 8px 8px 30px; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); align-items: end; z-index: 45; }
+  .tab { color: var(--muted); display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 11.5px; font-weight: 600; min-height: 48px; justify-content: flex-end; }
+  .tab.on { color: var(--green); font-weight: 700; }
+  .cam { display: flex; justify-content: center; }
+  .cam span { width: 58px; height: 58px; border-radius: 999px; background: var(--green); display: flex; align-items: center; justify-content: center; margin-top: -22px; border: 4px solid var(--bg); }
+</style>
+</head>
+<body>
+<div class="stage"><div class="phone"><div class="screen">
+  <div class="island"></div>
+  <div class="status">
+    <span>9:41</span>
+    <span class="icons">
+      <svg width="18" height="12" viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1" fill="#1F2A20"/><rect x="5" y="5.5" width="3" height="6.5" rx="1" fill="#1F2A20"/><rect x="10" y="3" width="3" height="9" rx="1" fill="#1F2A20"/><rect x="15" y="0" width="3" height="12" rx="1" fill="#1F2A20"/></svg>
+      <svg width="16" height="12" viewBox="0 0 16 12"><path d="M8 11.5l2.2-2.6a3.2 3.2 0 0 0-4.4 0z" fill="#1F2A20"/><path d="M3.6 6.9a6.3 6.3 0 0 1 8.8 0l-1.4 1.6a4.2 4.2 0 0 0-6 0z" fill="#1F2A20"/><path d="M1.2 4.2a9.7 9.7 0 0 1 13.6 0l-1.4 1.6a7.6 7.6 0 0 0-10.8 0z" fill="#1F2A20"/></svg>
+      <svg width="27" height="13" viewBox="0 0 27 13"><rect x="0.5" y="0.5" width="23" height="12" rx="3.5" fill="none" stroke="#1F2A20" opacity=".4"/><rect x="2" y="2" width="18" height="9" rx="2" fill="#1F2A20"/><path d="M25 4.5v4a2 2 0 0 0 0-4z" fill="#1F2A20" opacity=".4"/></svg>
+    </span>
+  </div>
+
+  <div class="content">
+    <div class="head">
+      <h1>Plan</h1>
+      <div class="avatar">D</div>
+    </div>
+    <div class="seg"><span class="on">Roadmap</span><span>Calendar</span><span>Crops</span><span>Season</span></div>
+
+    <div class="card">
+      <div class="zhead"><i class="dot" style="background:#2D6A3A"></i><b>Zone A</b><span class="meta">Vegetables</span>
+        <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4E5A4C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></div>
+      <div class="track"><i class="done"></i><i class="done"></i><i class="now"></i><i></i><i></i><i></i><i></i></div>
+      <div class="phase"><span>Step 3 of 7</span><b>Prepare soil</b></div>
+      <div class="act"><span class="num">1</span><div><div class="t">Spread compost on beds A1–A3</div><div class="w">Best before <b>15 Nov</b> · about 2 h</div></div></div>
+      <div class="act"><span class="num">2</span><div><div class="t">Lay mulch on the paths</div><div class="w">Late Nov · about 1 h 30</div></div></div>
+    </div>
+
+    <div class="card">
+      <div class="zhead"><i class="dot" style="background:#2F6FB0"></i><b>Zone B</b><span class="meta">To clear first</span>
+        <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4E5A4C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></div>
+      <div class="track"><i class="now"></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      <div class="phase"><span>Step 1 of 7</span><b>Assess and clear</b></div>
+      <div class="act"><span class="num">1</span><div><div class="t">Cut back brambles along the fence</div><div class="w">This month · about 3 h · needs a brush cutter</div></div></div>
+      <div class="act"><span class="num">2</span><div><div class="t">Dig out bramble roots</div><div class="w">After cutting · about 4 h</div></div></div>
+    </div>
+
+    <div class="card">
+      <div class="zhead"><i class="dot" style="background:#7A4F1E"></i><b>Zone C</b><span class="meta">Olive trees</span>
+        <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4E5A4C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></div>
+      <div class="track"><i class="done"></i><i class="done"></i><i class="done"></i><i class="done"></i><i class="done"></i><i class="now"></i><i></i></div>
+      <div class="phase"><span>Step 6 of 7</span><b>Maintain</b></div>
+      <div class="act"><span class="num">1</span><div><div class="t">Check olives for ripeness</div><div class="w">From early Nov · about 30 min</div></div></div>
+    </div>
+  </div>
+
+  <nav class="tabbar">
+    <div class="tab"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2"/></svg>Today</div>
+    <div class="tab"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6l6-2.5 6 2.5 6-2.5v14l-6 2.5-6-2.5-6 2.5z"/><path d="M9 3.5v14M15 6v14"/></svg>Garden</div>
+    <div class="cam"><span><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg></span></div>
+    <div class="tab on"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>Plan</div>
+    <div class="tab"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z"/><path d="M9 9h6M9 13h6"/></svg>Journal</div>
+  </nav>
+  <div class="home"></div>
+</div></div></div>
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>E5 Crop detail</title>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="frame.css">
+<style>
+  .nav { height: 48px; padding: 0 12px; display: flex; align-items: center; justify-content: space-between; flex: none; }
+  .nav .back { display: flex; align-items: center; gap: 2px; color: var(--green); font-size: 17px; font-weight: 600; height: 44px; }
+  .iconbtn { width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; }
+  .content { flex: 1; padding: 0 20px 120px; display: flex; flex-direction: column; gap: 12px; overflow: hidden; }
+  .hero { display: flex; gap: 14px; align-items: center; }
+  .hero .ic { width: 56px; height: 56px; border-radius: 16px; background: var(--green-soft); display: flex; align-items: center; justify-content: center; flex: none; }
+  h1 { margin: 0; font-size: 28px; font-weight: 800; line-height: 1.1; }
+  .sub { font-size: 14px; color: var(--muted); margin-top: 2px; }
+  .chip { font-size: 12px; font-weight: 800; padding: 3px 8px; border-radius: 999px; background: var(--green-soft); color: var(--green-ink); margin-left: auto; align-self: flex-start; white-space: nowrap; }
+  .card { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 12px 14px; display: flex; flex-direction: column; gap: 8px; }
+  .label { font-size: 12.5px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--green); }
+  .fit { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+  .fit div { background: var(--bg); border-radius: 12px; padding: 8px 10px; }
+  .fit b { display: flex; align-items: center; gap: 5px; font-size: 14.5px; font-weight: 800; }
+  .fit span { font-size: 12.5px; color: var(--muted); font-weight: 600; }
+  .win { position: relative; height: 12px; border-radius: 4px; background: #E6E9E0; margin-top: 2px; }
+  .seg-sow { position: absolute; left: 75%; width: 25%; top: 0; bottom: 0; border-radius: 4px; background: #2D6A3A; }
+  .seg-har { position: absolute; left: 16.7%; width: 25%; top: 0; bottom: 0; border-radius: 4px; background: #C9952B; }
+  .now { position: absolute; left: 80%; top: -5px; width: 3px; height: 22px; border-radius: 2px; background: var(--text); }
+  .months { display: flex; justify-content: space-between; font-size: 11.5px; font-weight: 700; color: var(--muted); }
+  .note { font-size: 14px; color: var(--muted); }
+  .note b { color: var(--text); }
+  .rowlink { display: flex; align-items: center; gap: 10px; min-height: 44px; }
+  .rowlink .v { margin-left: auto; font-size: 15px; font-weight: 700; color: var(--green); display: flex; align-items: center; gap: 4px; }
+  .qty { display: flex; align-items: center; gap: 10px; }
+  .step { display: flex; align-items: center; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+  .step span { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: 700; color: var(--green); }
+  .step b { min-width: 64px; text-align: center; font-size: 16px; font-weight: 800; }
+  .result { font-size: 14.5px; line-height: 1.45; }
+  .result b { font-weight: 800; }
+  .btnrow { display: flex; gap: 10px; }
+  .tabbar { position: absolute; bottom: 0; left: 0; right: 0; background: #fff; border-top: 1px solid var(--line); padding: 8px 8px 30px; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); align-items: end; z-index: 45; }
+  .tab { color: var(--muted); display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 11.5px; font-weight: 600; min-height: 48px; justify-content: flex-end; }
+  .tab.on { color: var(--green); font-weight: 700; }
+  .cam { display: flex; justify-content: center; }
+  .cam span { width: 58px; height: 58px; border-radius: 999px; background: var(--green); display: flex; align-items: center; justify-content: center; margin-top: -22px; border: 4px solid var(--bg); }
+</style>
+</head>
+<body>
+<div class="stage"><div class="phone"><div class="screen">
+  <div class="island"></div>
+  <div class="status">
+    <span>9:41</span>
+    <span class="icons">
+      <svg width="18" height="12" viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1" fill="#1F2A20"/><rect x="5" y="5.5" width="3" height="6.5" rx="1" fill="#1F2A20"/><rect x="10" y="3" width="3" height="9" rx="1" fill="#1F2A20"/><rect x="15" y="0" width="3" height="12" rx="1" fill="#1F2A20"/></svg>
+      <svg width="16" height="12" viewBox="0 0 16 12"><path d="M8 11.5l2.2-2.6a3.2 3.2 0 0 0-4.4 0z" fill="#1F2A20"/><path d="M3.6 6.9a6.3 6.3 0 0 1 8.8 0l-1.4 1.6a4.2 4.2 0 0 0-6 0z" fill="#1F2A20"/><path d="M1.2 4.2a9.7 9.7 0 0 1 13.6 0l-1.4 1.6a7.6 7.6 0 0 0-10.8 0z" fill="#1F2A20"/></svg>
+      <svg width="27" height="13" viewBox="0 0 27 13"><rect x="0.5" y="0.5" width="23" height="12" rx="3.5" fill="none" stroke="#1F2A20" opacity=".4"/><rect x="2" y="2" width="18" height="9" rx="2" fill="#1F2A20"/><path d="M25 4.5v4a2 2 0 0 0 0-4z" fill="#1F2A20" opacity=".4"/></svg>
+    </span>
+  </div>
+
+  <div class="nav">
+    <span class="back"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2D6A3A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>Crops</span>
+    <span class="iconbtn" aria-label="More"><svg width="24" height="24" viewBox="0 0 24 24" fill="#2D6A3A"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg></span>
+  </div>
+
+  <div class="content">
+    <div class="hero">
+      <span class="ic"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#2D6A3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 19c7 0 12-5 12-13-8 0-12 5-12 13z"/><path d="M6 19l7-7"/></svg></span>
+      <div><h1>Broad beans</h1><div class="sub">Favas · legume family · easy</div></div>
+      <span class="chip">Must-have</span>
+    </div>
+
+    <div class="card">
+      <span class="label">Fit for your plot</span>
+      <div class="fit">
+        <div><b><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#2D6A3A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"/></svg>Great</b><span>Climate</span></div>
+        <div><b><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#2D6A3A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"/></svg>Zone A</b><span>Full sun</span></div>
+        <div><b><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#2D6A3A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"/></svg>Low</b><span>Water need</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="label">When</span>
+      <div class="win"><div class="seg-har"></div><div class="seg-sow"></div><div class="now"></div></div>
+      <div class="months"><span>J</span><span>F</span><span>M</span><span>A</span><span>M</span><span>J</span><span>J</span><span>A</span><span>S</span><span>O</span><span>N</span><span>D</span></div>
+      <div class="note"><b>Sow now</b>, until mid December. Harvest in about <b>150 days</b>, from March to May.</div>
+    </div>
+
+    <div class="card" style="gap: 4px">
+      <div class="rowlink"><span style="font-size: 15.5px; font-weight: 700">Variety</span>
+        <span class="v">Generic (any)<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2D6A3A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span></div>
+      <div style="font-size: 13px; color: var(--muted); margin-top: -6px">Try “Aguadulce” for an earlier harvest.</div>
+    </div>
+
+    <div class="card">
+      <span class="label">How much to plant</span>
+      <div class="qty">
+        <span style="font-size: 15px; font-weight: 600">I’d like about</span>
+        <div class="step"><span>−</span><b>5 kg</b><span>+</span></div>
+      </div>
+      <div class="result">That’s <b>40 plants</b> in 2 rows of 6 m, about <b>7 m²</b>. Fits in bed A2.</div>
+    </div>
+
+    <div class="btnrow">
+      <div class="btn primary" style="flex: 1">Add to season plan</div>
+      <div class="btn secondary" style="flex: none; padding: 0 16px">Guide</div>
+    </div>
+  </div>
+
+  <nav class="tabbar">
+    <div class="tab"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2"/></svg>Today</div>
+    <div class="tab"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6l6-2.5 6 2.5 6-2.5v14l-6 2.5-6-2.5-6 2.5z"/><path d="M9 3.5v14M15 6v14"/></svg>Garden</div>
+    <div class="cam"><span><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg></span></div>
+    <div class="tab on"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>Plan</div>
+    <div class="tab"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z"/><path d="M9 9h6M9 13h6"/></svg>Journal</div>
+  </nav>
+  <div class="home"></div>
+</div></div></div>
+</body>
+</html>
