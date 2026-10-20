@@ -78,6 +78,7 @@ The owner is used to Azure DevOps, so the same hierarchy is used, built with sub
 | 2026-10-20 | **Priorities set** in `planning/feature-priorities.xlsx` (the owner's choices, with suggestions for blank rows): 72 MVP, 68 Good to have, 45 Future improvement. Notable choices: **offline sync is Good to have** (the MVP is online-only but sync-ready), **Android is Good to have**, and guide offline download is Future. |
 | 2026-10-20 | **Milestones M0–M7 replaced by release tiers plus 100-point sprints** (1 point = 1 hour including testing). Backlog: 21 epics, 214 features, 890 tasks; MVP ≈ 1,558 h in 16 sprints, Good to have ≈ 976 h in 10 sprints. |
 | 2026-10-20 | **Basic owned-tools list is part of the MVP** (inside "Tools needed per action"), because MVP tool features need it. Reference images stay Good to have. **Manual sun selector per zone** in the MVP, until automatic sun calculation (Good to have). |
+| 2026-10-20 | **App design started** on the design canvas (https://claude.ai/artifact/LhQtQH3DAuprsSMSv3rDqG). **App map approved:** five tabs (Today, Garden, Snap & Ask camera button in the middle, Plan, Journal), "Learn and Me" opened from the profile picture, 44 screens with codes A1–G6. Screens are reviewed one at a time, starting with A1. |
 
 ## Open decisions
 - None at the moment
