@@ -56,7 +56,7 @@ All features are in scope for development. The last column only notes what could
 | Site assessment by camera | See §3.4 | Premium |
 | Choosing your crops | See §3.6 | Free (rules) / Premium (AI explanation) |
 | When to plant what | See §3.5 | Free |
-| Harvest readiness | A photo, plus days since sowing and the variety's maturity, gives a verdict with a confidence level | Premium |
+| Harvest readiness | See §3.15 | Premium (checklists, notices and guides: Free) |
 | Future planting planner | Rules (season windows, crop rotation by family, spacing, companion plants, succession planting) generate the plan. The AI explains and adjusts it. | Free (rules) / Premium (AI) |
 | Plant identification | See §3.13 | Premium |
 | Pest and disease diagnosis | See §3.14 | Premium (risk warnings and scouting tasks: Free) |
@@ -295,6 +295,21 @@ Photograph a plant that looks wrong, find the cause, and get a treatment plan.
   - Scheduled check-ups.
   - Disease flags in each bed's history, which the season planner reads.
 
+### 3.15 Harvest readiness
+
+Knowing when to pick, and how, to harvest at the best moment.
+
+- **Photo verdict:** a photo, plus planting date and the variety's maturity time, gives one of: not yet (about X days to go), ready soon, ready now, or past its best (pick now, or leave for seed). Each verdict has a confidence level.
+- **Advance notice:** the calendar's harvest estimate (accumulated heat) warns when a harvest window is close and asks for a photo check.
+- **Signs checklist for each crop (no AI):** e.g. "melon: the stem slips off easily", "garlic: lower leaves turn brown". Crops that can't be judged from a photo (potatoes, carrots, onions, melons) use the checklist plus "dig up one to check" instructions.
+- **How to harvest:** technique, best time of day (morning for leafy greens, before the heat), and how to keep plants producing.
+- **Weather-aware:** e.g. harvest ripe tomatoes before heavy rain. Linked to weather alerts.
+- **One-tap logging:** ready → harvested → quantity in the harvest log.
+- **Glut warning** with ideas to preserve or give away.
+- **Storage and preserving guides:** how to store each crop, how long it keeps, and simple preserving (drying, freezing, jarring).
+- **Later (not in MVP):** saving seeds from the user's own crops.
+- **Backend:** a "harvest readiness" task in the AI layer (crop, variety and planting date as context), harvest windows from the calendar, harvest-sign checklists and storage guides in the knowledge base, notifications when a window is approaching, and glut forecasts.
+
 ---
 
 ## 4. Backend architecture
@@ -420,6 +435,7 @@ Each milestone ships backend and app work together and ends with something usabl
 - [ ] Climate-driven sowing and planting calendar
 - [ ] Guide format (standard step layout, parameters filled from the user's data), "doing" mode with read-aloud, step completion recorded in the activity log, feedback on unclear steps
 - [ ] First guides: land clearing, bed building, compost, drip irrigation, mulching, sowing, planting out
+- [ ] Harvest-sign checklists for each crop, plus storage and preserving guides
 - [ ] Illustration workflow (AI images reviewed by the owner, plus diagrams) and a broken-video-link check job
 - [ ] Sources and "last reviewed" dates on all content, plus the AI content-freshness job that proposes updates as pull requests
 
@@ -429,7 +445,7 @@ Each milestone ships backend and app work together and ends with something usabl
 - [ ] Plant identification: context-aware, several photos, crop-or-weed verdict, one-tap actions, corrections fed into the AI test set
 - [ ] Pest and disease diagnosis: all causes, follow-up questions, treatment plans (organic first, no product names), check-ups with before-and-after comparison, spread warnings, disease flags in bed history
 - [ ] Disease-risk rules on the weather data, seasonal scouting tasks, beneficial insect recognition
-- [ ] Harvest readiness
+- [ ] Harvest readiness: photo verdicts, advance notice of harvest windows, one-tap logging, glut warnings
 - [ ] Offline photo queue, with push notifications when results are ready
 - [ ] An evaluation set of real photos from the plot, re-run whenever a prompt or model changes
 
