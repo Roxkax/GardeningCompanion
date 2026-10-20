@@ -24,7 +24,8 @@ A mobile app that guides a complete beginner from **unused land to a productive,
 | Database | **PostgreSQL** with PostGIS (geospatial) and pgvector (AI search) |
 | Backend | **.NET (ASP.NET Core)**. A Python service is added only if we later need our own raster or ML processing. |
 | Cloud | **Azure**, with the lowest possible cost during the individual phase |
-| Business model | **Freemium**: free core features, with the AI features in a premium subscription |
+| Business model | **Freemium** (later): free core features, with the AI features in a premium subscription |
+| Scope while it's for personal use | **All features are essential and in scope.** The tier column only notes what *could* be premium once the app goes commercial. |
 
 ---
 
@@ -41,10 +42,14 @@ The roadmap guides the user from bare land to a working garden. It is **not a fi
 - **Time and cost estimates** for each action, to help plan weekends and a budget.
 - **Deviations:** the user can mark an action as done differently, skipped, not possible, or as having a problem. The next actions adapt to that.
 - Each action links to its guide, its tasks and the materials it needs.
+- **How next actions are produced:** a rules layer (agronomy logic and safety limits) suggests the possible actions and their time windows. An AI layer ranks them, adapts them to deviations, explains why, and estimates time and cost. See §4, component 3.
+- **Potential tier (commercial):** rules-based next actions free, AI adaptation premium.
 
 ### 3.2 Other features
 
-| Feature | Approach | Tier |
+All features are in scope for development. The last column only notes what could be premium in a future commercial version.
+
+| Feature | Approach | Potential tier (commercial) |
 |---|---|---|
 | Plot mapping | Draw the plot and zones on a satellite base map (MapKit on iOS, Google Maps SDK on Android). The server calculates area and sun exposure, and adds slope from elevation data and estimated soil type from SoilGrids. | Free |
 | Site assessment by camera | Claude analyzes photos for weeds, stones, slope, shade and how the soil looks. Guided DIY soil tests (jar test, squeeze test), and a recommendation for a lab test. | Premium |
@@ -87,27 +92,35 @@ The roadmap guides the user from bare land to a working garden. It is **not a fi
 
 ### Components
 1. **Identity:** Entra External ID, signed in with MSAL on both apps. Multi-user from day one, with every record scoped to a user.
-2. **Core API:** plots, zones and beds (PostGIS geometry), plantings, tasks, journal, materials, plans, roadmap progress. Built with ASP.NET Core and EF Core, using NetTopologySuite for geometry.
-3. **Sync API:** offline-first sync.
+2. **Core API:** plots, zones and beds (PostGIS geometry), plantings, tasks, journal, materials, plans. Built with ASP.NET Core and EF Core, using NetTopologySuite for geometry.
+3. **Activity log and roadmap engine:**
+   - **Activity log:** an entry is saved for everything that happens (actions done, skipped or done differently, journal notes, photo results, changes of state). Entries are timestamped and never overwritten.
+   - **Zone state:** a current-state view of each zone, built from the log. The zone's phase is worked out from it.
+   - **Next actions:** a rules layer (agronomy logic and safety limits that are never broken) produces the possible actions and their time windows. An AI layer ranks them, adapts them to deviations, explains why, and estimates time and cost. The result is a short list of next actions for each zone, each with a reason, a time window, a guide link and the materials needed.
+   - **When it recalculates:** on relevant events (an action recorded, a photo analyzed, a significant forecast change) and once a day. The rules run every time, the AI only when the change matters, to keep costs down. The latest result is cached on the phone for offline use.
+   - **Traceability:** each recommendation records the knowledge-base version and AI model that produced it.
+4. **Sync API:** offline-first sync.
    - Clients generate the record IDs (UUIDs).
    - Every record carries a server version number.
    - Deleted records are marked as deleted (soft deletes) rather than removed.
    - Endpoints are `POST /sync/push` and `GET /sync/pull?since=<token>`.
-   - Conflicts are resolved by last-write-wins per record, and every resolution is logged.
-4. **Media:** the API issues short-lived SAS upload URLs, the phone uploads directly to Blob Storage, and a queue triggers thumbnail creation and any AI analysis.
-5. **AI layer:** one `IAiService` handles every task: site assessment, identification, diagnosis, harvest readiness, assistant chat (tool use that creates **pending proposals**), plan explanation and the weekly review.
+   - Activity log entries are only ever added, never edited, so they sync without conflicts.
+   - For records that can be edited, conflicts are resolved by last-write-wins per record, and every resolution is logged.
+5. **Media:** the API issues short-lived SAS upload URLs, the phone uploads directly to Blob Storage, and a queue triggers thumbnail creation and any AI analysis.
+6. **AI layer:** one `IAiService` handles every task: site assessment, identification, diagnosis, harvest readiness, assistant chat (tool use that creates **pending proposals**), plan explanation and the weekly review.
    - It assembles the context for each call: garden, history, weather, and relevant knowledge-base content.
    - Usage is limited per user according to their plan tier.
    - Every request is logged with its cost.
    - The model can be swapped.
-6. **Knowledge base:** crops (temperature thresholds, frost tolerance, days to maturity, rotation family, spacing, Kc), techniques and guides.
+7. **Knowledge base:** crops (temperature thresholds, frost tolerance, days to maturity, rotation family, spacing, Kc), techniques and guides.
    - The **source of truth lives in git** under `content/` as YAML and Markdown, in both PT and EN.
    - A pipeline publishes it to the database and Blob Storage, and builds offline packages.
    - The AI uses it as grounding: PostgreSQL full-text search first, then pgvector embeddings.
-7. **External data adapters:** Open-Meteo (forecast, historical climate, ET₀, elevation) and SoilGrids (soil). The results are cached for each plot.
-8. **Worker:** queue processing and scheduled jobs (weather alerts, reminders, weekly reviews).
-9. **Notifications:** Azure Notification Hubs (free tier), sending to APNs and FCM.
-10. **Later:** App Store and Play subscription receipt validation, IoT and sensor ingestion, a content admin interface, and a Python service for raster or ML work.
+   - **Kept current:** each item cites its sources (e.g. FAO, agricultural extension services) and has a "last reviewed" date. A scheduled AI job flags outdated content and proposes updates as pull requests to `content/`. **A person reviews each update before it's published.** Nothing is published automatically from the web.
+8. **External data adapters:** Open-Meteo (forecast, historical climate, ET₀, elevation) and SoilGrids (soil). The results are cached for each plot.
+9. **Worker:** queue processing and scheduled jobs (roadmap recalculation, weather alerts, reminders, weekly reviews, content freshness review).
+10. **Notifications:** Azure Notification Hubs (free tier), sending to APNs and FCM.
+11. **Later:** App Store and Play subscription receipt validation, IoT and sensor ingestion, a content admin interface, and a Python service for raster or ML work.
 
 ### Estimated monthly cost during the individual phase
 To be verified against current Azure pricing.
@@ -142,7 +155,7 @@ docs/      architecture decisions (ADRs), API notes
 
 ## 6. Milestones
 
-Each milestone ships backend and app work together and ends with something usable on the real plot in Alentejo.
+Each milestone ships backend and app work together and ends with something usable on the real plot in Alentejo. **All features are essential:** milestones set the order, not what's in scope.
 
 ### M0 — Foundations
 - [ ] Repo structure, .NET solution, Docker Compose (PostgreSQL + PostGIS + Azurite)
@@ -155,7 +168,9 @@ Each milestone ships backend and app work together and ends with something usabl
 ### M1 — Plot and roadmap
 - [ ] Draw the plot and zones on a satellite map, stored in PostGIS
 - [ ] Enrichment: area, sun exposure, slope (elevation data) and soil estimate (SoilGrids)
-- [ ] Project roadmap with phases and checklists (static content first)
+- [ ] Activity log and zone state
+- [ ] Setup questions about what already exists
+- [ ] Roadmap engine, rules layer: next actions for each zone, with time windows and deviation handling
 
 ### M2 — Journal, tasks, materials and offline sync
 - [ ] Local databases (SwiftData and Room), plus the sync push/pull protocol
@@ -166,6 +181,7 @@ Each milestone ships backend and app work together and ends with something usabl
 - [ ] Crop catalog (30–50 crops relevant to Mediterranean climates first), PT and EN
 - [ ] Climate-driven sowing and planting calendar
 - [ ] First guides: soil preparation, compost, drip irrigation, sowing, transplanting
+- [ ] Sources and "last reviewed" dates on all content, plus the AI content-freshness job that proposes updates as pull requests
 
 ### M4 — AI photo features
 - [ ] AI layer on Foundry, with quotas by plan tier and cost logging
@@ -176,6 +192,7 @@ Each milestone ships backend and app work together and ends with something usabl
 ### M5 — AI assistant and smart alerts
 - [ ] An assistant with garden context that answers from the knowledge base
 - [ ] Tool use that creates pending proposals, a confirmation interface and an audit log
+- [ ] Roadmap engine, AI layer: ranking, adapting to deviations, explanations, time and cost estimates
 - [ ] Weather alerts and the weekly improvement review
 
 ### M6 — Planning
@@ -203,4 +220,4 @@ Each milestone ships backend and app work together and ends with something usabl
 ## 8. Open decisions
 
 - [ ] Embedding model for pgvector search. Claude doesn't produce embeddings, so this needs a separate model, for example one on Foundry.
-- [ ] The exact sync conflict policy for each entity (last-write-wins per record or per field).
+- [ ] The exact sync conflict policy for each editable entity (last-write-wins per record or per field). Activity log entries are only ever added, so they don't need one.
