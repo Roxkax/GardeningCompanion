@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>G2 Guide library</title>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="frame.css">
+<style>
+  .nav { height: 44px; padding: 0 12px; display: flex; align-items: center; gap: 4px; flex: none; }
+  .back { width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; }
+  .body { flex: 1; padding: 0 20px 30px; display: flex; flex-direction: column; gap: 16px; overflow: hidden; }
+  .body > * { flex: none; }
+  h1 { margin: 0; font-size: 32px; font-weight: 800; }
+  .search { height: 46px; border-radius: 12px; background: #E9ECE4; display: flex; align-items: center; gap: 10px; padding: 0 14px; font-size: 16px; color: #5F6A5C; }
+  .chips { display: flex; gap: 8px; }
+  .chip { height: 36px; padding: 0 14px; border-radius: 999px; background: #fff; border: 1px solid var(--line); display: flex; align-items: center; font-size: 14.5px; font-weight: 700; }
+  .chip.on { background: var(--green); color: #fff; border-color: var(--green); }
+  h2 { margin: 0; font-size: 20px; font-weight: 800; }
+  .hrow { display: flex; justify-content: space-between; align-items: baseline; }
+  .hrow a { font-size: 15px; font-weight: 600; color: var(--green); }
+  .scroller { display: flex; gap: 12px; margin-right: -20px; }
+  .feat { width: 220px; flex: none; background: #fff; border: 1px solid var(--line); border-radius: 16px; overflow: hidden; }
+  .feat .img { height: 96px; }
+  .feat .txt { padding: 10px 12px 12px; display: flex; flex-direction: column; gap: 4px; }
+  .tag { font-size: 12px; font-weight: 700; color: var(--green-ink); background: var(--green-soft); align-self: flex-start; padding: 2px 8px; border-radius: 999px; }
+  .feat b { font-size: 15.5px; line-height: 1.25; }
+  .meta { font-size: 13px; color: var(--muted); font-weight: 600; }
+  .list { background: #fff; border: 1px solid var(--line); border-radius: 16px; }
+  .item { display: flex; gap: 12px; align-items: center; padding: 12px 14px; border-bottom: 1px solid #EEF0EA; }
+  .item:last-child { border-bottom: none; }
+  .thumb { width: 58px; height: 58px; border-radius: 12px; overflow: hidden; flex: none; }
+  .item b { display: block; font-size: 16px; line-height: 1.25; }
+  .level { display: inline-flex; gap: 3px; vertical-align: middle; margin-left: 2px; }
+  .level i { width: 6px; height: 6px; border-radius: 2px; background: #C9CFC2; display: block; }
+  .level i.on { background: var(--green); }
+</style>
+</head>
+<body>
+<div class="stage"><div class="phone"><div class="screen">
+  <div class="island"></div>
+  <div class="status">
+    <span>9:41</span>
+    <span class="icons">
+      <svg width="18" height="12" viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1" fill="#1F2A20"/><rect x="5" y="5.5" width="3" height="6.5" rx="1" fill="#1F2A20"/><rect x="10" y="3" width="3" height="9" rx="1" fill="#1F2A20"/><rect x="15" y="0" width="3" height="12" rx="1" fill="#1F2A20"/></svg>
+      <svg width="16" height="12" viewBox="0 0 16 12"><path d="M8 11.5l2.2-2.6a3.2 3.2 0 0 0-4.4 0z" fill="#1F2A20"/><path d="M3.6 6.9a6.3 6.3 0 0 1 8.8 0l-1.4 1.6a4.2 4.2 0 0 0-6 0z" fill="#1F2A20"/><path d="M1.2 4.2a9.7 9.7 0 0 1 13.6 0l-1.4 1.6a7.6 7.6 0 0 0-10.8 0z" fill="#1F2A20"/></svg>
+      <svg width="27" height="13" viewBox="0 0 27 13"><rect x="0.5" y="0.5" width="23" height="12" rx="3.5" fill="none" stroke="#1F2A20" opacity=".4"/><rect x="2" y="2" width="18" height="9" rx="2" fill="#1F2A20"/><path d="M25 4.5v4a2 2 0 0 0 0-4z" fill="#1F2A20" opacity=".4"/></svg>
+    </span>
+  </div>
+  <div class="nav">
+    <div class="back"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2D6A3A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></div>
+    <span style="font-size: 17px; color: var(--green); font-weight: 600">Me</span>
+  </div>
+  <div class="body">
+    <h1>Guides</h1>
+    <div class="search">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4E5A4C" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg>
+      Search guides
+    </div>
+    <div class="chips"><span class="chip on">All</span><span class="chip">Techniques</span><span class="chip">Crops</span><span class="chip">Problems</span></div>
+
+    <div class="hrow"><h2>For your next actions</h2></div>
+    <div class="scroller">
+      <div class="feat">
+        <div class="img"><svg width="220" height="96" viewBox="0 0 220 96"><rect width="220" height="96" fill="#F3E6CF"/><path d="M0 70 C60 62 150 66 220 60 V96 H0z" fill="#B8925E"/><g fill="#6B4C2E"><circle cx="40" cy="74" r="3"/><circle cx="90" cy="80" r="2.5"/><circle cx="150" cy="72" r="3"/></g><path d="M120 66 l26-34 h22 l-20 34z" fill="#8A6A45"/><rect x="128" y="20" width="6" height="40" rx="3" fill="#7A5A36" transform="rotate(30 131 40)"/><path d="M30 50 C 50 40, 70 40, 92 52" stroke="#5E7B3C" stroke-width="4" fill="none" stroke-linecap="round"/></svg></div>
+        <div class="txt"><span class="tag">Zone A · Prepare soil</span><b>Spread compost on beds</b><span class="meta">8 steps · 2 h</span></div>
+      </div>
+      <div class="feat">
+        <div class="img"><svg width="220" height="96" viewBox="0 0 220 96"><rect width="220" height="96" fill="#E6EFE0"/><path d="M0 72 H220 V96 H0z" fill="#B8925E"/><g stroke="#3E8A47" stroke-width="3" stroke-linecap="round" fill="none"><path d="M40 72 v-18 M40 60 c-8-4-10-10-8-14 M40 58 c8-4 12-8 10-14"/><path d="M100 72 v-22 M100 62 c-8-4-10-10-8-14 M100 58 c8-4 12-8 10-14"/><path d="M160 72 v-16 M160 62 c-8-4-10-10-8-12 M160 60 c8-4 12-8 10-12"/></g></svg></div>
+        <div class="txt"><span class="tag">Zone A · Sow</span><b>Sowing broad beans</b><span class="meta">6 steps · 45 min</span></div>
+      </div>
+    </div>
+
+    <div class="hrow"><h2>Techniques</h2><a>See all</a></div>
+    <div class="list">
+      <div class="item">
+        <div class="thumb"><svg width="58" height="58" viewBox="0 0 58 58"><rect width="58" height="58" fill="#EFE3CC"/><rect x="8" y="26" width="42" height="16" rx="2" fill="#9C7547"/><rect x="8" y="22" width="42" height="6" rx="2" fill="#B88D58"/><g fill="#3E8A47"><circle cx="18" cy="20" r="4"/><circle cx="29" cy="19" r="4"/><circle cx="40" cy="20" r="4"/></g></svg></div>
+        <div style="flex: 1"><b>Build a raised bed</b><span class="meta">8 steps · 3 h · Beginner <span class="level"><i class="on"></i><i></i><i></i></span></span></div>
+      </div>
+      <div class="item">
+        <div class="thumb"><svg width="58" height="58" viewBox="0 0 58 58"><rect width="58" height="58" fill="#E3EDF7"/><path d="M6 36 H52" stroke="#1E4E7A" stroke-width="4" stroke-linecap="round"/><g fill="#2F6FB0"><circle cx="16" cy="36" r="3"/><circle cx="29" cy="36" r="3"/><circle cx="42" cy="36" r="3"/></g><g fill="#7FB0DE"><path d="M16 42 q-2 4 0 6 q2-2 0-6z"/><path d="M29 42 q-2 4 0 6 q2-2 0-6z"/><path d="M42 42 q-2 4 0 6 q2-2 0-6z"/></g></svg></div>
+        <div style="flex: 1"><b>Install drip irrigation</b><span class="meta">10 steps · 4 h · Intermediate <span class="level"><i class="on"></i><i class="on"></i><i></i></span></span></div>
+      </div>
+      <div class="item">
+        <div class="thumb"><svg width="58" height="58" viewBox="0 0 58 58"><rect width="58" height="58" fill="#F1E7D6"/><path d="M10 44 C 20 30, 38 30, 48 44 Z" fill="#7A5A36"/><g stroke="#C9A05A" stroke-width="2" stroke-linecap="round"><path d="M18 36 l6-4"/><path d="M28 33 l7-2"/><path d="M36 37 l6-5"/><path d="M22 40 l8-1"/></g></svg></div>
+        <div style="flex: 1"><b>Mulching to save water</b><span class="meta">5 steps · 1 h · Beginner <span class="level"><i class="on"></i><i></i><i></i></span></span></div>
+      </div>
+    </div>
+  </div>
+  <div class="home"></div>
+</div></div></div>
+</body>
+</html>
