@@ -1,0 +1,1099 @@
+[
+ {
+  "key": "E02",
+  "title": "Project roadmap",
+  "plan_ref": "PLAN.md §3.1",
+  "summary": "The dynamic backbone of the app: for each zone it works out the current stage from the activity log and produces the next actions, using fixed agronomy rules and safety limits, adapted to the season, the starting point and any deviations the user reports.",
+  "features": [
+   {
+    "key": "3.1.1",
+    "title": "Next actions (rules)",
+    "priority": "MVP",
+    "seq": 4,
+    "story": "As a beginner gardener, I want the app to tell me the next actions for each zone so that I always know what to do next without planning it myself.",
+    "acceptance": [
+     "Given a zone with a known state, when the roadmap is recalculated, then a short list of next actions is produced, each with a reason, time window, guide link and tools needed",
+     "Safety rules are never broken (e.g. no transplanting frost-sensitive crops while there is frost risk)",
+     "Recalculation runs when a relevant activity log entry is added and once a day",
+     "Each recommendation stores the knowledge-base version that produced it",
+     "The latest next actions are shown in the app"
+    ],
+    "depends_on": [
+     "0.4",
+     "0.5",
+     "E00:API skeleton",
+     "3.1.3"
+    ],
+    "tasks": [
+     {
+      "title": "Design the rules format for next actions in the knowledge base",
+      "area": "backend",
+      "hours": 4,
+      "description": "Define how rules are expressed (conditions on zone state, season window, prerequisites, safety limits) and store them in content/. Done when the format is documented and validated by the content pipeline."
+     },
+     {
+      "title": "Write the first rule set for the Assess → Plant phases",
+      "area": "content",
+      "hours": 6,
+      "description": "Author rules for clearing, bed building, irrigation setup, sowing and planting out. Done when rules load without validation errors."
+     },
+     {
+      "title": "Write rules for the Maintain → Plan next season phases",
+      "area": "content",
+      "hours": 5,
+      "description": "Author rules for watering, weeding, mulching, harvest and end-of-season actions. Done when rules load without validation errors."
+     },
+     {
+      "title": "Build the rules engine that evaluates rules against zone state",
+      "area": "backend",
+      "hours": 8,
+      "description": "Implement the engine that takes a zone state and date and returns candidate actions with reasons. Done when it returns expected actions for sample states."
+     },
+     {
+      "title": "Add safety limits that block unsafe actions",
+      "area": "backend",
+      "hours": 4,
+      "description": "Implement hard constraints (frost risk, waterlogged soil, heat) that remove or postpone actions. Done when unit tests prove unsafe actions never appear."
+     },
+     {
+      "title": "Store next actions with traceability",
+      "area": "backend",
+      "hours": 3,
+      "description": "Persist the computed next actions per zone with knowledge-base version and timestamp. Done when stored actions can be queried per zone."
+     },
+     {
+      "title": "Trigger recalculation on activity log events and daily",
+      "area": "backend",
+      "hours": 4,
+      "description": "Subscribe to relevant activity log entries and add a daily scheduled job to recalculate next actions. Done when a new log entry updates next actions within a minute."
+     },
+     {
+      "title": "Expose next-actions API endpoint",
+      "area": "backend",
+      "hours": 3,
+      "description": "GET endpoint returning next actions per zone with reason, window, guide link and tools. Done when documented in OpenAPI and covered by an integration test."
+     },
+     {
+      "title": "Unit tests for the rules engine with sample gardens",
+      "area": "testing",
+      "hours": 4,
+      "description": "Create sample zone states (bare land, beds ready, planted) and assert the expected next actions. Done when tests pass in CI."
+     },
+     {
+      "title": "Build the next-actions list on iOS",
+      "area": "ios",
+      "hours": 5,
+      "description": "Show next actions per zone with reason, time window and links to guide and tools. Done when the list renders from the API on device."
+     },
+     {
+      "title": "Test next actions on iPhone against the real plot",
+      "area": "testing",
+      "hours": 3,
+      "description": "Enter the real plot's state and check the next actions make sense. Done when issues found are logged as bugs."
+     }
+    ]
+   },
+   {
+    "key": "3.1.2",
+    "title": "Next actions (AI)",
+    "priority": "Future improvement",
+    "seq": 99,
+    "story": "As a gardener, I want the AI to rank and adapt my next actions and explain why so that the advice fits my exact situation.",
+    "acceptance": [
+     "AI ranks the rule-based candidate actions for each zone",
+     "Deviations are handled with adapted alternatives",
+     "Each action has a plain-language explanation",
+     "Safety limits from the rules layer are never overridden"
+    ],
+    "depends_on": [
+     "3.1.1",
+     "E00:AI layer core"
+    ],
+    "tasks": []
+   },
+   {
+    "key": "3.1.3",
+    "title": "Per-zone stages",
+    "priority": "MVP",
+    "seq": 4,
+    "story": "As a gardener with several zones, I want each zone to have its own stage so that one zone can be planted while another is still being cleared.",
+    "acceptance": [
+     "Each zone shows its current phase (Assess, Design, Prepare soil, Irrigation, Plant, Maintain, Harvest, Plan next season)",
+     "The phase is worked out from the zone's state, not stored as a pointer",
+     "The zone state view is rebuilt from the activity log",
+     "Changing one zone's state does not affect other zones"
+    ],
+    "depends_on": [
+     "0.4",
+     "3.3.3"
+    ],
+    "tasks": [
+     {
+      "title": "Define the zone state model",
+      "area": "backend",
+      "hours": 3,
+      "description": "Define the fields that describe a zone's state (cleared, beds built, irrigation installed, planted crops, problems). Done when the model is documented and reviewed."
+     },
+     {
+      "title": "Build the zone state projection from the activity log",
+      "area": "backend",
+      "hours": 6,
+      "description": "Implement a projection that replays activity log entries into the current zone state. Done when replaying sample logs gives the expected state."
+     },
+     {
+      "title": "Derive the phase from zone state",
+      "area": "backend",
+      "hours": 3,
+      "description": "Implement phase derivation rules from the zone state. Done when unit tests cover each phase."
+     },
+     {
+      "title": "Expose zone state and phase in the API",
+      "area": "backend",
+      "hours": 2,
+      "description": "Add zone state and phase to the zone endpoints. Done when available in OpenAPI and tested."
+     },
+     {
+      "title": "Show the phase per zone on iOS",
+      "area": "ios",
+      "hours": 3,
+      "description": "Display each zone's phase with a progress indicator on the zone list and zone detail. Done when it reflects state changes on device."
+     },
+     {
+      "title": "Test per-zone stages with two zones at different stages",
+      "area": "testing",
+      "hours": 2,
+      "description": "Create two zones at different stages on device and check phases and next actions stay independent. Done when verified."
+     }
+    ]
+   },
+   {
+    "key": "3.1.4",
+    "title": "Starting point",
+    "priority": "MVP",
+    "seq": 4,
+    "story": "As a user who already has some work done, I want the app to ask what already exists so that I don't have to start from zero.",
+    "acceptance": [
+     "During setup the user answers what already exists per zone (cleared land, beds, irrigation, plants)",
+     "Answers are recorded as activity log entries",
+     "The zone state and next actions reflect the answers immediately",
+     "Answers can be changed later"
+    ],
+    "depends_on": [
+     "3.1.3",
+     "0.4"
+    ],
+    "tasks": [
+     {
+      "title": "Design the starting-point questions",
+      "area": "design",
+      "hours": 2,
+      "description": "Define the questions and answer options per zone, in plain language. Done when reviewed by the owner."
+     },
+     {
+      "title": "Map answers to activity log entries",
+      "area": "backend",
+      "hours": 3,
+      "description": "Convert each answer into one or more activity log entries that set the zone state. Done when tests show the expected zone state."
+     },
+     {
+      "title": "Build the starting-point questionnaire on iOS",
+      "area": "ios",
+      "hours": 5,
+      "description": "Screens asking what already exists for each zone, PT and EN. Done when answers are saved through the API."
+     },
+     {
+      "title": "Allow editing starting-point answers later",
+      "area": "ios",
+      "hours": 2,
+      "description": "Let the user revisit answers from zone settings. Done when changes update next actions."
+     },
+     {
+      "title": "Test starting point with the real plot",
+      "area": "testing",
+      "hours": 2,
+      "description": "Answer for the real plot and check that next actions skip completed work. Done when verified."
+     }
+    ]
+   },
+   {
+    "key": "3.1.5",
+    "title": "Season-aware timing",
+    "priority": "MVP",
+    "seq": 4,
+    "story": "As a gardener, I want actions scheduled in their ideal time window for my climate so that I do things at the right time of year.",
+    "acceptance": [
+     "Each rule-based action can have a time window derived from local climate (e.g. prepare soil before autumn rains)",
+     "Actions outside their window are postponed with a clear 'best done in …' message",
+     "Windows adapt to the user's location, not fixed months",
+     "Windows are tested for Alentejo and one contrasting climate"
+    ],
+    "depends_on": [
+     "3.1.1",
+     "E00:Weather data service"
+    ],
+    "tasks": [
+     {
+      "title": "Add time-window conditions to the rules format",
+      "area": "backend",
+      "hours": 3,
+      "description": "Support windows defined by climate conditions (temperature, rainfall season) in rules. Done when the content pipeline validates them."
+     },
+     {
+      "title": "Compute action windows from local climate history",
+      "area": "backend",
+      "hours": 5,
+      "description": "Use the plot's cached climate normals to turn window conditions into date ranges. Done when unit tests give sensible windows for Alentejo."
+     },
+     {
+      "title": "Postpone or flag actions outside their window",
+      "area": "backend",
+      "hours": 3,
+      "description": "Engine marks actions as 'best done in …' when outside the window. Done when tests cover in/out-of-window cases."
+     },
+     {
+      "title": "Show time windows on next actions in iOS",
+      "area": "ios",
+      "hours": 2,
+      "description": "Display the window and 'best done in …' message. Done when visible on device."
+     },
+     {
+      "title": "Test season-aware timing for Alentejo and a northern location",
+      "area": "testing",
+      "hours": 2,
+      "description": "Compare windows for the real plot and a test location in northern Europe. Done when results look plausible."
+     }
+    ]
+   },
+   {
+    "key": "3.1.6",
+    "title": "Time and cost estimates",
+    "priority": "Good to have",
+    "seq": 22,
+    "story": "As a weekend gardener, I want rough time and cost estimates for each action so that I can plan my weekends and budget.",
+    "acceptance": [
+     "Each action shows an estimated time range",
+     "Each action shows a rough cost range, clearly labelled as an estimate",
+     "Estimates scale with zone or bed size",
+     "Estimates come from the knowledge base"
+    ],
+    "depends_on": [
+     "3.1.1"
+    ],
+    "tasks": [
+     {
+      "title": "Add time and cost estimate fields to action rules",
+      "area": "content",
+      "hours": 3,
+      "description": "Add per-unit time and cost ranges (per m² or per bed) to rule content. Done when validated by the pipeline."
+     },
+     {
+      "title": "Calculate estimates from zone and bed size",
+      "area": "backend",
+      "hours": 3,
+      "description": "Scale per-unit estimates by area and return them with next actions. Done when unit tests pass."
+     },
+     {
+      "title": "Show estimates on next actions in iOS",
+      "area": "ios",
+      "hours": 2,
+      "description": "Display time and cost ranges labelled as estimates. Done when visible on device."
+     },
+     {
+      "title": "Test estimates against real work on the plot",
+      "area": "testing",
+      "hours": 2,
+      "description": "Compare estimates with actual time spent on a few actions. Done when adjustments are noted."
+     }
+    ]
+   },
+   {
+    "key": "3.1.7",
+    "title": "Deviation handling",
+    "priority": "MVP",
+    "seq": 4,
+    "story": "As a gardener, I want to mark an action as done differently, skipped, not possible or having a problem so that the next actions adapt to what actually happened.",
+    "acceptance": [
+     "Each action can be marked done, done differently, skipped, not possible or problem, with an optional note",
+     "Each outcome is recorded in the activity log",
+     "Next actions are recalculated and adapt (e.g. alternative method when not possible)",
+     "Skipped prerequisite actions are re-proposed when still needed"
+    ],
+    "depends_on": [
+     "3.1.1",
+     "0.4"
+    ],
+    "tasks": [
+     {
+      "title": "Define deviation outcomes in the activity log",
+      "area": "backend",
+      "hours": 2,
+      "description": "Add outcome types and note fields for actions. Done when the schema migration is applied."
+     },
+     {
+      "title": "Handle deviations in the rules engine",
+      "area": "backend",
+      "hours": 5,
+      "description": "Rules react to outcomes: alternatives for 'not possible', re-proposal for skipped prerequisites, follow-up for problems. Done when unit tests cover each outcome."
+     },
+     {
+      "title": "Write alternative actions for common deviations",
+      "area": "content",
+      "hours": 3,
+      "description": "Author alternative methods (e.g. manual digging when no rototiller). Done when validated by the pipeline."
+     },
+     {
+      "title": "Build outcome picker on iOS",
+      "area": "ios",
+      "hours": 3,
+      "description": "Let the user pick an outcome and add a note on any next action. Done when saved through the API."
+     },
+     {
+      "title": "Test deviation handling with each outcome",
+      "area": "testing",
+      "hours": 2,
+      "description": "Mark actions with every outcome on device and check next actions adapt. Done when verified."
+     }
+    ]
+   },
+   {
+    "key": "3.1.8",
+    "title": "Content freshness review",
+    "priority": "Future improvement",
+    "seq": 99,
+    "story": "As the content owner, I want an AI job to flag outdated content and propose updates so that advice stays current.",
+    "acceptance": [
+     "A scheduled job checks content against review dates and sources",
+     "Proposed updates are opened as pull requests to content/",
+     "Nothing is published without human review",
+     "Each item's 'last reviewed' date is updated after review"
+    ],
+    "depends_on": [
+     "0.5",
+     "E00:AI layer core"
+    ],
+    "tasks": []
+   }
+  ]
+ },
+ {
+  "key": "E03",
+  "title": "Plot mapping",
+  "plan_ref": "PLAN.md §3.3",
+  "summary": "A satellite map of the user's land where they draw the plot boundary, zones, beds and points of interest, design the layout, and get automatic information such as area, sun, slope and estimated soil type. Every other feature builds on this map.",
+  "features": [
+   {
+    "key": "3.3.1",
+    "title": "Plot boundary on satellite map",
+    "priority": "MVP",
+    "seq": 2,
+    "story": "As a new user, I want to draw my plot's boundary on a satellite map so that the app knows the land I'm working with.",
+    "acceptance": [
+     "The map opens centred on the user's location with satellite imagery (MapKit)",
+     "The user draws the boundary by tapping corners and can move or delete points",
+     "The boundary is saved as a PostGIS polygon",
+     "Area is shown after drawing",
+     "The plot is its own entity so several plots can be added later"
+    ],
+    "depends_on": [
+     "E00:API skeleton",
+     "0.1"
+    ],
+    "tasks": [
+     {
+      "title": "Create plot data model and migration with PostGIS geometry",
+      "area": "backend",
+      "hours": 3,
+      "description": "Plot entity with owner, name and boundary polygon (NetTopologySuite). Done when the migration applies locally."
+     },
+     {
+      "title": "Plot CRUD API endpoints",
+      "area": "backend",
+      "hours": 3,
+      "description": "Create, read, update and delete plot with boundary validation (closed, non-self-intersecting). Done when covered by integration tests."
+     },
+     {
+      "title": "Calculate plot area on the server",
+      "area": "backend",
+      "hours": 1,
+      "description": "Compute area in m² from the geometry using a geographic projection. Done when tested against a known polygon."
+     },
+     {
+      "title": "Set up MapKit satellite map screen on iOS",
+      "area": "ios",
+      "hours": 3,
+      "description": "Map view with satellite imagery centred on the user's location, with location permission handling. Done when it runs on device."
+     },
+     {
+      "title": "Implement boundary drawing by tapping corners",
+      "area": "ios",
+      "hours": 6,
+      "description": "Tap to add points, drag to move, tap to delete, close the polygon. Done when the drawn polygon saves through the API."
+     },
+     {
+      "title": "Test boundary drawing on the real plot",
+      "area": "testing",
+      "hours": 2,
+      "description": "Draw the real plot on device and compare the area with known figures. Done when verified."
+     }
+    ]
+   },
+   {
+    "key": "3.3.2",
+    "title": "Walk boundary with GPS",
+    "priority": "Future improvement",
+    "seq": 99,
+    "story": "As a user, I want to walk around my plot with GPS to draw its boundary so that I can capture it accurately on the ground.",
+    "acceptance": [
+     "Recording starts and stops on demand",
+     "GPS points are simplified into a polygon",
+     "Accuracy (about 3–5 m) is shown",
+     "The result can be edited like a tapped boundary"
+    ],
+    "depends_on": [
+     "3.3.1"
+    ],
+    "tasks": []
+   },
+   {
+    "key": "3.3.3",
+    "title": "Zones and beds",
+    "priority": "MVP",
+    "seq": 2,
+    "story": "As a gardener, I want to draw zones and beds inside my plot, or enter exact bed dimensions, so that the app can plan each area separately.",
+    "acceptance": [
+     "Zones are drawn inside the plot boundary and named",
+     "Beds can be drawn on the map or created from exact dimensions (e.g. 1.2 × 6 m) and placed",
+     "Each zone has a manual sun-exposure setting (full sun, part shade, shade)",
+     "Zones and beds are stored in PostGIS and linked to the plot",
+     "Zones and beds can be edited and deleted"
+    ],
+    "depends_on": [
+     "3.3.1"
+    ],
+    "tasks": [
+     {
+      "title": "Create zone and bed data models and migrations",
+      "area": "backend",
+      "hours": 3,
+      "description": "Zone and bed entities with geometry, name, type and dimensions. Done when migrations apply locally."
+     },
+     {
+      "title": "Zone and bed CRUD API with containment validation",
+      "area": "backend",
+      "hours": 4,
+      "description": "Endpoints ensuring zones lie inside the plot and beds inside zones. Done when covered by integration tests."
+     },
+     {
+      "title": "Add manual sun-exposure selector per zone",
+      "area": "backend",
+      "hours": 1,
+      "description": "Add a sun-exposure field (full sun, part shade, shade) to zones, used by crop suggestions until automatic sun calculation exists. Done when exposed in the API."
+     },
+     {
+      "title": "Draw and name zones on the iOS map",
+      "area": "ios",
+      "hours": 5,
+      "description": "Polygon drawing for zones inside the plot, with naming and colour. Done when zones save through the API."
+     },
+     {
+      "title": "Create beds from exact dimensions on iOS",
+      "area": "ios",
+      "hours": 5,
+      "description": "Enter width and length, then place and rotate the rectangle on the map. Done when the bed saves with correct dimensions."
+     },
+     {
+      "title": "Draw beds freehand on the iOS map",
+      "area": "ios",
+      "hours": 3,
+      "description": "Polygon drawing for irregular beds. Done when beds save through the API."
+     },
+     {
+      "title": "Sun-exposure selector in iOS zone settings",
+      "area": "ios",
+      "hours": 1,
+      "description": "Picker for full sun, part shade or shade. Done when saved through the API."
+     },
+     {
+      "title": "Test zones and beds on the real plot",
+      "area": "testing",
+      "hours": 2,
+      "description": "Create the real zones and beds on device and check dimensions and containment. Done when verified."
+     }
+    ]
+   },
+   {
+    "key": "3.3.4",
+    "title": "Points of interest",
+    "priority": "MVP",
+    "seq": 2,
+    "story": "As a gardener, I want to mark water sources, electricity, access, buildings and trees on my map so that the app can plan irrigation and layout around them.",
+    "acceptance": [
+     "The user can place points of interest of type water source (well, tap, tank), electricity, gate/access, building and tree",
+     "Trees and buildings have an optional rough height",
+     "Points can be edited, moved and deleted",
+     "Water sources are available to the irrigation planner"
+    ],
+    "depends_on": [
+     "3.3.1"
+    ],
+    "tasks": [
+     {
+      "title": "Create points-of-interest data model and API",
+      "area": "backend",
+      "hours": 3,
+      "description": "POI entity with type, subtype, point or polygon geometry and optional height. Done when CRUD endpoints are tested."
+     },
+     {
+      "title": "Design POI icons and type picker",
+      "area": "design",
+      "hours": 2,
+      "description": "Icons for each POI type that read well on satellite imagery. Done when approved by the owner."
+     },
+     {
+      "title": "Place and edit points of interest on iOS",
+      "area": "ios",
+      "hours": 4,
+      "description": "Add, move, edit and delete POIs on the map, with height entry for trees and buildings. Done when saved through the API."
+     },
+     {
+      "title": "Test points of interest on the real plot",
+      "area": "testing",
+      "hours": 1,
+      "description": "Mark the real well, gate and trees on device. Done when verified."
+     }
+    ]
+   },
+   {
+    "key": "3.3.5",
+    "title": "Area, sun and slope",
+    "priority": "Good to have",
+    "seq": 23,
+    "story": "As a gardener, I want the app to work out area, sun exposure and slope for my zones so that suggestions fit my land without me measuring.",
+    "acceptance": [
+     "Area is calculated for plot, zones and beds",
+     "Sun exposure is estimated from the location and sun path",
+     "Slope is calculated from elevation data",
+     "Automatic sun exposure can replace or confirm the manual setting",
+     "Results are cached per zone"
+    ],
+    "depends_on": [
+     "3.3.3",
+     "E00:Weather data service"
+    ],
+    "tasks": [
+     {
+      "title": "Fetch elevation data for the plot",
+      "area": "backend",
+      "hours": 3,
+      "description": "Use Open-Meteo elevation for a grid of points across the plot and cache it. Done when elevations are stored per plot."
+     },
+     {
+      "title": "Calculate slope and aspect per zone",
+      "area": "backend",
+      "hours": 4,
+      "description": "Derive slope and aspect from the elevation grid. Done when unit tests pass for sample terrain."
+     },
+     {
+      "title": "Estimate sun exposure from location and sun path",
+      "area": "backend",
+      "hours": 4,
+      "description": "Compute daily sun hours across the year per zone (ignoring obstacles). Done when tested for Alentejo."
+     },
+     {
+      "title": "Show area, sun and slope on iOS zone details",
+      "area": "ios",
+      "hours": 3,
+      "description": "Display the computed values and let the user accept automatic sun exposure over the manual setting. Done when visible on device."
+     },
+     {
+      "title": "Test enrichment on the real plot",
+      "area": "testing",
+      "hours": 2,
+      "description": "Compare slope and sun results with observations on the plot. Done when verified."
+     }
+    ]
+   },
+   {
+    "key": "3.3.6",
+    "title": "Soil type estimate",
+    "priority": "Good to have",
+    "seq": 23,
+    "story": "As a gardener, I want an estimated soil type for my plot so that suggestions and guides can take it into account.",
+    "acceptance": [
+     "Soil type is fetched from SoilGrids for the plot's location",
+     "Results are cached per plot",
+     "The estimate is clearly labelled as from global maps, not a test",
+     "SoilGrids attribution is shown"
+    ],
+    "depends_on": [
+     "3.3.1"
+    ],
+    "tasks": [
+     {
+      "title": "Integrate SoilGrids API with caching and rate limiting",
+      "area": "backend",
+      "hours": 4,
+      "description": "Fetch texture and related properties for the plot centroid and cache them. Done when stored per plot with error handling."
+     },
+     {
+      "title": "Map SoilGrids values to a plain-language soil type",
+      "area": "backend",
+      "hours": 2,
+      "description": "Convert sand/silt/clay to a texture class with a short explanation. Done when unit tests pass."
+     },
+     {
+      "title": "Show soil estimate with attribution on iOS",
+      "area": "ios",
+      "hours": 2,
+      "description": "Display the soil type, its source and CC-BY attribution. Done when visible on device."
+     },
+     {
+      "title": "Test soil estimate for the real plot",
+      "area": "testing",
+      "hours": 1,
+      "description": "Check the estimate for the plot looks plausible. Done when verified."
+     }
+    ]
+   },
+   {
+    "key": "3.3.7",
+    "title": "Shade estimation",
+    "priority": "Future improvement",
+    "seq": 99,
+    "story": "As a gardener, I want shade from trees and buildings estimated so that I don't plant sun-loving crops in shady spots.",
+    "acceptance": [
+     "Shade is estimated from marked trees and buildings with heights and the sun path",
+     "User-observed shade can be marked",
+     "Shade is combined into each zone's sun exposure",
+     "Results are visualised on the map"
+    ],
+    "depends_on": [
+     "3.3.4",
+     "3.3.5"
+    ],
+    "tasks": []
+   },
+   {
+    "key": "3.3.8",
+    "title": "Prevailing wind",
+    "priority": "Future improvement",
+    "seq": 99,
+    "story": "As a gardener, I want to know the prevailing wind so that the app can suggest windbreaks.",
+    "acceptance": [
+     "Prevailing wind direction comes from weather data",
+     "Wind direction is shown on the map",
+     "Windbreak suggestions are offered for exposed zones"
+    ],
+    "depends_on": [
+     "E00:Weather data service"
+    ],
+    "tasks": []
+   },
+   {
+    "key": "3.3.9",
+    "title": "Layout designer",
+    "priority": "MVP",
+    "seq": 2,
+    "story": "As a gardener, I want to design my beds with real dimensions, paths and row direction so that my layout is practical before I build it.",
+    "acceptance": [
+     "Beds show real dimensions and can be resized and rotated",
+     "Paths can be drawn with a set width",
+     "Row direction can be set per bed, with north–south suggested",
+     "The layout is saved and visible on the map"
+    ],
+    "depends_on": [
+     "3.3.3"
+    ],
+    "tasks": [
+     {
+      "title": "Add path and row-direction fields to the layout model",
+      "area": "backend",
+      "hours": 2,
+      "description": "Path entity with width and geometry; row direction on beds. Done when migrations and API are tested."
+     },
+     {
+      "title": "Resize and rotate beds with live dimensions on iOS",
+      "area": "ios",
+      "hours": 5,
+      "description": "Handles to resize and rotate beds showing dimensions in metres. Done when changes save through the API."
+     },
+     {
+      "title": "Draw paths with width on iOS",
+      "area": "ios",
+      "hours": 3,
+      "description": "Draw paths as lines with a width setting. Done when paths save through the API."
+     },
+     {
+      "title": "Set row direction per bed with north–south suggestion",
+      "area": "ios",
+      "hours": 2,
+      "description": "Row direction control on each bed with a suggestion. Done when saved and shown on the map."
+     },
+     {
+      "title": "Test layout designer by laying out the real beds",
+      "area": "testing",
+      "hours": 2,
+      "description": "Design the planned beds on device and check measurements on the ground. Done when verified."
+     }
+    ]
+   },
+   {
+    "key": "3.3.10",
+    "title": "Measuring tool",
+    "priority": "Good to have",
+    "seq": 23,
+    "story": "As a gardener, I want to measure distances on the map so that I know lengths like pipe from the well to a zone.",
+    "acceptance": [
+     "The user can measure a straight or multi-segment distance on the map",
+     "Distance is shown in metres",
+     "A measurement can be saved and linked to an irrigation line"
+    ],
+    "depends_on": [
+     "3.3.1"
+    ],
+    "tasks": [
+     {
+      "title": "Build distance measuring on the iOS map",
+      "area": "ios",
+      "hours": 3,
+      "description": "Tap points to measure straight and multi-segment distances with geodesic length. Done when it works on device."
+     },
+     {
+      "title": "Save measurements via the API",
+      "area": "backend",
+      "hours": 2,
+      "description": "Store named measurements per plot. Done when tested."
+     },
+     {
+      "title": "Test measuring tool on the real plot",
+      "area": "testing",
+      "hours": 1,
+      "description": "Measure a known distance and compare. Done when verified."
+     }
+    ]
+   },
+   {
+    "key": "3.3.11",
+    "title": "Layout history",
+    "priority": "Good to have",
+    "seq": 23,
+    "story": "As a gardener, I want each season's layout kept as a version so that the crop rotation planner can see past seasons.",
+    "acceptance": [
+     "A layout version can be saved per season",
+     "Past versions can be viewed on the map",
+     "The season planner can query previous layouts",
+     "Current edits don't change past versions"
+    ],
+    "depends_on": [
+     "3.3.9"
+    ],
+    "tasks": [
+     {
+      "title": "Design layout versioning in the data model",
+      "area": "backend",
+      "hours": 3,
+      "description": "Snapshot zones, beds and paths per season with an active version. Done when the migration is applied."
+     },
+     {
+      "title": "Layout version API endpoints",
+      "area": "backend",
+      "hours": 3,
+      "description": "Create, list and read layout versions. Done when tested."
+     },
+     {
+      "title": "View past layouts on iOS",
+      "area": "ios",
+      "hours": 3,
+      "description": "Season selector showing past layouts read-only on the map. Done when it works on device."
+     },
+     {
+      "title": "Test layout history across two seasons",
+      "area": "testing",
+      "hours": 1,
+      "description": "Save a version, change the layout and compare. Done when verified."
+     }
+    ]
+   },
+   {
+    "key": "3.3.12",
+    "title": "Several plots per user",
+    "priority": "Future improvement",
+    "seq": 99,
+    "story": "As a user with more than one garden, I want to manage several plots so that I can use the app for each of them.",
+    "acceptance": [
+     "The user can add, switch between and delete plots",
+     "All features work per plot",
+     "Data stays separate between plots"
+    ],
+    "depends_on": [
+     "3.3.1"
+    ],
+    "tasks": []
+   }
+  ]
+ },
+ {
+  "key": "E04",
+  "title": "Site assessment",
+  "plan_ref": "PLAN.md §3.4",
+  "summary": "The AI looks at photos of each zone to work out what's there now, what needs clearing or fixing and how much effort it will take, with no soil analysis. Results feed the roadmap engine.",
+  "features": [
+   {
+    "key": "3.4.1",
+    "title": "AI photo assessment",
+    "priority": "MVP",
+    "seq": 9,
+    "story": "As a beginner, I want to photograph each zone and have the AI tell me what needs clearing or fixing so that I know where to start.",
+    "acceptance": [
+     "The user takes one or more photos of a zone",
+     "The AI reports vegetation to clear (with method, time and cost), problem plants, trees to keep, obstacles, terrain, visible water problems and infrastructure",
+     "Each finding has a confidence level",
+     "No soil analysis is attempted",
+     "The assessment is saved and recorded in the activity log so the roadmap updates"
+    ],
+    "depends_on": [
+     "E00:AI layer core",
+     "E00:Media service",
+     "3.3.3",
+     "0.4"
+    ],
+    "tasks": [
+     {
+      "title": "Create assessment data model and migration",
+      "area": "backend",
+      "hours": 3,
+      "description": "Assessment entity per zone with photos, findings, confidence and estimates. Done when the migration applies."
+     },
+     {
+      "title": "Write the site assessment prompt and structured output schema",
+      "area": "backend",
+      "hours": 5,
+      "description": "Prompt and JSON schema for findings, excluding soil analysis. Done when it returns valid structured output on sample photos."
+     },
+     {
+      "title": "Implement the assessment task in the AI layer",
+      "area": "backend",
+      "hours": 4,
+      "description": "Call Claude with zone context and photos, validate output, store results. Done when integration tests pass with a mocked model."
+     },
+     {
+      "title": "Record assessments in the activity log",
+      "area": "backend",
+      "hours": 2,
+      "description": "Write an activity log entry per assessment so the zone state and roadmap update. Done when next actions change after an assessment."
+     },
+     {
+      "title": "Assessment API endpoints",
+      "area": "backend",
+      "hours": 2,
+      "description": "Start an assessment and read results. Done when documented in OpenAPI and tested."
+     },
+     {
+      "title": "Build photo capture and assessment results screens on iOS",
+      "area": "ios",
+      "hours": 6,
+      "description": "Take photos for a zone, upload, show progress and display findings with confidence. Done when it works end to end on device."
+     },
+     {
+      "title": "Build a site assessment test set from real plot photos",
+      "area": "testing",
+      "hours": 3,
+      "description": "Collect 10–15 photos of the plot with expected findings for the AI test set. Done when stored with expected results."
+     },
+     {
+      "title": "Test site assessment on the real plot",
+      "area": "testing",
+      "hours": 3,
+      "description": "Assess each real zone on device and check findings and next actions. Done when issues are logged."
+     }
+    ]
+   },
+   {
+    "key": "3.4.2",
+    "title": "Wildlife pressure",
+    "priority": "Good to have",
+    "seq": 24,
+    "story": "As a gardener, I want the assessment to spot signs of rabbits, wild boar, birds and moles so that I know whether I need fencing or netting.",
+    "acceptance": [
+     "The assessment reports wildlife signs with confidence",
+     "Fencing or netting advice is given when needed",
+     "Wildlife pressure becomes part of the zone state",
+     "Advice links to a guide"
+    ],
+    "depends_on": [
+     "3.4.1"
+    ],
+    "tasks": [
+     {
+      "title": "Extend the assessment prompt and schema for wildlife signs",
+      "area": "backend",
+      "hours": 2,
+      "description": "Add wildlife findings and protection advice. Done when sample outputs validate."
+     },
+     {
+      "title": "Add wildlife pressure to zone state and roadmap rules",
+      "area": "backend",
+      "hours": 3,
+      "description": "Store wildlife pressure and add rules proposing fencing or netting. Done when tests show the action appears."
+     },
+     {
+      "title": "Show wildlife findings and advice on iOS",
+      "area": "ios",
+      "hours": 2,
+      "description": "Display wildlife findings with advice and guide link. Done when visible on device."
+     },
+     {
+      "title": "Test wildlife detection with sample photos",
+      "area": "testing",
+      "hours": 1,
+      "description": "Check results on photos with known wildlife signs. Done when verified."
+     }
+    ]
+   },
+   {
+    "key": "3.4.3",
+    "title": "Fixed photo spots",
+    "priority": "Good to have",
+    "seq": 24,
+    "story": "As a gardener, I want guided photos taken from fixed spots on my map so that I can compare before and after over time.",
+    "acceptance": [
+     "The user can save photo spots on the map with a direction",
+     "The app guides what to shoot (wide view, close-up)",
+     "New photos from a spot are linked to earlier ones",
+     "Before-and-after comparison is shown side by side"
+    ],
+    "depends_on": [
+     "3.4.1",
+     "3.3.1"
+    ],
+    "tasks": [
+     {
+      "title": "Photo spot data model and API",
+      "area": "backend",
+      "hours": 3,
+      "description": "Photo spot with location, direction and linked photos. Done when CRUD endpoints are tested."
+     },
+     {
+      "title": "Save photo spots on the iOS map",
+      "area": "ios",
+      "hours": 3,
+      "description": "Place a spot and record compass direction. Done when saved through the API."
+     },
+     {
+      "title": "Guided capture from a photo spot on iOS",
+      "area": "ios",
+      "hours": 3,
+      "description": "Overlay guidance and link the new photo to the spot. Done when it works on device."
+     },
+     {
+      "title": "Before-and-after comparison view on iOS",
+      "area": "ios",
+      "hours": 3,
+      "description": "Side-by-side or slider comparison of photos from the same spot. Done when it works on device."
+     },
+     {
+      "title": "Test photo spots on the real plot",
+      "area": "testing",
+      "hours": 1,
+      "description": "Create spots and re-shoot after a change. Done when verified."
+     }
+    ]
+   },
+   {
+    "key": "3.4.4",
+    "title": "Walk-around video",
+    "priority": "Future improvement",
+    "seq": 99,
+    "story": "As a gardener, I want to film a zone instead of taking separate photos so that assessment is quicker.",
+    "acceptance": [
+     "The user records a short video of a zone",
+     "The app extracts the best frames for the AI",
+     "The assessment runs on the extracted frames"
+    ],
+    "depends_on": [
+     "3.4.1"
+    ],
+    "tasks": []
+   },
+   {
+    "key": "3.4.5",
+    "title": "Equipment advice",
+    "priority": "Good to have",
+    "seq": 24,
+    "story": "As a beginner, I want advice on which big equipment I need for the work ahead so that I can get it in time.",
+    "acceptance": [
+     "Advice is based on the assessment findings and plot size",
+     "Each item is marked buy, rent or borrow",
+     "When the 'always own' setting is on, only buy is suggested",
+     "Equipment links to the tool catalog and the 'tools to get' list"
+    ],
+    "depends_on": [
+     "3.4.1",
+     "3.10.4",
+     "3.10.5"
+    ],
+    "tasks": [
+     {
+      "title": "Equipment advice rules from assessment findings and plot size",
+      "area": "backend",
+      "hours": 4,
+      "description": "Rules recommending equipment with buy, rent or borrow, respecting 'always own'. Done when unit tests pass."
+     },
+     {
+      "title": "Add big-equipment entries to the tool catalog",
+      "area": "content",
+      "hours": 2,
+      "description": "Add equipment like brush cutters and rototillers with usual buy/rent guidance. Done when validated by the pipeline."
+     },
+     {
+      "title": "Show equipment advice on iOS",
+      "area": "ios",
+      "hours": 2,
+      "description": "Display advice after an assessment and add items to 'tools to get'. Done when it works on device."
+     },
+     {
+      "title": "Test equipment advice for the real plot",
+      "area": "testing",
+      "hours": 1,
+      "description": "Check advice is sensible for the plot. Done when verified."
+     }
+    ]
+   },
+   {
+    "key": "3.4.6",
+    "title": "Re-assessments",
+    "priority": "Good to have",
+    "seq": 24,
+    "story": "As a gardener, I want to re-assess a zone at any time so that progress is tracked and the roadmap stays current.",
+    "acceptance": [
+     "The user can run a new assessment for any zone",
+     "Changes since the previous assessment are highlighted",
+     "The zone state and next actions update"
+    ],
+    "depends_on": [
+     "3.4.1"
+    ],
+    "tasks": [
+     {
+      "title": "Compare a new assessment with the previous one",
+      "area": "backend",
+      "hours": 3,
+      "description": "Diff findings between assessments and store the changes. Done when unit tests pass."
+     },
+     {
+      "title": "Re-assessment flow and changes view on iOS",
+      "area": "ios",
+      "hours": 3,
+      "description": "Start a re-assessment from a zone and show what changed. Done when it works on device."
+     },
+     {
+      "title": "Test re-assessment after clearing work",
+      "area": "testing",
+      "hours": 1,
+      "description": "Re-assess a zone after real work and check changes. Done when verified."
+     }
+    ]
+   }
+  ]
+ }
+]
