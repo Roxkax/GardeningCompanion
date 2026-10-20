@@ -1,0 +1,23 @@
+/* Shared iPhone frame and design tokens for screen renders */
+* { box-sizing: border-box; }
+:root {
+  --bg: #F5F6F0; --card: #FFFFFF; --line: #DCE1D5; --text: #1F2A20; --muted: #4E5A4C;
+  --green: #2D6A3A; --green-dark: #1F4D29; --green-soft: #E3F0E1; --green-ink: #1F5A2C;
+  --orange: #9A4A0C; --orange-soft: #FFF1E3; --blue-soft: #E3EDF7; --blue-ink: #1E4E7A;
+}
+body { margin: 0; background: #E9ECE4; font-family: Figtree, Inter, system-ui, sans-serif; color: var(--text); }
+.stage { width: 520px; height: 980px; display: flex; align-items: center; justify-content: center; }
+.phone { width: 433px; height: 892px; border-radius: 68px; background: #1B1D1B; padding: 20px; box-shadow: 0 30px 60px rgba(30,40,25,.25), inset 0 0 0 2px #3A3D39; }
+.screen { width: 393px; height: 852px; border-radius: 50px; overflow: hidden; background: var(--bg); position: relative; display: flex; flex-direction: column; }
+.island { position: absolute; top: 11px; left: 50%; transform: translateX(-50%); width: 124px; height: 36px; border-radius: 20px; background: #000; z-index: 50; }
+.status { position: relative; z-index: 40; height: 54px; padding: 18px 34px 0 44px; display: flex; justify-content: space-between; align-items: flex-start; font-weight: 700; font-size: 16px; font-family: Inter, system-ui, sans-serif; color: var(--text); flex: none; }
+.status .icons { display: flex; gap: 6px; align-items: center; height: 22px; }
+.home { position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); width: 134px; height: 5px; border-radius: 3px; background: var(--text); z-index: 60; }
+.btn { height: 52px; border-radius: 13px; display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 17px; font-weight: 700; }
+.btn.primary { background: var(--green); color: #fff; }
+.btn.secondary { background: #ECEDE8; color: var(--text); }
+.btn.link { color: var(--green); height: 44px; }
+.circle-btn { width: 44px; height: 44px; border-radius: 999px; background: rgba(255,255,255,.95); display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0,0,0,.18); }
+.progress { display: flex; gap: 4px; }
+.progress i { display: block; height: 5px; flex: 1; border-radius: 3px; background: rgba(31,42,32,.18); }
+.progress i.on { background: var(--green); }
