@@ -42,6 +42,7 @@ The roadmap guides the user from bare land to a working garden. It is **not a fi
 - **Time and cost estimates** for each action, to help plan weekends and a budget.
 - **Deviations:** the user can mark an action as done differently, skipped, not possible, or as having a problem. The next actions adapt to that.
 - Each action links to its guide, its tasks and the materials it needs.
+- **Choosing crops** is a step in the **Design** phase, after mapping and site assessment (see §3.6). Next actions follow the user's chosen crops.
 - **How next actions are produced:** a rules layer (agronomy logic and safety limits) suggests the possible actions and their time windows. An AI layer ranks them, adapts them to deviations, explains why, and estimates time and cost. See §4, component 3.
 - **Potential tier (commercial):** rules-based next actions free, AI adaptation premium.
 
@@ -53,6 +54,7 @@ All features are in scope for development. The last column only notes what could
 |---|---|---|
 | Plot mapping | See §3.3 | Free |
 | Site assessment by camera | See §3.4 | Premium |
+| Choosing your crops | See §3.6 | Free (rules) / Premium (AI explanation) |
 | When to plant what | See §3.5 | Free |
 | Harvest readiness | A photo, plus days since sowing and the variety's maturity, gives a verdict with a confidence level | Premium |
 | Future planting planner | Rules (season windows, crop rotation by family, spacing, companion plants, succession planting) generate the plan. The AI explains and adjusts it. | Free (rules) / Premium (AI) |
@@ -109,6 +111,7 @@ Shows what to sow or plant, and when, for the user's exact location, kept up to 
 - **Too-hot windows as well as frost:** for crops that go to seed in heat (lettuce, spinach), and for tomatoes, which stop setting fruit above about 35 °C. In Alentejo, autumn and winter are the main season for brassicas, lettuce and broad beans.
 - **Views:** a month calendar and a "What to do this week" list.
 - **Adjusted by the forecast:** for example, planting out is pushed back when a cold snap is coming.
+- **Your crops first:** shows the user's chosen crops (§3.6) by default, plus a "Suggested for now" section for discovering others.
 - **Fits each zone:** "what can I plant now in zone A", based on its sun and shade.
 - **Varieties:** early and late varieties mature at different times. The user picks a variety or uses a generic default.
 - **Day length:** suggests varieties suited to the latitude (e.g. short-day onions in southern Portugal).
@@ -117,6 +120,33 @@ Shows what to sow or plant, and when, for the user's exact location, kept up to 
 - **Export** to the phone's calendar.
 - Adding a crop from the calendar creates a planned planting, which updates the roadmap, tasks and materials.
 - **Backend:** crop rules in the knowledge base, local climate history fetched once per plot and cached, a fixed calculation of windows (no AI), and a daily job for harvest estimates and forecast adjustments. The result is cached on the phone for offline use.
+
+### 3.6 Choosing your crops
+
+The user chooses which crops to grow, helped by suggestions ranked by suitability for their location. The list shapes the rest of the app.
+
+- **Browse and pick** from the crop catalog, optionally with a variety. Each crop gets a **priority** (must-have or nice-to-have) and a **rough quantity**.
+- **Ranked suggestions with a reason**, based on:
+  - Climate: heat and frost tolerance, and season length.
+  - Zone conditions: sun and shade, and available space.
+  - Water needs: drought-tolerant crops rank higher where water is scarce.
+  - Difficulty: beginner-friendly crops are marked.
+  - Timing: what can be sown soon.
+- **Warnings** for a poor fit, with a better time or variety suggested. The user's choice is **never blocked**.
+- **How much to plant:** the number of plants and space needed, from the desired quantity and typical yields.
+- **Editable at any time.** Every change goes into the activity log, so the roadmap, calendar and planners recalculate.
+- **Effect on other features:**
+  - Roadmap: the Design-phase step.
+  - Calendar: the user's crops first.
+  - Layout designer and season planner: assign crops to beds.
+  - Irrigation planner: water needs.
+  - Materials: seeds and nursery seedlings on the shopping list.
+  - AI assistant: proposes additions or swaps, which the user confirms.
+- **Backend:**
+  - A "my crops" list for each user (crop, variety, priority, quantity).
+  - A **suitability score** worked out with fixed rules (no AI), so suggestions work offline.
+  - Space estimates from typical yields and spacing.
+  - Potential premium: a personalised AI explanation of the suggestions.
 
 ---
 
@@ -234,6 +264,7 @@ Each milestone ships backend and app work together and ends with something usabl
 ### M3 — Knowledge base, calendar and guides
 - [ ] `content/` pipeline publishing to the database and Blob Storage, with offline packages
 - [ ] Crop catalog (30–50 crops relevant to Mediterranean climates first), PT and EN
+- [ ] Choosing your crops: "my crops" list, suitability scoring, warnings, how much to plant
 - [ ] Climate-driven sowing and planting calendar
 - [ ] First guides: soil preparation, compost, drip irrigation, sowing, transplanting
 - [ ] Sources and "last reviewed" dates on all content, plus the AI content-freshness job that proposes updates as pull requests
