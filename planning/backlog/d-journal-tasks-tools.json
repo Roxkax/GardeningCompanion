@@ -1,0 +1,1471 @@
+[
+ {
+  "key": "E08",
+  "title": "Journal and timeline",
+  "summary": "The record of everything that happens in the garden: entries with photos and notes, automatic entries, timelines, the harvest log, search and export. It is the user-facing view of the activity log and what the roadmap and AI learn from.",
+  "plan_ref": "PLAN.md §3.8",
+  "features": [
+   {
+    "key": "3.8.1",
+    "title": "Entries with photos and notes",
+    "priority": "MVP",
+    "seq": 5,
+    "story": "As a beginner gardener, I want to log what I did in a zone, bed or planting with photos and notes, so that I have a record the app and AI can learn from.",
+    "acceptance": [
+     "I can create an entry of a given type (watering, feeding, sowing, planting out, weeding, mulching, pruning, treating, harvesting, observation, problem)",
+     "An entry is linked to a zone, a bed or a planting",
+     "I can attach one or more photos and a free-text note",
+     "Every entry is stored as an activity log event and never overwritten",
+     "Entries appear immediately in the journal list"
+    ],
+    "depends_on": [
+     "0.1",
+     "0.4"
+    ],
+    "tasks": [
+     {
+      "title": "Define journal entry types and payload schema",
+      "area": "backend",
+      "hours": 2,
+      "description": "Define the journal entry types and their payload fields as activity log event types. Done when the schema is documented and versioned."
+     },
+     {
+      "title": "Add journal entry events to the activity log model",
+      "area": "backend",
+      "hours": 3,
+      "description": "Add EF Core mapping and migration for journal entry events (type, target zone/bed/planting, note, photo refs, occurred-at). Done when migration applies cleanly."
+     },
+     {
+      "title": "Create journal entry API endpoint",
+      "area": "backend",
+      "hours": 3,
+      "description": "POST endpoint that validates the entry and appends it to the activity log. Done when OpenAPI is updated and the endpoint returns the created entry."
+     },
+     {
+      "title": "List journal entries API with paging",
+      "area": "backend",
+      "hours": 3,
+      "description": "GET endpoint returning entries for the user, newest first, with paging and target filter. Done when paging works with 200+ entries."
+     },
+     {
+      "title": "Backend tests for journal entries",
+      "area": "backend",
+      "hours": 3,
+      "description": "Unit and integration tests for create/list, validation and user scoping. Done when tests pass in CI."
+     },
+     {
+      "title": "Design journal entry form",
+      "area": "design",
+      "hours": 2,
+      "description": "Sketch the entry form: type picker, target picker, note, photos. Done when the layout is agreed and saved in docs."
+     },
+     {
+      "title": "Build journal entry form on iOS",
+      "area": "ios",
+      "hours": 5,
+      "description": "SwiftUI form with type, target (zone/bed/planting), note and photo picker/camera. Done when an entry can be saved through the generated API client."
+     },
+     {
+      "title": "Attach photos to entries on iOS",
+      "area": "ios",
+      "hours": 4,
+      "description": "Upload photos through the media service (SAS URLs) and link them to the entry. Done when photos show on the saved entry."
+     },
+     {
+      "title": "Build journal list screen on iOS",
+      "area": "ios",
+      "hours": 4,
+      "description": "List of entries with type icon, target, date, note preview and photo thumbnail. Done when it scrolls smoothly with paging."
+     },
+     {
+      "title": "Test journal entries on iPhone",
+      "area": "testing",
+      "hours": 2,
+      "description": "Create entries of each type with photos at the plot. Done when entries, photos and list behave correctly."
+     }
+    ]
+   },
+   {
+    "key": "3.8.2",
+    "title": "Quick and bulk logging",
+    "priority": "Future improvement",
+    "seq": 99,
+    "story": "As a gardener in the field, I want to log common actions in one tap and for several beds at once, so that logging is fast.",
+    "acceptance": [
+     "One-tap logging for common actions",
+     "Logging the same action for several beds at once"
+    ],
+    "depends_on": [
+     "3.8.1"
+    ],
+    "tasks": []
+   },
+   {
+    "key": "3.8.3",
+    "title": "Voice notes",
+    "priority": "Future improvement",
+    "seq": 99,
+    "story": "As a gardener with dirty hands, I want to dictate notes, so that I don't have to type in the field.",
+    "acceptance": [
+     "Dictation uses on-device speech recognition",
+     "Works offline"
+    ],
+    "depends_on": [
+     "3.8.1"
+    ],
+    "tasks": []
+   },
+   {
+    "key": "3.8.4",
+    "title": "Automatic entries",
+    "priority": "MVP",
+    "seq": 5,
+    "story": "As a gardener, I want completed roadmap actions, tasks and guide steps to be logged automatically, so that I don't log things twice.",
+    "acceptance": [
+     "Completing a task creates a journal entry linked to the task",
+     "Completing a roadmap action creates a journal entry",
+     "Completing a guide step creates a journal entry",
+     "Automatic entries are marked as automatic and can have notes or photos added later"
+    ],
+    "depends_on": [
+     "3.8.1",
+     "3.9.4"
+    ],
+    "tasks": [
+     {
+      "title": "Map task, roadmap and guide completion events to journal entries",
+      "area": "backend",
+      "hours": 3,
+      "description": "Define how completion events from tasks, roadmap actions and guide steps appear as journal entries. Done when the mapping is documented."
+     },
+     {
+      "title": "Generate journal entries from completion events",
+      "area": "backend",
+      "hours": 4,
+      "description": "Handler that creates a linked journal entry when a completion event is appended. Done when each source creates exactly one entry."
+     },
+     {
+      "title": "Allow adding notes and photos to automatic entries",
+      "area": "backend",
+      "hours": 2,
+      "description": "Append-only annotation event that adds a note or photo to an existing entry. Done when the annotation shows with the entry."
+     },
+     {
+      "title": "Tests for automatic entries",
+      "area": "backend",
+      "hours": 2,
+      "description": "Tests that each completion source creates one entry and no duplicates on retries. Done when tests pass."
+     },
+     {
+      "title": "Show automatic entries in the iOS journal",
+      "area": "ios",
+      "hours": 3,
+      "description": "Distinct marker for automatic entries, link back to the task/action/guide, and 'add note or photo' action. Done when visible and tappable."
+     },
+     {
+      "title": "Test automatic entries on iPhone",
+      "area": "testing",
+      "hours": 1,
+      "description": "Complete a task, an action and a guide step and check the journal. Done when all three appear correctly."
+     }
+    ]
+   },
+   {
+    "key": "3.8.5",
+    "title": "Weather on each day",
+    "priority": "Good to have",
+    "seq": 28,
+    "story": "As a gardener, I want each day in the journal to show its rain and temperatures, so that I can relate what happened to the weather.",
+    "acceptance": [
+     "Each journal day shows min/max temperature and rainfall",
+     "Weather comes from the stored weather history for the plot",
+     "Past days show recorded weather, not forecast"
+    ],
+    "depends_on": [
+     "3.8.1"
+    ],
+    "tasks": [
+     {
+      "title": "Store daily observed weather per plot",
+      "area": "backend",
+      "hours": 3,
+      "description": "Daily job saves observed min/max temperature and rainfall per plot from the weather data service. Done when 30 days of history accumulate correctly."
+     },
+     {
+      "title": "Expose daily weather in the journal API",
+      "area": "backend",
+      "hours": 2,
+      "description": "Add daily weather to journal day groups in the list API. Done when OpenAPI shows it."
+     },
+     {
+      "title": "Show weather on journal day headers on iOS",
+      "area": "ios",
+      "hours": 3,
+      "description": "Compact weather chip (temps, rain) on each journal day header. Done when shown for each day with data."
+     },
+     {
+      "title": "Test weather on journal days",
+      "area": "testing",
+      "hours": 1,
+      "description": "Compare shown values with the weather source for a few days. Done when values match."
+     }
+    ]
+   },
+   {
+    "key": "3.8.6",
+    "title": "Change the date",
+    "priority": "Good to have",
+    "seq": 28,
+    "story": "As a gardener, I want to log something after the fact with the real date, so that the history is accurate.",
+    "acceptance": [
+     "I can choose a past date and time when creating an entry",
+     "Backdated entries sort by their real date",
+     "The record keeps both the occurred-at and recorded-at times"
+    ],
+    "depends_on": [
+     "3.8.1"
+    ],
+    "tasks": [
+     {
+      "title": "Support occurred-at separate from recorded-at",
+      "area": "backend",
+      "hours": 2,
+      "description": "Validate a past occurred-at date (not in the future) while keeping the recorded-at timestamp. Done when both are stored and sorted correctly."
+     },
+     {
+      "title": "Add date and time picker to the iOS entry form",
+      "area": "ios",
+      "hours": 2,
+      "description": "Default to now with an option to pick a past date. Done when backdated entries appear in the right place."
+     },
+     {
+      "title": "Test backdated entries",
+      "area": "testing",
+      "hours": 1,
+      "description": "Log an entry for yesterday and last week. Done when ordering and roadmap recalculation are correct."
+     }
+    ]
+   },
+   {
+    "key": "3.8.7",
+    "title": "Timeline views",
+    "priority": "MVP",
+    "seq": 5,
+    "story": "As a gardener, I want to see the history of a zone, a bed or a planting, so that I can understand what has happened to it.",
+    "acceptance": [
+     "Timeline for a zone, a bed or a planting, newest first",
+     "Shows entries with photos and notes",
+     "Reachable from the zone, bed and planting screens"
+    ],
+    "depends_on": [
+     "3.8.1"
+    ],
+    "tasks": [
+     {
+      "title": "Timeline API filtered by zone, bed or planting",
+      "area": "backend",
+      "hours": 3,
+      "description": "Endpoint returning entries for one target including child beds/plantings of a zone. Done when filters return correct sets."
+     },
+     {
+      "title": "Timeline API tests",
+      "area": "backend",
+      "hours": 2,
+      "description": "Tests for target filtering and user scoping. Done when tests pass."
+     },
+     {
+      "title": "Build timeline screen on iOS",
+      "area": "ios",
+      "hours": 4,
+      "description": "Vertical timeline with date groups, entry cards and photos. Done when it renders a zone, a bed and a planting."
+     },
+     {
+      "title": "Link timeline from zone, bed and planting screens",
+      "area": "ios",
+      "hours": 2,
+      "description": "Add 'History' entry points. Done when each opens the right timeline."
+     },
+     {
+      "title": "Test timelines on iPhone",
+      "area": "testing",
+      "hours": 1,
+      "description": "Check timelines for a zone, bed and planting with real entries. Done when contents are correct."
+     }
+    ]
+   },
+   {
+    "key": "3.8.8",
+    "title": "Photo time-lapse",
+    "priority": "Future improvement",
+    "seq": 99,
+    "story": "As a gardener, I want a time-lapse from my fixed photo spots, so that I can see progress over time.",
+    "acceptance": [
+     "Photos from the same fixed spot play in date order"
+    ],
+    "depends_on": [
+     "3.8.1"
+    ],
+    "tasks": []
+   },
+   {
+    "key": "3.8.9",
+    "title": "Harvest log",
+    "priority": "MVP",
+    "seq": 5,
+    "story": "As a gardener, I want to record what I harvest by weight or count, so that I can see yields and compare them with what was expected.",
+    "acceptance": [
+     "I can log a harvest with crop, variety, planting, weight or count",
+     "Season totals per crop and variety are shown",
+     "Each harvest is compared with the expected yield where known",
+     "Harvest entries are activity log events"
+    ],
+    "depends_on": [
+     "3.8.1"
+    ],
+    "tasks": [
+     {
+      "title": "Add harvest entry type with quantity and unit",
+      "area": "backend",
+      "hours": 2,
+      "description": "Harvest event payload: planting, crop, variety, quantity, unit (kg, g, count). Done when stored and validated."
+     },
+     {
+      "title": "Season totals and expected-yield comparison API",
+      "area": "backend",
+      "hours": 4,
+      "description": "Aggregate harvests per crop/variety per season and compare with expected yield from the crop catalog and plant count. Done when totals are correct for test data."
+     },
+     {
+      "title": "Harvest log tests",
+      "area": "backend",
+      "hours": 2,
+      "description": "Tests for aggregation, units and seasons. Done when tests pass."
+     },
+     {
+      "title": "Build harvest entry form on iOS",
+      "area": "ios",
+      "hours": 3,
+      "description": "Quick form with planting picker, quantity and unit. Done when a harvest is saved."
+     },
+     {
+      "title": "Build harvest summary screen on iOS",
+      "area": "ios",
+      "hours": 4,
+      "description": "Season totals per crop with expected vs actual bars. Done when it shows real data."
+     },
+     {
+      "title": "Test the harvest log on iPhone",
+      "area": "testing",
+      "hours": 1,
+      "description": "Log several harvests and check totals. Done when numbers match."
+     }
+    ]
+   },
+   {
+    "key": "3.8.10",
+    "title": "Harvest value",
+    "priority": "Future improvement",
+    "seq": 99,
+    "story": "As a gardener, I want an estimated value of my harvest using prices I enter, so that I can see if the garden pays off.",
+    "acceptance": [
+     "User-entered prices per crop",
+     "Estimated value per season"
+    ],
+    "depends_on": [
+     "3.8.9"
+    ],
+    "tasks": []
+   },
+   {
+    "key": "3.8.11",
+    "title": "Search and filters",
+    "priority": "MVP",
+    "seq": 5,
+    "story": "As a gardener, I want to search and filter my journal, so that I can find things like every time I treated the tomatoes.",
+    "acceptance": [
+     "Free-text search over notes",
+     "Filter by entry type, zone/bed/planting, crop and date range",
+     "Filters can be combined"
+    ],
+    "depends_on": [
+     "3.8.1"
+    ],
+    "tasks": [
+     {
+      "title": "Add full-text search index for journal notes",
+      "area": "backend",
+      "hours": 3,
+      "description": "PostgreSQL full-text index (PT and EN) on entry notes. Done when queries use the index."
+     },
+     {
+      "title": "Journal search and filter API",
+      "area": "backend",
+      "hours": 3,
+      "description": "Query parameters for text, type, target, crop and date range. Done when combinations return correct results."
+     },
+     {
+      "title": "Search and filter tests",
+      "area": "backend",
+      "hours": 2,
+      "description": "Tests for each filter and combinations. Done when tests pass."
+     },
+     {
+      "title": "Build search bar and filter sheet on iOS",
+      "area": "ios",
+      "hours": 4,
+      "description": "Search field plus filter sheet with chips. Done when filtering updates the list."
+     },
+     {
+      "title": "Test journal search on iPhone",
+      "area": "testing",
+      "hours": 1,
+      "description": "Search for real entries in PT and EN. Done when results are as expected."
+     }
+    ]
+   },
+   {
+    "key": "3.8.12",
+    "title": "Export CSV/PDF",
+    "priority": "Good to have",
+    "seq": 28,
+    "story": "As a gardener, I want to export my journal to CSV or PDF, so that I can keep or share a copy.",
+    "acceptance": [
+     "Export the journal or a filtered view to CSV",
+     "Export to PDF with photos as thumbnails",
+     "The file can be shared from the iPhone share sheet"
+    ],
+    "depends_on": [
+     "3.8.1",
+     "3.8.11"
+    ],
+    "tasks": [
+     {
+      "title": "CSV export endpoint",
+      "area": "backend",
+      "hours": 3,
+      "description": "Stream journal entries (respecting filters) as CSV. Done when the file opens correctly in Numbers."
+     },
+     {
+      "title": "PDF export endpoint",
+      "area": "backend",
+      "hours": 5,
+      "description": "Generate a PDF with entries and photo thumbnails. Done when a 50-entry export renders correctly."
+     },
+     {
+      "title": "Export tests",
+      "area": "backend",
+      "hours": 2,
+      "description": "Tests for CSV columns, filters and PDF generation. Done when tests pass."
+     },
+     {
+      "title": "Export action and share sheet on iOS",
+      "area": "ios",
+      "hours": 3,
+      "description": "Export button with format choice, then the iOS share sheet. Done when the file can be saved to Files."
+     },
+     {
+      "title": "Test exports on iPhone",
+      "area": "testing",
+      "hours": 1,
+      "description": "Export CSV and PDF and open them. Done when contents are correct."
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "key": "E09",
+  "title": "Tasks and reminders",
+  "summary": "The garden to-do list: tasks from every source with date ranges, estimates and outcomes, Today/Week/zone views, a weekend planner, weather-aware rescheduling, missed-task alternatives, reminders, a morning summary and sharing with helpers.",
+  "plan_ref": "PLAN.md §3.9",
+  "features": [
+   {
+    "key": "3.9.1",
+    "title": "Tasks from all sources",
+    "priority": "MVP",
+    "seq": 5,
+    "story": "As a gardener, I want tasks to come from the roadmap, calendar, regular care, weather, AI and myself, so that I have one to-do list for the garden.",
+    "acceptance": [
+     "Tasks can be created manually",
+     "Accepted roadmap next actions become tasks",
+     "Calendar and regular care create tasks",
+     "Weather alerts and confirmed AI proposals create tasks",
+     "Each task records its source"
+    ],
+    "depends_on": [
+     "0.1",
+     "0.4",
+     "3.1.1"
+    ],
+    "tasks": [
+     {
+      "title": "Task data model and migration",
+      "area": "backend",
+      "hours": 3,
+      "description": "Task entity: title, target, date range, estimate, priority, guide link, tools, source, status, version for sync. Done when migration applies."
+     },
+     {
+      "title": "Task CRUD API",
+      "area": "backend",
+      "hours": 4,
+      "description": "Create, read, update and delete endpoints with validation and user scoping. Done when OpenAPI is updated."
+     },
+     {
+      "title": "Task source tracking and links",
+      "area": "backend",
+      "hours": 2,
+      "description": "Store source type and source id (roadmap action, calendar window, care rule, alert, proposal, manual). Done when tasks link back to their source."
+     },
+     {
+      "title": "Create tasks from accepted roadmap actions",
+      "area": "backend",
+      "hours": 3,
+      "description": "Accepting a next action creates a task with its window, estimate and guide. Done when accepted actions appear as tasks."
+     },
+     {
+      "title": "Create tasks from calendar windows and care rules",
+      "area": "backend",
+      "hours": 4,
+      "description": "Generate tasks for sowing/planting windows of chosen crops and regular care. Done when generation is idempotent."
+     },
+     {
+      "title": "Task generation tests",
+      "area": "backend",
+      "hours": 3,
+      "description": "Tests for each source and duplicate prevention. Done when tests pass."
+     },
+     {
+      "title": "Build manual task creation on iOS",
+      "area": "ios",
+      "hours": 3,
+      "description": "Form to add a task with target, date range and notes. Done when a manual task is saved."
+     },
+     {
+      "title": "Show task source on iOS",
+      "area": "ios",
+      "hours": 2,
+      "description": "Source badge and link to the originating item. Done when tapping opens the source."
+     },
+     {
+      "title": "Test task sources on iPhone",
+      "area": "testing",
+      "hours": 2,
+      "description": "Create tasks from each available source. Done when all appear correctly."
+     }
+    ]
+   },
+   {
+    "key": "3.9.2",
+    "title": "Task details",
+    "priority": "MVP",
+    "seq": 5,
+    "story": "As a gardener, I want each task to show its date range, time estimate, priority and guide, so that I know when and how to do it.",
+    "acceptance": [
+     "Tasks have a date range rather than a single day",
+     "Each task shows estimated time and priority",
+     "Each task links to its guide",
+     "Task detail shows target zone, bed or planting"
+    ],
+    "depends_on": [
+     "3.9.1"
+    ],
+    "tasks": [
+     {
+      "title": "Date range, estimate and priority fields with validation",
+      "area": "backend",
+      "hours": 2,
+      "description": "Validate start ≤ end, estimate in minutes, priority levels. Done when invalid input is rejected."
+     },
+     {
+      "title": "Design task detail screen",
+      "area": "design",
+      "hours": 2,
+      "description": "Layout for date range, estimate, priority, guide link, tools and target. Done when agreed."
+     },
+     {
+      "title": "Build task detail screen on iOS",
+      "area": "ios",
+      "hours": 4,
+      "description": "Detail view with editing of date range, estimate and priority, and guide link. Done when edits save."
+     },
+     {
+      "title": "Test task details on iPhone",
+      "area": "testing",
+      "hours": 1,
+      "description": "Edit tasks and open guides from tasks. Done when everything works."
+     }
+    ]
+   },
+   {
+    "key": "3.9.3",
+    "title": "Tools check",
+    "priority": "Good to have",
+    "seq": 29,
+    "story": "As a gardener, I want a task to warn me if I'm missing a tool it needs, so that I can get it in time.",
+    "acceptance": [
+     "Tasks list the tools they need",
+     "Missing tools are highlighted",
+     "Missing tools link to the 'tools to get' list"
+    ],
+    "depends_on": [
+     "3.9.2",
+     "3.10.3",
+     "3.10.4"
+    ],
+    "tasks": [
+     {
+      "title": "Compute missing tools per task",
+      "area": "backend",
+      "hours": 3,
+      "description": "Compare task tools with the user's owned tools. Done when the API returns missing tools per task."
+     },
+     {
+      "title": "Show tools and missing-tool warning on iOS",
+      "area": "ios",
+      "hours": 3,
+      "description": "Tool list on the task with a warning and a link to 'tools to get'. Done when shown correctly."
+     },
+     {
+      "title": "Test the tools check",
+      "area": "testing",
+      "hours": 1,
+      "description": "Remove an owned tool and check the warning. Done when the warning appears."
+     }
+    ]
+   },
+   {
+    "key": "3.9.4",
+    "title": "Task outcomes",
+    "priority": "MVP",
+    "seq": 5,
+    "story": "As a gardener, I want to mark a task as done, skipped or couldn't do (with a reason), so that the roadmap adapts to what really happened.",
+    "acceptance": [
+     "Tasks can be marked done, skipped or couldn't do",
+     "Skipped and couldn't do require or allow a reason",
+     "Each outcome is appended to the activity log",
+     "The roadmap recalculates after an outcome"
+    ],
+    "depends_on": [
+     "3.9.1",
+     "0.4"
+    ],
+    "tasks": [
+     {
+      "title": "Task outcome events in the activity log",
+      "area": "backend",
+      "hours": 3,
+      "description": "Append done/skipped/couldn't-do events with reason and timestamp. Done when the task status reflects the latest outcome."
+     },
+     {
+      "title": "Trigger roadmap recalculation on outcomes",
+      "area": "backend",
+      "hours": 2,
+      "description": "Publish an event so the roadmap engine recalculates the zone. Done when next actions update after an outcome."
+     },
+     {
+      "title": "Outcome tests",
+      "area": "backend",
+      "hours": 2,
+      "description": "Tests for each outcome and recalculation trigger. Done when tests pass."
+     },
+     {
+      "title": "Outcome actions and reason sheet on iOS",
+      "area": "ios",
+      "hours": 3,
+      "description": "Swipe actions and buttons for done/skip/couldn't do, with a reason sheet. Done when outcomes save."
+     },
+     {
+      "title": "Test task outcomes on iPhone",
+      "area": "testing",
+      "hours": 1,
+      "description": "Mark tasks with each outcome and check the roadmap. Done when behaviour is correct."
+     }
+    ]
+   },
+   {
+    "key": "3.9.5",
+    "title": "Today, Week and zone views",
+    "priority": "MVP",
+    "seq": 5,
+    "story": "As a gardener, I want to see tasks for today, this week, and by zone, so that I can focus on what matters now.",
+    "acceptance": [
+     "Today view shows tasks whose window includes today, by priority",
+     "Week view groups tasks by day",
+     "Zone view groups tasks by zone and bed",
+     "Overdue tasks are highlighted"
+    ],
+    "depends_on": [
+     "3.9.1"
+    ],
+    "tasks": [
+     {
+      "title": "Task query API for today, week and zone",
+      "area": "backend",
+      "hours": 3,
+      "description": "Endpoints or filters returning tasks for a date window and grouped by zone. Done when results are correct across time zones."
+     },
+     {
+      "title": "Task query tests",
+      "area": "backend",
+      "hours": 2,
+      "description": "Tests for date windows, time zones and grouping. Done when tests pass."
+     },
+     {
+      "title": "Build Today and Week task lists on iOS",
+      "area": "ios",
+      "hours": 4,
+      "description": "Segmented lists with priority sorting and overdue highlighting. Done when both views work."
+     },
+     {
+      "title": "Build zone task view on iOS",
+      "area": "ios",
+      "hours": 3,
+      "description": "Tasks grouped by zone and bed. Done when it matches the plot structure."
+     },
+     {
+      "title": "Test task views on iPhone",
+      "area": "testing",
+      "hours": 1,
+      "description": "Check views over a week of real tasks. Done when grouping and sorting are right."
+     }
+    ]
+   },
+   {
+    "key": "3.9.6",
+    "title": "Weekend planner",
+    "priority": "MVP",
+    "seq": 5,
+    "story": "As a weekend gardener, I want to enter the hours I have and get the most important tasks that fit, so that I use my time well.",
+    "acceptance": [
+     "I can enter available hours for a day or weekend",
+     "The app proposes tasks that fit, by priority and window urgency",
+     "I can accept the plan, which schedules the tasks",
+     "The plan respects tasks that must happen before others"
+    ],
+    "depends_on": [
+     "3.9.2",
+     "3.9.5"
+    ],
+    "tasks": [
+     {
+      "title": "Weekend planning algorithm",
+      "area": "backend",
+      "hours": 5,
+      "description": "Select tasks by priority, window urgency and estimate to fit available hours (knapsack-style), respecting order dependencies. Done when it produces sensible plans for test data."
+     },
+     {
+      "title": "Weekend planner API",
+      "area": "backend",
+      "hours": 2,
+      "description": "Endpoint taking available hours and dates, returning the proposed plan. Done when OpenAPI is updated."
+     },
+     {
+      "title": "Weekend planner tests",
+      "area": "backend",
+      "hours": 3,
+      "description": "Tests for fitting, priorities and dependencies. Done when tests pass."
+     },
+     {
+      "title": "Build weekend planner screen on iOS",
+      "area": "ios",
+      "hours": 4,
+      "description": "Hours input, proposed plan with total time, accept action. Done when an accepted plan schedules the tasks."
+     },
+     {
+      "title": "Test the weekend planner on a real weekend",
+      "area": "testing",
+      "hours": 2,
+      "description": "Use it for a real weekend at the plot. Done when the plan was realistic or adjustments are noted."
+     }
+    ]
+   },
+   {
+    "key": "3.9.7",
+    "title": "Weather-aware rescheduling",
+    "priority": "MVP",
+    "seq": 5,
+    "story": "As a gardener, I want tasks rescheduled automatically for the weather, so that I don't water before rain or spray in the wind.",
+    "acceptance": [
+     "Watering tasks are skipped or moved when rain is forecast",
+     "In a heatwave, watering is moved to early morning",
+     "Spraying is postponed when wind is forecast",
+     "Each change is explained on the task and logged"
+    ],
+    "depends_on": [
+     "3.9.1",
+     "3.12.1"
+    ],
+    "tasks": [
+     {
+      "title": "Define weather rescheduling rules",
+      "area": "backend",
+      "hours": 2,
+      "description": "Rules for rain, heat and wind per task type, with thresholds. Done when documented with test cases."
+     },
+     {
+      "title": "Daily rescheduling job",
+      "area": "backend",
+      "hours": 4,
+      "description": "Job applies rules to upcoming tasks using the forecast and records the change and reason. Done when changes are applied once per forecast change."
+     },
+     {
+      "title": "Rescheduling tests",
+      "area": "backend",
+      "hours": 3,
+      "description": "Tests for each rule and idempotency. Done when tests pass."
+     },
+     {
+      "title": "Show rescheduling reason on iOS",
+      "area": "ios",
+      "hours": 2,
+      "description": "Banner on the task explaining the change, with an undo option. Done when visible and undo works."
+     },
+     {
+      "title": "Test rescheduling with real forecasts",
+      "area": "testing",
+      "hours": 1,
+      "description": "Watch it over a rainy and a hot period. Done when changes are sensible."
+     }
+    ]
+   },
+   {
+    "key": "3.9.8",
+    "title": "Repeating tasks",
+    "priority": "Future improvement",
+    "seq": 99,
+    "story": "As a gardener, I want repeating tasks such as weekly feeding, so that I don't recreate them.",
+    "acceptance": [
+     "Tasks can repeat on a schedule"
+    ],
+    "depends_on": [
+     "3.9.1"
+    ],
+    "tasks": []
+   },
+   {
+    "key": "3.9.9",
+    "title": "Missed-task alternatives",
+    "priority": "MVP",
+    "seq": 5,
+    "story": "As a gardener, I want an alternative when I miss a time-sensitive task, so that I'm not left with a useless overdue task.",
+    "acceptance": [
+     "Time-sensitive tasks are flagged when their window closes",
+     "The roadmap engine suggests an alternative (e.g. a later variety, a different method)",
+     "I can accept the alternative or dismiss the task"
+    ],
+    "depends_on": [
+     "3.9.4",
+     "3.1.1"
+    ],
+    "tasks": [
+     {
+      "title": "Detect missed time-sensitive tasks",
+      "area": "backend",
+      "hours": 3,
+      "description": "Daily job marks tasks whose window closed without an outcome. Done when missed tasks are flagged."
+     },
+     {
+      "title": "Request alternatives from the roadmap engine",
+      "area": "backend",
+      "hours": 4,
+      "description": "Rules layer proposes an alternative action for the missed one. Done when common cases (sowing window missed) get an alternative."
+     },
+     {
+      "title": "Missed-task tests",
+      "area": "backend",
+      "hours": 2,
+      "description": "Tests for detection and alternatives. Done when tests pass."
+     },
+     {
+      "title": "Missed-task card with alternative on iOS",
+      "area": "ios",
+      "hours": 3,
+      "description": "Card showing the missed task and the alternative, with accept or dismiss. Done when accepting creates the new task."
+     },
+     {
+      "title": "Test missed-task alternatives",
+      "area": "testing",
+      "hours": 1,
+      "description": "Let a sowing window pass on a test task. Done when the alternative is sensible."
+     }
+    ]
+   },
+   {
+    "key": "3.9.10",
+    "title": "On-phone reminders",
+    "priority": "Good to have",
+    "seq": 29,
+    "story": "As a gardener, I want reminders scheduled on the phone, so that I'm reminded even without a connection.",
+    "acceptance": [
+     "Tasks can have a reminder time",
+     "Reminders are scheduled as local notifications",
+     "Reminders update when tasks change or complete"
+    ],
+    "depends_on": [
+     "3.9.2"
+    ],
+    "tasks": [
+     {
+      "title": "Reminder field on tasks",
+      "area": "backend",
+      "hours": 2,
+      "description": "Optional reminder time on tasks, synced to the app. Done when stored and returned."
+     },
+     {
+      "title": "Schedule local notifications on iOS",
+      "area": "ios",
+      "hours": 4,
+      "description": "Use UNUserNotificationCenter to schedule, update and cancel reminders. Done when reminders fire offline."
+     },
+     {
+      "title": "Notification permission flow on iOS",
+      "area": "ios",
+      "hours": 2,
+      "description": "Ask for permission at a sensible moment with an explanation. Done when denial is handled."
+     },
+     {
+      "title": "Test reminders on iPhone",
+      "area": "testing",
+      "hours": 1,
+      "description": "Set reminders and go offline. Done when they fire on time."
+     }
+    ]
+   },
+   {
+    "key": "3.9.11",
+    "title": "Morning summary",
+    "priority": "Good to have",
+    "seq": 29,
+    "story": "As a gardener, I want one daily morning summary instead of many notifications, so that I'm informed without noise.",
+    "acceptance": [
+     "One push notification per morning at my chosen time",
+     "Summarises today's tasks, alerts and pending proposals",
+     "Tapping opens the Today screen"
+    ],
+    "depends_on": [
+     "3.9.5"
+    ],
+    "tasks": [
+     {
+      "title": "Morning summary job per user time zone",
+      "area": "backend",
+      "hours": 4,
+      "description": "Scheduled job builds a summary per user at their chosen time and sends it through push infrastructure. Done when each user gets one per day."
+     },
+     {
+      "title": "Morning summary tests",
+      "area": "backend",
+      "hours": 2,
+      "description": "Tests for time zones and content. Done when tests pass."
+     },
+     {
+      "title": "Summary time setting and deep link on iOS",
+      "area": "ios",
+      "hours": 2,
+      "description": "Setting for the summary time and deep link to Today. Done when tapping opens Today."
+     },
+     {
+      "title": "Test the morning summary for a week",
+      "area": "testing",
+      "hours": 1,
+      "description": "Check daily delivery and content. Done when reliable."
+     }
+    ]
+   },
+   {
+    "key": "3.9.12",
+    "title": "Quiet hours",
+    "priority": "Future improvement",
+    "seq": 99,
+    "story": "As a user, I want quiet hours, so that I'm not disturbed at night.",
+    "acceptance": [
+     "No non-urgent notifications during quiet hours"
+    ],
+    "depends_on": [
+     "3.9.11"
+    ],
+    "tasks": []
+   },
+   {
+    "key": "3.9.13",
+    "title": "Share tasks with family",
+    "priority": "Good to have",
+    "seq": 29,
+    "story": "As a gardener, I want to share tasks with family or helpers, so that they can see and do them.",
+    "acceptance": [
+     "I can invite a helper to my garden",
+     "Helpers see and can complete shared tasks",
+     "Outcomes show who did the task",
+     "I can remove a helper"
+    ],
+    "depends_on": [
+     "3.9.1",
+     "0.1"
+    ],
+    "tasks": [
+     {
+      "title": "Design garden sharing and helper roles",
+      "area": "design",
+      "hours": 3,
+      "description": "Decide roles (owner, helper), what helpers can see and do, and the invite flow. Done when documented."
+     },
+     {
+      "title": "Garden membership model and migration",
+      "area": "backend",
+      "hours": 4,
+      "description": "Membership entity with roles; update data scoping so helpers access shared gardens. Done when scoping tests pass."
+     },
+     {
+      "title": "Invite and accept API",
+      "area": "backend",
+      "hours": 4,
+      "description": "Create invite links, accept, and remove members. Done when the flow works end to end."
+     },
+     {
+      "title": "Record who completed a task",
+      "area": "backend",
+      "hours": 2,
+      "description": "Store the actor on outcome events. Done when shown in task history."
+     },
+     {
+      "title": "Sharing and permission tests",
+      "area": "backend",
+      "hours": 4,
+      "description": "Tests that helpers only access shared data. Done when tests pass."
+     },
+     {
+      "title": "Invite and member management on iOS",
+      "area": "ios",
+      "hours": 4,
+      "description": "Invite sheet, member list and remove action. Done when a helper can join."
+     },
+     {
+      "title": "Show task completer on iOS",
+      "area": "ios",
+      "hours": 2,
+      "description": "Display who did each task. Done when visible."
+     },
+     {
+      "title": "Test sharing with a second account",
+      "area": "testing",
+      "hours": 2,
+      "description": "Invite a second account and complete tasks. Done when access and attribution are correct."
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "key": "E10",
+  "title": "Tools",
+  "summary": "Which tools the user owns, which they need and when: a tool catalog with images, tools needed per action, a 'tools to get' list, the 'always own' setting, a starter toolkit, advice, maintenance reminders and shop links. No consumable or stock tracking.",
+  "plan_ref": "PLAN.md §3.10",
+  "features": [
+   {
+    "key": "3.10.1",
+    "title": "My tools with reference images",
+    "priority": "Good to have",
+    "seq": 30,
+    "story": "As a beginner, I want every tool to have a reference image, so that I can recognise it.",
+    "acceptance": [
+     "Every catalog tool has a reference image",
+     "Images appear in my tools, tasks, guides, 'tools to get' and the starter toolkit",
+     "Images are reviewed before publishing"
+    ],
+    "depends_on": [
+     "3.10.3",
+     "0.5"
+    ],
+    "tasks": [
+     {
+      "title": "Generate tool reference images with gpt-image",
+      "area": "content",
+      "hours": 4,
+      "description": "Produce consistent-style images for each catalog tool and review them. Done when every tool has an approved image."
+     },
+     {
+      "title": "Add images to the tool catalog pipeline",
+      "area": "backend",
+      "hours": 2,
+      "description": "Publish tool images with the catalog to Blob Storage. Done when the API returns image URLs."
+     },
+     {
+      "title": "Show tool images across iOS screens",
+      "area": "ios",
+      "hours": 3,
+      "description": "Display images in my tools, tasks, guides and lists with caching. Done when images appear everywhere tools are shown."
+     },
+     {
+      "title": "Test tool images on iPhone",
+      "area": "testing",
+      "hours": 1,
+      "description": "Check images are correct and recognisable. Done when all reviewed."
+     }
+    ]
+   },
+   {
+    "key": "3.10.2",
+    "title": "Own photo of a tool",
+    "priority": "MVP",
+    "seq": 6,
+    "story": "As a gardener, I want to replace a tool's image with a photo of my own tool, so that it's easy to find.",
+    "acceptance": [
+     "I can take or pick a photo for an owned tool",
+     "My photo replaces the catalog image for that tool",
+     "I can revert to the catalog image"
+    ],
+    "depends_on": [
+     "3.10.3"
+    ],
+    "tasks": [
+     {
+      "title": "Store a custom photo per owned tool",
+      "area": "backend",
+      "hours": 2,
+      "description": "Link an uploaded photo to an owned tool, with revert. Done when the API returns the custom photo."
+     },
+     {
+      "title": "Photo capture for owned tools on iOS",
+      "area": "ios",
+      "hours": 3,
+      "description": "Camera or library picker on the owned tool, upload through the media service, revert action. Done when the photo shows."
+     },
+     {
+      "title": "Test own tool photos",
+      "area": "testing",
+      "hours": 1,
+      "description": "Photograph a real tool. Done when it shows and reverts correctly."
+     }
+    ]
+   },
+   {
+    "key": "3.10.3",
+    "title": "Tools needed per action",
+    "priority": "MVP",
+    "seq": 6,
+    "story": "As a beginner, I want each action, task and guide to list the tools it needs, compared with the tools I own, so that I'm not caught without one.",
+    "acceptance": [
+     "A tool catalog exists (name, purpose, PT/EN)",
+     "I can add and remove tools I own",
+     "Roadmap actions, tasks and guides list required tools",
+     "Missing tools are flagged"
+    ],
+    "depends_on": [
+     "0.5"
+    ],
+    "tasks": [
+     {
+      "title": "Tool catalog content (names, purposes, PT/EN)",
+      "area": "content",
+      "hours": 4,
+      "description": "Author the initial catalog of ~40 common tools with purpose and typical use, in PT and EN. Done when published through the content pipeline."
+     },
+     {
+      "title": "Tool catalog and owned-tools model",
+      "area": "backend",
+      "hours": 3,
+      "description": "Catalog table plus the user's owned tools list, with migration. Done when migration applies."
+     },
+     {
+      "title": "Owned tools API",
+      "area": "backend",
+      "hours": 3,
+      "description": "List catalog, add and remove owned tools. Done when OpenAPI is updated."
+     },
+     {
+      "title": "Required tools on actions, tasks and guide steps",
+      "area": "backend",
+      "hours": 3,
+      "description": "Reference catalog tools from roadmap rules, tasks and guide steps. Done when each returns its required tools."
+     },
+     {
+      "title": "Missing-tools calculation",
+      "area": "backend",
+      "hours": 2,
+      "description": "Compute required minus owned for any item. Done when correct for test data."
+     },
+     {
+      "title": "Tools tests",
+      "area": "backend",
+      "hours": 2,
+      "description": "Tests for owned tools and missing-tool calculation. Done when tests pass."
+     },
+     {
+      "title": "Build My tools screen on iOS",
+      "area": "ios",
+      "hours": 4,
+      "description": "Browse the catalog and add or remove owned tools. Done when the list persists."
+     },
+     {
+      "title": "Show required tools on actions and guides on iOS",
+      "area": "ios",
+      "hours": 3,
+      "description": "Tool list with missing ones highlighted. Done when shown on actions and guide steps."
+     },
+     {
+      "title": "Test tools needed per action",
+      "area": "testing",
+      "hours": 1,
+      "description": "Check real actions against owned tools. Done when flags are correct."
+     }
+    ]
+   },
+   {
+    "key": "3.10.4",
+    "title": "\"Tools to get\" list",
+    "priority": "MVP",
+    "seq": 6,
+    "story": "As a gardener, I want a list of missing tools ordered by when I'll need them, so that I can get them in time.",
+    "acceptance": [
+     "Missing tools are listed by the earliest date they're needed",
+     "Each tool shows which tasks need it",
+     "Each tool can be marked buy, rent or borrow",
+     "Marking a tool as got adds it to my tools"
+    ],
+    "depends_on": [
+     "3.10.3"
+    ],
+    "tasks": [
+     {
+      "title": "Tools-to-get API ordered by need date",
+      "area": "backend",
+      "hours": 3,
+      "description": "Aggregate missing tools across upcoming tasks and actions, with earliest need date. Done when ordering is correct."
+     },
+     {
+      "title": "Acquisition choice and 'got it' action",
+      "area": "backend",
+      "hours": 2,
+      "description": "Store buy/rent/borrow choice and convert to owned on 'got it'. Done when the tool moves to my tools."
+     },
+     {
+      "title": "Tools-to-get tests",
+      "area": "backend",
+      "hours": 2,
+      "description": "Tests for ordering and conversion. Done when tests pass."
+     },
+     {
+      "title": "Build Tools to get screen on iOS",
+      "area": "ios",
+      "hours": 4,
+      "description": "List with need dates, linked tasks, choice and 'got it'. Done when working end to end."
+     },
+     {
+      "title": "Test the tools-to-get list",
+      "area": "testing",
+      "hours": 1,
+      "description": "Plan tasks needing missing tools. Done when the list is correct."
+     }
+    ]
+   },
+   {
+    "key": "3.10.5",
+    "title": "\"Always own\" setting",
+    "priority": "MVP",
+    "seq": 6,
+    "story": "As a gardener who prefers to own tools, I want missing tools to default to buy, so that I don't see rent or borrow suggestions.",
+    "acceptance": [
+     "An opt-in 'always own' setting exists",
+     "When on, missing tools default to buy",
+     "When on, rent and borrow suggestions are hidden",
+     "The buy/rent/borrow information is still kept"
+    ],
+    "depends_on": [
+     "3.10.4"
+    ],
+    "tasks": [
+     {
+      "title": "Always-own preference in the user settings",
+      "area": "backend",
+      "hours": 2,
+      "description": "Store the preference and apply it as the default acquisition choice. Done when the API respects it."
+     },
+     {
+      "title": "Hide rent and borrow options on iOS when on",
+      "area": "ios",
+      "hours": 2,
+      "description": "Settings toggle and conditional UI. Done when rent/borrow disappear with the setting on."
+     },
+     {
+      "title": "Tests for the always-own setting",
+      "area": "backend",
+      "hours": 1,
+      "description": "Tests for defaults with the setting on and off. Done when tests pass."
+     },
+     {
+      "title": "Test the always-own setting",
+      "area": "testing",
+      "hours": 1,
+      "description": "Toggle the setting and check lists. Done when behaviour is correct."
+     }
+    ]
+   },
+   {
+    "key": "3.10.6",
+    "title": "Starter toolkit",
+    "priority": "Good to have",
+    "seq": 30,
+    "story": "As a beginner, I want a recommended starter toolkit for my plot size and work, so that I know what to buy first.",
+    "acceptance": [
+     "Toolkit is based on plot size and planned work",
+     "Split into essential and nice to have",
+     "I can add the toolkit to 'tools to get' in one tap"
+    ],
+    "depends_on": [
+     "3.10.3"
+    ],
+    "tasks": [
+     {
+      "title": "Starter toolkit rules by plot size and work",
+      "area": "content",
+      "hours": 3,
+      "description": "Define essential and nice-to-have tools by plot size and planned roadmap work. Done when rules are in the knowledge base."
+     },
+     {
+      "title": "Starter toolkit API",
+      "area": "backend",
+      "hours": 3,
+      "description": "Apply the rules to the user's plot and roadmap, excluding owned tools. Done when results are sensible for test plots."
+     },
+     {
+      "title": "Build starter toolkit screen on iOS",
+      "area": "ios",
+      "hours": 3,
+      "description": "Essential and nice-to-have sections with 'add all to tools to get'. Done when working."
+     },
+     {
+      "title": "Test the starter toolkit for the Alentejo plot",
+      "area": "testing",
+      "hours": 1,
+      "description": "Review the recommendation for the real plot. Done when reasonable."
+     }
+    ]
+   },
+   {
+    "key": "3.10.7",
+    "title": "Buy/rent/borrow advice",
+    "priority": "Good to have",
+    "seq": 30,
+    "story": "As a gardener, I want advice on whether to buy, rent or borrow big equipment, so that I don't waste money.",
+    "acceptance": [
+     "Advice considers plot size and how often the tool is needed",
+     "Hidden when 'always own' is on",
+     "Advice explains its reasoning"
+    ],
+    "depends_on": [
+     "3.10.4",
+     "3.10.5"
+    ],
+    "tasks": [
+     {
+      "title": "Buy/rent/borrow rules in the tool catalog",
+      "area": "content",
+      "hours": 2,
+      "description": "Add typical price range and usual acquisition per tool. Done when published."
+     },
+     {
+      "title": "Advice calculation",
+      "area": "backend",
+      "hours": 3,
+      "description": "Rules based on plot size and usage frequency from planned tasks. Done when advice is returned per tool."
+     },
+     {
+      "title": "Show advice on iOS (respecting always-own)",
+      "area": "ios",
+      "hours": 2,
+      "description": "Advice line on big tools, hidden with always-own. Done when correct."
+     },
+     {
+      "title": "Test buy/rent/borrow advice",
+      "area": "testing",
+      "hours": 1,
+      "description": "Check advice for a rototiller and a brush cutter. Done when sensible."
+     }
+    ]
+   },
+   {
+    "key": "3.10.8",
+    "title": "Maintenance reminders",
+    "priority": "Good to have",
+    "seq": 30,
+    "story": "As a gardener, I want tool maintenance reminders, so that my tools last.",
+    "acceptance": [
+     "Maintenance rules per tool (sharpen, clean, store before frost)",
+     "Reminders become tasks",
+     "Seasonal reminders follow the local climate"
+    ],
+    "depends_on": [
+     "3.10.3",
+     "3.9.1"
+    ],
+    "tasks": [
+     {
+      "title": "Maintenance rules in the tool catalog",
+      "area": "content",
+      "hours": 2,
+      "description": "Define maintenance actions and frequency per tool. Done when published."
+     },
+     {
+      "title": "Generate maintenance tasks",
+      "area": "backend",
+      "hours": 3,
+      "description": "Scheduled job creates maintenance tasks for owned tools, with seasonal ones tied to frost dates. Done when tasks appear on schedule."
+     },
+     {
+      "title": "Maintenance task tests",
+      "area": "backend",
+      "hours": 2,
+      "description": "Tests for schedules and duplicates. Done when tests pass."
+     },
+     {
+      "title": "Test maintenance reminders",
+      "area": "testing",
+      "hours": 1,
+      "description": "Check generated tasks for owned tools. Done when correct."
+     }
+    ]
+   },
+   {
+    "key": "3.10.9",
+    "title": "Shop links and affiliates",
+    "priority": "Good to have",
+    "seq": 30,
+    "story": "As a gardener, I want links to buy missing tools, so that getting them is easy (and could generate revenue later).",
+    "acceptance": [
+     "Tools to get can show shop links",
+     "Links are configurable per country",
+     "Affiliate tags can be added without code changes"
+    ],
+    "depends_on": [
+     "3.10.4"
+    ],
+    "tasks": [
+     {
+      "title": "Research shop and affiliate options for Portugal",
+      "area": "design",
+      "hours": 3,
+      "description": "Identify shops and affiliate programmes and their terms. Done when a short recommendation is documented."
+     },
+     {
+      "title": "Shop link model per tool and country",
+      "area": "backend",
+      "hours": 3,
+      "description": "Store links per tool and country with optional affiliate tag. Done when the API returns links."
+     },
+     {
+      "title": "Show shop links on iOS",
+      "area": "ios",
+      "hours": 2,
+      "description": "'Buy' button opening the link in Safari. Done when working."
+     },
+     {
+      "title": "Test shop links",
+      "area": "testing",
+      "hours": 1,
+      "description": "Open links for a few tools. Done when correct."
+     }
+    ]
+   }
+  ]
+ }
+]

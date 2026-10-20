@@ -1,0 +1,1895 @@
+[
+ {
+  "key": "E00",
+  "title": "Foundations",
+  "summary": "The platform everything else builds on: repository, local development, CI, Azure infrastructure, API skeleton, data model, iOS skeleton, sign-in, languages, activity log, knowledge base pipeline, shared services (weather, media, notifications, background worker, AI layer, search) and account deletion and export. Offline sync is a good-to-have feature built on top of a data model designed for it from day one.",
+  "plan_ref": "PLAN.md §2, §4, §5",
+  "features": [
+   {
+    "key": "X.E00.1",
+    "title": "Repository structure and .NET solution",
+    "priority": "MVP",
+    "seq": 1,
+    "story": "As the developer, I want a clean repository layout and .NET solution so that backend, apps, content and infrastructure each have a clear home.",
+    "acceptance": [
+     "Repo has backend/, ios/, android/, content/, infra/, docs/ folders as in PLAN.md §5",
+     ".NET solution builds with Api, Domain, Infrastructure, Worker and test projects",
+     "README explains how to build and run each part",
+     "Code style rules (.editorconfig) are enforced on build"
+    ],
+    "depends_on": [],
+    "tasks": [
+     {
+      "title": "Create repo folder structure and README",
+      "area": "infra",
+      "hours": 2,
+      "description": "Create backend/, ios/, android/, content/, infra/, docs/ with short README files. Done when the layout matches PLAN.md §5."
+     },
+     {
+      "title": "Create .NET solution with Api, Domain, Infrastructure, Worker projects",
+      "area": "backend",
+      "hours": 3,
+      "description": "Scaffold the solution and project references following clean architecture. Done when `dotnet build` succeeds."
+     },
+     {
+      "title": "Add backend test projects (unit and integration)",
+      "area": "backend",
+      "hours": 2,
+      "description": "Add xUnit test projects with one passing sample test each. Done when `dotnet test` passes."
+     },
+     {
+      "title": "Add .editorconfig, analyzers and formatting rules",
+      "area": "backend",
+      "hours": 2,
+      "description": "Enable nullable, warnings as errors for key analyzers, and dotnet format. Done when the build fails on a style violation."
+     },
+     {
+      "title": "Write architecture decision record template and first ADRs",
+      "area": "infra",
+      "hours": 2,
+      "description": "Add docs/adr/ with a template and ADRs for .NET, PostgreSQL, Azure and Claude via Foundry. Done when ADRs are merged."
+     }
+    ]
+   },
+   {
+    "key": "X.E00.2",
+    "title": "Local development environment",
+    "priority": "MVP",
+    "seq": 1,
+    "story": "As the developer, I want to run the whole backend locally at no cost so that I can develop and test without Azure.",
+    "acceptance": [
+     "`docker compose up` starts PostgreSQL with PostGIS and pgvector, and Azurite",
+     "The API connects to the local database and storage with default settings",
+     "Database migrations apply automatically in development",
+     "Seed data gives a sample user, plot and zones"
+    ],
+    "depends_on": [
+     "X.E00.1"
+    ],
+    "tasks": [
+     {
+      "title": "Docker Compose for PostgreSQL with PostGIS and pgvector",
+      "area": "infra",
+      "hours": 3,
+      "description": "Compose service using a PostGIS image with pgvector installed. Done when both extensions can be created."
+     },
+     {
+      "title": "Add Azurite to Docker Compose for local Blob Storage and queues",
+      "area": "infra",
+      "hours": 1,
+      "description": "Done when the API can write a test blob locally."
+     },
+     {
+      "title": "Configure local settings and user secrets for the API",
+      "area": "backend",
+      "hours": 2,
+      "description": "appsettings.Development.json and user-secrets setup documented. Done when a fresh clone runs with documented steps."
+     },
+     {
+      "title": "Auto-apply EF Core migrations and seed sample data in development",
+      "area": "backend",
+      "hours": 3,
+      "description": "Seed a sample user, plot with zones and beds. Done when a fresh database is ready after startup."
+     },
+     {
+      "title": "Test local setup from a clean clone",
+      "area": "testing",
+      "hours": 1,
+      "description": "Follow the README on a clean checkout. Done when everything starts without manual fixes."
+     }
+    ]
+   },
+   {
+    "key": "X.E00.3",
+    "title": "Continuous integration",
+    "priority": "MVP",
+    "seq": 1,
+    "story": "As the developer, I want every push checked automatically so that broken builds are caught early.",
+    "acceptance": [
+     "Backend builds, tests and lints on every push and pull request",
+     "iOS app builds and runs unit tests on a macOS runner",
+     "OpenAPI spec is generated and the Swift client is regenerated and checked for drift",
+     "CI status is visible on pull requests"
+    ],
+    "depends_on": [
+     "X.E00.1",
+     "X.E00.5"
+    ],
+    "tasks": [
+     {
+      "title": "GitHub Actions workflow: backend build, test and format check",
+      "area": "infra",
+      "hours": 3,
+      "description": "Run dotnet build, test and format --verify-no-changes. Done when the workflow is green on master."
+     },
+     {
+      "title": "Run integration tests against PostgreSQL service container in CI",
+      "area": "infra",
+      "hours": 3,
+      "description": "Use a PostGIS service container. Done when integration tests run in CI."
+     },
+     {
+      "title": "GitHub Actions workflow: iOS build and unit tests on macOS",
+      "area": "infra",
+      "hours": 4,
+      "description": "xcodebuild build and test on a simulator. Done when the workflow is green."
+     },
+     {
+      "title": "Generate OpenAPI spec in CI and fail on uncommitted changes",
+      "area": "infra",
+      "hours": 2,
+      "description": "Export the spec at build time and compare to the committed file. Done when drift fails the build."
+     },
+     {
+      "title": "Generate Swift API client from OpenAPI in CI",
+      "area": "infra",
+      "hours": 3,
+      "description": "Use swift-openapi-generator. Done when the iOS build uses the generated client."
+     },
+     {
+      "title": "Add branch protection guidance and PR template",
+      "area": "infra",
+      "hours": 1,
+      "description": "Document required checks and add a pull request template. Done when the template is used on the next PR."
+     }
+    ]
+   },
+   {
+    "key": "X.E00.4",
+    "title": "Azure infrastructure and deployment",
+    "priority": "MVP",
+    "seq": 1,
+    "story": "As the developer, I want the Azure environment defined as code and deployed automatically so that it is reproducible and cheap to run.",
+    "acceptance": [
+     "Bicep templates create Container Apps, PostgreSQL Flexible Server, Blob Storage, Key Vault, Notification Hubs and Application Insights",
+     "Resources use the cheapest tiers that fit (scale to zero, burstable B1ms)",
+     "A GitHub Actions pipeline deploys the API on merge to master",
+     "Secrets live in Key Vault and are accessed with managed identity",
+     "A monthly budget alert is configured"
+    ],
+    "depends_on": [
+     "X.E00.1",
+     "X.E00.3"
+    ],
+    "tasks": [
+     {
+      "title": "Bicep: resource group, Log Analytics and Application Insights",
+      "area": "infra",
+      "hours": 2,
+      "description": "Done when deployed to a dev resource group."
+     },
+     {
+      "title": "Bicep: PostgreSQL Flexible Server B1ms with PostGIS and pgvector enabled",
+      "area": "infra",
+      "hours": 3,
+      "description": "Allow-list extensions and configure firewall. Done when the API can connect."
+     },
+     {
+      "title": "Bicep: Storage account with blob containers and queues",
+      "area": "infra",
+      "hours": 2,
+      "description": "Containers for photos and content packages. Done when deployed."
+     },
+     {
+      "title": "Bicep: Key Vault and managed identity access",
+      "area": "infra",
+      "hours": 2,
+      "description": "Done when the API reads a secret using managed identity."
+     },
+     {
+      "title": "Bicep: Container Apps environment and API app scaling to zero",
+      "area": "infra",
+      "hours": 3,
+      "description": "Consumption plan, min replicas 0. Done when the API responds on its URL."
+     },
+     {
+      "title": "Bicep: Notification Hubs namespace (free tier)",
+      "area": "infra",
+      "hours": 1,
+      "description": "Done when the hub exists and its connection string is in Key Vault."
+     },
+     {
+      "title": "Configure Azure budget alert for monthly cost",
+      "area": "infra",
+      "hours": 1,
+      "description": "Alert at €10 and €25. Done when a test alert email arrives."
+     },
+     {
+      "title": "GitHub Actions deployment pipeline with OIDC to Azure",
+      "area": "infra",
+      "hours": 4,
+      "description": "Build container image, push to registry, deploy revision. Done when a merge deploys automatically."
+     },
+     {
+      "title": "Run database migrations as part of deployment",
+      "area": "infra",
+      "hours": 2,
+      "description": "Migration job before the new revision goes live. Done when a schema change deploys cleanly."
+     },
+     {
+      "title": "Test end-to-end deployment and cold start",
+      "area": "testing",
+      "hours": 2,
+      "description": "Deploy, wait for scale to zero, call the API and measure the first response. Done when it works and timing is noted."
+     }
+    ]
+   },
+   {
+    "key": "X.E00.5",
+    "title": "API skeleton",
+    "priority": "MVP",
+    "seq": 1,
+    "story": "As the developer, I want a consistent API foundation so that every feature's endpoints behave the same way.",
+    "acceptance": [
+     "ASP.NET Core API with EF Core, Npgsql and NetTopologySuite configured",
+     "OpenAPI document generated with versioned routes (v1)",
+     "Consistent error responses (problem details) and validation",
+     "Health check endpoint and structured logging to Application Insights"
+    ],
+    "depends_on": [
+     "X.E00.1",
+     "X.E00.2"
+    ],
+    "tasks": [
+     {
+      "title": "Configure EF Core with Npgsql and NetTopologySuite",
+      "area": "backend",
+      "hours": 3,
+      "description": "DbContext with spatial support. Done when a geometry column round-trips in a test."
+     },
+     {
+      "title": "Set up OpenAPI generation and API versioning",
+      "area": "backend",
+      "hours": 2,
+      "description": "Routes under /v1. Done when the spec is generated with version info."
+     },
+     {
+      "title": "Add problem-details error handling and request validation",
+      "area": "backend",
+      "hours": 3,
+      "description": "Global exception handler and FluentValidation or equivalent. Done when invalid input returns a 400 problem response."
+     },
+     {
+      "title": "Add health checks and structured logging",
+      "area": "backend",
+      "hours": 2,
+      "description": "Database and storage health checks, Serilog or built-in logging to App Insights. Done when /health reports dependencies."
+     },
+     {
+      "title": "Add rate limiting and CORS policy defaults",
+      "area": "backend",
+      "hours": 1,
+      "description": "Done when a burst of requests is throttled in a test."
+     },
+     {
+      "title": "Write API conventions document",
+      "area": "backend",
+      "hours": 1,
+      "description": "Naming, pagination, dates (UTC), units. Done when docs/api-conventions.md exists."
+     }
+    ]
+   },
+   {
+    "key": "X.E00.6",
+    "title": "Core data model ready for offline sync",
+    "priority": "MVP",
+    "seq": 1,
+    "story": "As the developer, I want every record to have a client-generated ID and a server version so that offline sync can be added later without migrating data.",
+    "acceptance": [
+     "All entities use UUIDs that the client can generate",
+     "Every editable record has a server version number and updated timestamp",
+     "Deletes are soft deletes",
+     "Every record belongs to a user (multi-user from day one)",
+     "A base entity and conventions are reused by all features"
+    ],
+    "depends_on": [
+     "X.E00.5"
+    ],
+    "tasks": [
+     {
+      "title": "Create base entity with UUID, owner, version, timestamps and soft delete",
+      "area": "backend",
+      "hours": 3,
+      "description": "Shared base class and EF configuration. Done when a sample entity uses it."
+     },
+     {
+      "title": "Implement automatic server version increment on save",
+      "area": "backend",
+      "hours": 2,
+      "description": "Monotonic version via sequence or row version. Done when updates bump the version in a test."
+     },
+     {
+      "title": "Add global query filters for soft delete and owner scoping",
+      "area": "backend",
+      "hours": 3,
+      "description": "Users can only see their own records. Done when a cross-user test fails to read data."
+     },
+     {
+      "title": "Create plot, zone and bed base entities with PostGIS geometry",
+      "area": "backend",
+      "hours": 3,
+      "description": "Plot as its own entity to allow several plots later. Done when migrations apply."
+     },
+     {
+      "title": "Write integration tests for ownership isolation",
+      "area": "testing",
+      "hours": 2,
+      "description": "Two users, verify no data leaks. Done when tests pass in CI."
+     }
+    ]
+   },
+   {
+    "key": "X.E00.7",
+    "title": "iOS app skeleton",
+    "priority": "MVP",
+    "seq": 1,
+    "story": "As the developer, I want a solid iOS foundation so that every feature screen is built the same way.",
+    "acceptance": [
+     "SwiftUI app with tab navigation and a basic design system (colours, typography, components)",
+     "Generated API client wired in with authentication headers",
+     "Supports Dynamic Type and dark mode from the start",
+     "App runs on a real iPhone via TestFlight internal testing"
+    ],
+    "depends_on": [
+     "X.E00.1",
+     "X.E00.3"
+    ],
+    "tasks": [
+     {
+      "title": "Create SwiftUI project with app structure and tab navigation",
+      "area": "ios",
+      "hours": 3,
+      "description": "Today, Garden, Calendar, Journal and More tabs as placeholders. Done when it runs on the simulator."
+     },
+     {
+      "title": "Build design system: colours, typography, spacing and core components",
+      "area": "design",
+      "hours": 4,
+      "description": "Buttons, cards, list rows, empty states, with light and dark mode. Done when a component gallery screen shows them."
+     },
+     {
+      "title": "Wire generated API client with environment configuration",
+      "area": "ios",
+      "hours": 3,
+      "description": "Dev and production base URLs. Done when the app calls /health."
+     },
+     {
+      "title": "Set up local persistence layer (SwiftData) for caching",
+      "area": "ios",
+      "hours": 3,
+      "description": "Cache-ready repository pattern so offline sync can plug in later. Done when a sample entity is cached."
+     },
+     {
+      "title": "Set up App Store Connect app record and TestFlight",
+      "area": "infra",
+      "hours": 2,
+      "description": "Bundle ID, signing, internal testers. Done when a build is installable from TestFlight."
+     },
+     {
+      "title": "Add iOS unit and UI test targets with sample tests",
+      "area": "ios",
+      "hours": 2,
+      "description": "Done when tests run locally and in CI."
+     },
+     {
+      "title": "Test the skeleton on a real iPhone",
+      "area": "testing",
+      "hours": 1,
+      "description": "Install via TestFlight and check navigation and dark mode. Done when verified."
+     }
+    ]
+   },
+   {
+    "key": "X.E00.8",
+    "title": "Knowledge base schema for crops and tools",
+    "priority": "MVP",
+    "seq": 3,
+    "story": "As the developer, I want a well-defined structure for crop and tool data so that the calendar, planner, guides and tools features share one source.",
+    "acceptance": [
+     "Crop schema covers temperature thresholds, frost and heat tolerance, days to maturity, rotation family, spacing, watering guidance by season, varieties and day length",
+     "Tool schema covers name, purpose, reference image, typical price range and usually rented or bought",
+     "All text fields are translatable (pt-PT and en)",
+     "Schemas are validated by the content pipeline"
+    ],
+    "depends_on": [
+     "X.E00.6"
+    ],
+    "tasks": [
+     {
+      "title": "Define crop YAML schema with JSON Schema validation",
+      "area": "content",
+      "hours": 3,
+      "description": "Document every field with units. Done when a sample crop validates."
+     },
+     {
+      "title": "Define tool YAML schema with JSON Schema validation",
+      "area": "content",
+      "hours": 2,
+      "description": "Include image reference. Done when a sample tool validates."
+     },
+     {
+      "title": "Create database tables and EF models for crops, varieties and tools",
+      "area": "backend",
+      "hours": 3,
+      "description": "Read-only reference data, versioned. Done when migrations apply."
+     },
+     {
+      "title": "Add API endpoints to read crops and tools with language selection",
+      "area": "backend",
+      "hours": 3,
+      "description": "Accept-Language aware. Done when the endpoint returns pt-PT and en text."
+     },
+     {
+      "title": "Write two sample crops and three sample tools to prove the schema",
+      "area": "content",
+      "hours": 2,
+      "description": "Tomato, broad bean; hoe, spade, wheelbarrow. Done when they validate and load."
+     }
+    ]
+   },
+   {
+    "key": "X.E00.9",
+    "title": "Weather data service",
+    "priority": "MVP",
+    "seq": 3,
+    "story": "As a user, I want accurate local weather and climate data for my plot so that the calendar and alerts fit my location.",
+    "acceptance": [
+     "Fetches forecast and 30-year historical climate from Open-Meteo for a plot's location",
+     "Historical climate is fetched once per plot and cached",
+     "Forecast is refreshed several times a day and cached per location",
+     "Failures are retried and logged without breaking the app"
+    ],
+    "depends_on": [
+     "X.E00.5",
+     "X.E00.10"
+    ],
+    "tasks": [
+     {
+      "title": "Build Open-Meteo client for forecast data",
+      "area": "backend",
+      "hours": 3,
+      "description": "Typed client with retries and timeouts. Done when a forecast for Alentejo is returned in a test."
+     },
+     {
+      "title": "Build Open-Meteo client for historical climate data",
+      "area": "backend",
+      "hours": 3,
+      "description": "Daily temperature and precipitation history. Done when 30 years are fetched."
+     },
+     {
+      "title": "Compute and store climate normals per plot",
+      "area": "backend",
+      "hours": 4,
+      "description": "Daily mean, min and max temperature normals and frost probabilities. Done when stored for the sample plot."
+     },
+     {
+      "title": "Cache forecasts per location and schedule refresh",
+      "area": "backend",
+      "hours": 3,
+      "description": "Round location to avoid duplicate calls. Done when the worker refreshes on schedule."
+     },
+     {
+      "title": "Expose weather and climate endpoints for the app",
+      "area": "backend",
+      "hours": 2,
+      "description": "Done when the iOS client can read a 7-day forecast."
+     },
+     {
+      "title": "Write tests for normals calculation",
+      "area": "testing",
+      "hours": 2,
+      "description": "Use recorded data fixtures. Done when tests pass."
+     }
+    ]
+   },
+   {
+    "key": "X.E00.10",
+    "title": "Background worker and scheduler",
+    "priority": "MVP",
+    "seq": 4,
+    "story": "As the developer, I want a background worker so that scheduled jobs and queued work run without blocking the API.",
+    "acceptance": [
+     "Worker runs as Container Apps Jobs (scheduled and queue-triggered)",
+     "Queue messages are processed with retries and a poison queue",
+     "Scheduled jobs (daily roadmap check, forecast refresh, reminders) are registered in one place",
+     "Job runs are logged with duration and outcome"
+    ],
+    "depends_on": [
+     "X.E00.4",
+     "X.E00.5"
+    ],
+    "tasks": [
+     {
+      "title": "Create Worker project with queue processing",
+      "area": "backend",
+      "hours": 3,
+      "description": "Azure Storage Queues with retries and poison handling. Done when a test message is processed."
+     },
+     {
+      "title": "Add scheduled job framework with cron definitions",
+      "area": "backend",
+      "hours": 3,
+      "description": "Single registry of jobs. Done when a sample daily job runs locally."
+     },
+     {
+      "title": "Bicep: Container Apps Jobs for scheduled and event-driven runs",
+      "area": "infra",
+      "hours": 3,
+      "description": "Scale-to-zero jobs. Done when deployed and a job runs in Azure."
+     },
+     {
+      "title": "Add job run logging and failure alerts",
+      "area": "backend",
+      "hours": 2,
+      "description": "Done when a failing job sends an alert."
+     },
+     {
+      "title": "Test worker end-to-end in Azure",
+      "area": "testing",
+      "hours": 1,
+      "description": "Enqueue a message and confirm processing. Done when verified."
+     }
+    ]
+   },
+   {
+    "key": "X.E00.11",
+    "title": "Media and photo upload service",
+    "priority": "MVP",
+    "seq": 5,
+    "story": "As a user, I want my photos to upload quickly and privately so that the journal and AI features can use them.",
+    "acceptance": [
+     "The API issues short-lived SAS upload URLs per photo",
+     "The phone uploads directly to Blob Storage",
+     "GPS data is stripped from photos before storage",
+     "Thumbnails are generated in the background",
+     "Photos are only readable by their owner (short-lived read URLs)"
+    ],
+    "depends_on": [
+     "X.E00.4",
+     "X.E00.10"
+    ],
+    "tasks": [
+     {
+      "title": "Create photo entity and SAS upload URL endpoint",
+      "area": "backend",
+      "hours": 3,
+      "description": "Done when the app can request an upload URL."
+     },
+     {
+      "title": "Strip EXIF GPS data on the device before upload",
+      "area": "ios",
+      "hours": 2,
+      "description": "Remove location metadata from JPEG and HEIC. Done when an uploaded photo has no GPS data."
+     },
+     {
+      "title": "Confirm upload and enqueue thumbnail job",
+      "area": "backend",
+      "hours": 2,
+      "description": "Done when a completed upload creates a queue message."
+     },
+     {
+      "title": "Generate thumbnails in the worker",
+      "area": "backend",
+      "hours": 3,
+      "description": "ImageSharp or similar, two sizes. Done when thumbnails appear in storage."
+     },
+     {
+      "title": "Serve photos via short-lived read URLs",
+      "area": "backend",
+      "hours": 2,
+      "description": "Done when another user cannot read the photo."
+     },
+     {
+      "title": "iOS photo picker and camera capture component",
+      "area": "ios",
+      "hours": 4,
+      "description": "Reusable component with upload progress and retry. Done when used in a sample screen."
+     },
+     {
+      "title": "Test photo upload on iPhone over mobile data",
+      "area": "testing",
+      "hours": 1,
+      "description": "Done when upload works and GPS is stripped."
+     }
+    ]
+   },
+   {
+    "key": "X.E00.12",
+    "title": "Push notification infrastructure",
+    "priority": "MVP",
+    "seq": 5,
+    "story": "As a user, I want to receive timely notifications so that I don't miss reminders and weather alerts.",
+    "acceptance": [
+     "Devices register with Azure Notification Hubs via APNs",
+     "The backend can send a notification to one user's devices",
+     "Notifications respect language and quiet hours settings",
+     "Tapping a notification opens the related screen (deep link)"
+    ],
+    "depends_on": [
+     "X.E00.4",
+     "X.E00.7"
+    ],
+    "tasks": [
+     {
+      "title": "Configure APNs key and Notification Hubs credentials",
+      "area": "infra",
+      "hours": 2,
+      "description": "Done when a test push arrives on a device."
+     },
+     {
+      "title": "Device registration endpoint and iOS registration flow",
+      "area": "backend",
+      "hours": 3,
+      "description": "Register and refresh installations per user. Done when a device is listed."
+     },
+     {
+      "title": "iOS notification permission prompt and handling",
+      "area": "ios",
+      "hours": 3,
+      "description": "Ask at a meaningful moment, handle denial. Done when permission flow works."
+     },
+     {
+      "title": "Notification sending service with templates in pt-PT and en",
+      "area": "backend",
+      "hours": 3,
+      "description": "Done when a localized test notification is sent."
+     },
+     {
+      "title": "Deep links from notifications into app screens",
+      "area": "ios",
+      "hours": 3,
+      "description": "Done when tapping opens the right task or alert."
+     },
+     {
+      "title": "Test push notifications on iPhone",
+      "area": "testing",
+      "hours": 1,
+      "description": "Done when foreground, background and tap behaviours work."
+     }
+    ]
+   },
+   {
+    "key": "X.E00.13",
+    "title": "AI layer core",
+    "priority": "MVP",
+    "seq": 9,
+    "story": "As the developer, I want one AI layer for all AI features so that prompts, costs, limits and model choice are managed in one place.",
+    "acceptance": [
+     "IAiService calls Claude via Microsoft Foundry with structured (JSON) outputs",
+     "Context assembly helpers add garden, weather and knowledge-base data",
+     "Usage limits per user and plan tier, and cost logged per request",
+     "Model can be swapped by configuration (cheap vs strong model routing)",
+     "An evaluation harness re-runs a test set when prompts or models change"
+    ],
+    "depends_on": [
+     "X.E00.4",
+     "X.E00.5"
+    ],
+    "tasks": [
+     {
+      "title": "Provision Claude deployment in Microsoft Foundry and store keys",
+      "area": "infra",
+      "hours": 2,
+      "description": "Verify available models and pricing. Done when a test call succeeds."
+     },
+     {
+      "title": "Implement IAiService abstraction with Foundry Claude provider",
+      "area": "backend",
+      "hours": 4,
+      "description": "Text and image inputs, structured JSON output parsing. Done when a sample prompt returns typed results."
+     },
+     {
+      "title": "Add prompt templates with versioning",
+      "area": "backend",
+      "hours": 3,
+      "description": "Prompts stored as files with version IDs recorded on each call. Done when the version is logged."
+     },
+     {
+      "title": "Add context assembly helpers",
+      "area": "backend",
+      "hours": 3,
+      "description": "Garden, zone, plantings, weather and language. Done when a helper builds context for a sample plot."
+     },
+     {
+      "title": "Implement usage limits per user and plan tier",
+      "area": "backend",
+      "hours": 3,
+      "description": "Daily and monthly limits, owner unlimited in config. Done when exceeding the limit returns a clear error."
+     },
+     {
+      "title": "Log cost, tokens, model and latency per AI request",
+      "area": "backend",
+      "hours": 2,
+      "description": "Done when a cost report query works."
+     },
+     {
+      "title": "Implement model routing (cheap vs strong) by task type",
+      "area": "backend",
+      "hours": 2,
+      "description": "Done when routing is configurable per task."
+     },
+     {
+      "title": "Add prompt caching for repeated context",
+      "area": "backend",
+      "hours": 2,
+      "description": "Done when cache hits appear in logs."
+     },
+     {
+      "title": "Build evaluation harness for AI test sets",
+      "area": "backend",
+      "hours": 4,
+      "description": "Run a set of inputs with expected outputs and report a score. Done when it runs from the command line and in CI on demand."
+     },
+     {
+      "title": "Test AI layer with real photos from the plot",
+      "area": "testing",
+      "hours": 2,
+      "description": "Done when typed results come back for five photos."
+     }
+    ]
+   },
+   {
+    "key": "X.E00.14",
+    "title": "Embeddings and hybrid knowledge search",
+    "priority": "MVP",
+    "seq": 9,
+    "story": "As a user, I want the AI to find the right guide and crop information so that its answers are grounded in trusted content.",
+    "acceptance": [
+     "Content chunks are embedded with text-embedding-3-small when published",
+     "Embeddings are stored in pgvector with an index",
+     "Hybrid search combines vector similarity with PostgreSQL full-text search (pt and en)",
+     "Search returns cited sources for the AI to show"
+    ],
+    "depends_on": [
+     "0.5",
+     "X.E00.13"
+    ],
+    "tasks": [
+     {
+      "title": "Provision text-embedding-3-small deployment",
+      "area": "infra",
+      "hours": 1,
+      "description": "Done when a test embedding is returned."
+     },
+     {
+      "title": "Chunk published content and generate embeddings in the pipeline",
+      "area": "backend",
+      "hours": 4,
+      "description": "Only re-embed changed content. Done when chunks and vectors are stored."
+     },
+     {
+      "title": "Create pgvector index and full-text indexes for pt and en",
+      "area": "backend",
+      "hours": 2,
+      "description": "Done when queries use the indexes."
+     },
+     {
+      "title": "Implement hybrid search with rank fusion",
+      "area": "backend",
+      "hours": 4,
+      "description": "Combine vector and keyword results. Done when search returns relevant chunks with sources."
+     },
+     {
+      "title": "Write retrieval quality tests with sample questions",
+      "area": "testing",
+      "hours": 2,
+      "description": "Ten questions with expected guides. Done when at least 8 of 10 are found."
+     }
+    ]
+   },
+   {
+    "key": "0.1",
+    "title": "Sign-in and accounts",
+    "priority": "MVP",
+    "seq": 1,
+    "story": "As a user, I want to sign in securely with email, Apple or Google so that my garden data is mine and available on my devices.",
+    "acceptance": [
+     "Sign in with email, Sign in with Apple and Google through Entra External ID",
+     "The API validates tokens and creates a user profile on first sign-in",
+     "Sign-out and token refresh work on iOS",
+     "Each user has a plan tier field (free or premium) for future limits"
+    ],
+    "depends_on": [
+     "X.E00.5",
+     "X.E00.7"
+    ],
+    "tasks": [
+     {
+      "title": "Create Entra External ID tenant and app registrations",
+      "area": "infra",
+      "hours": 3,
+      "description": "API and iOS app registrations with scopes. Done when tokens can be issued."
+     },
+     {
+      "title": "Configure Sign in with Apple and Google identity providers",
+      "area": "infra",
+      "hours": 3,
+      "description": "Done when both providers appear on the sign-in page."
+     },
+     {
+      "title": "Validate JWT tokens in the API and map users",
+      "area": "backend",
+      "hours": 3,
+      "description": "Done when an authenticated request reaches a protected endpoint."
+     },
+     {
+      "title": "Create user profile on first sign-in with plan tier",
+      "area": "backend",
+      "hours": 2,
+      "description": "Done when a new user gets a profile with tier 'free'."
+     },
+     {
+      "title": "Integrate MSAL sign-in, sign-out and token refresh in iOS",
+      "area": "ios",
+      "hours": 4,
+      "description": "Done when the app signs in and calls the API."
+     },
+     {
+      "title": "Build welcome and sign-in screens",
+      "area": "ios",
+      "hours": 3,
+      "description": "Branded, localized screens. Done when the flow looks finished."
+     },
+     {
+      "title": "Test sign-in with all three providers on iPhone",
+      "area": "testing",
+      "hours": 2,
+      "description": "Done when email, Apple and Google all work."
+     }
+    ]
+   },
+   {
+    "key": "0.2",
+    "title": "Portuguese and English",
+    "priority": "MVP",
+    "seq": 1,
+    "story": "As a user, I want the whole app in Portuguese or English so that I can use it in my own language.",
+    "acceptance": [
+     "iOS app uses String Catalogs with pt-PT and en",
+     "The API returns localized text based on Accept-Language and the user's setting",
+     "Dates, numbers and units follow the selected locale",
+     "Missing translations fail the build or are reported"
+    ],
+    "depends_on": [
+     "X.E00.5",
+     "X.E00.7"
+    ],
+    "tasks": [
+     {
+      "title": "Set up String Catalogs for pt-PT and en in iOS",
+      "area": "ios",
+      "hours": 2,
+      "description": "Done when a sample screen switches language."
+     },
+     {
+      "title": "Add backend localization with resource files",
+      "area": "backend",
+      "hours": 3,
+      "description": "Accept-Language plus user preference. Done when an error message is localized."
+     },
+     {
+      "title": "Add translatable text model for content and reference data",
+      "area": "backend",
+      "hours": 2,
+      "description": "Pattern for pt-PT and en fields. Done when used by crops."
+     },
+     {
+      "title": "Add missing-translation check in CI",
+      "area": "infra",
+      "hours": 2,
+      "description": "Done when a missing string fails the check."
+     },
+     {
+      "title": "Test the app in both languages",
+      "area": "testing",
+      "hours": 1,
+      "description": "Done when screens look right in pt-PT and en."
+     }
+    ]
+   },
+   {
+    "key": "0.4",
+    "title": "Activity log",
+    "priority": "MVP",
+    "seq": 1,
+    "story": "As a user, I want everything I do in my garden recorded permanently so that the roadmap, journal and AI can learn from my history.",
+    "acceptance": [
+     "Activity entries are append-only (never edited or overwritten)",
+     "Each entry has a type, timestamp, zone/bed/planting links and payload",
+     "Zone state views are rebuilt from the log",
+     "Entries record which content version and AI model produced any recommendation they relate to"
+    ],
+    "depends_on": [
+     "X.E00.6"
+    ],
+    "tasks": [
+     {
+      "title": "Design activity log schema and entry types",
+      "area": "backend",
+      "hours": 3,
+      "description": "Typed payloads with versioning. Done when documented in docs/."
+     },
+     {
+      "title": "Implement append-only activity log storage",
+      "area": "backend",
+      "hours": 3,
+      "description": "No update or delete paths except account deletion. Done when tests prove entries can't be edited."
+     },
+     {
+      "title": "Implement zone state projection from the log",
+      "area": "backend",
+      "hours": 4,
+      "description": "Current state per zone rebuilt from entries. Done when a sample sequence produces the expected state."
+     },
+     {
+      "title": "Publish domain events when entries are added",
+      "area": "backend",
+      "hours": 2,
+      "description": "So the roadmap engine can recalculate. Done when a subscriber receives events."
+     },
+     {
+      "title": "Add traceability fields (content version, model, prompt version)",
+      "area": "backend",
+      "hours": 2,
+      "description": "Done when recommendations store them."
+     },
+     {
+      "title": "Write tests for projections and event ordering",
+      "area": "testing",
+      "hours": 2,
+      "description": "Done when tests pass in CI."
+     }
+    ]
+   },
+   {
+    "key": "0.5",
+    "title": "Knowledge base pipeline",
+    "priority": "MVP",
+    "seq": 3,
+    "story": "As the owner, I want crops, guides and tools kept in git and published automatically so that content is versioned, reviewed and available in the app.",
+    "acceptance": [
+     "Content lives in content/ as YAML and Markdown in pt-PT and en",
+     "A pipeline validates content against the schemas on every pull request",
+     "Merged content is published to the database and Blob Storage with a version number",
+     "Each item has sources and a 'last reviewed' date"
+    ],
+    "depends_on": [
+     "X.E00.8",
+     "X.E00.4"
+    ],
+    "tasks": [
+     {
+      "title": "Create content folder structure and authoring guide",
+      "area": "content",
+      "hours": 2,
+      "description": "content/crops, content/tools, content/guides with a how-to. Done when documented."
+     },
+     {
+      "title": "Build content validator (schemas, required translations, sources)",
+      "area": "backend",
+      "hours": 4,
+      "description": "CLI tool used in CI. Done when invalid content fails."
+     },
+     {
+      "title": "Build content publisher to database and Blob Storage",
+      "area": "backend",
+      "hours": 4,
+      "description": "Versioned publish with change detection. Done when publishing updates the API."
+     },
+     {
+      "title": "GitHub Actions workflow to validate on PR and publish on merge",
+      "area": "infra",
+      "hours": 2,
+      "description": "Done when a merged change appears in the app."
+     },
+     {
+      "title": "Expose content version in the API and app",
+      "area": "backend",
+      "hours": 1,
+      "description": "Done when the app shows the content version in settings."
+     },
+     {
+      "title": "Test the full content flow with a sample change",
+      "area": "testing",
+      "hours": 1,
+      "description": "Done when an edited crop appears in the app."
+     }
+    ]
+   },
+   {
+    "key": "0.6",
+    "title": "Account deletion and data export",
+    "priority": "MVP",
+    "seq": 1,
+    "story": "As a user, I want to delete my account or export my data so that I stay in control, as app stores require.",
+    "acceptance": [
+     "Users can request account deletion from settings, with confirmation",
+     "Deletion removes all user data, including photos and activity log entries",
+     "Users can export their data as a downloadable archive (JSON plus photos)",
+     "Deletion and export are logged for audit"
+    ],
+    "depends_on": [
+     "0.1",
+     "X.E00.6"
+    ],
+    "tasks": [
+     {
+      "title": "Implement account deletion endpoint and background purge",
+      "area": "backend",
+      "hours": 4,
+      "description": "Delete database rows, blobs and Entra user. Done when nothing remains for the user."
+     },
+     {
+      "title": "Implement data export job producing a downloadable archive",
+      "area": "backend",
+      "hours": 4,
+      "description": "JSON plus photos in a zip with a short-lived link. Done when the archive downloads."
+     },
+     {
+      "title": "iOS settings screens for delete account and export data",
+      "area": "ios",
+      "hours": 3,
+      "description": "Confirmation and progress states. Done when both flows work."
+     },
+     {
+      "title": "Test deletion and export with a test account",
+      "area": "testing",
+      "hours": 1,
+      "description": "Done when verified that data is gone and the export is complete."
+     }
+    ]
+   },
+   {
+    "key": "0.3",
+    "title": "Offline sync",
+    "priority": "Good to have",
+    "seq": 21,
+    "story": "As a user, I want to use the journal, tasks, tools, map and calendar without signal and have them sync later so that I can work in the field.",
+    "acceptance": [
+     "Push and pull sync endpoints with a since-token",
+     "Activity log entries sync without conflicts",
+     "Conflicting edits on editable records are shown side by side for the user to resolve",
+     "Unresolved conflicts show as a badge on the 'Today' screen",
+     "Every resolution is logged"
+    ],
+    "depends_on": [
+     "X.E00.6",
+     "0.4"
+    ],
+    "tasks": [
+     {
+      "title": "Design sync protocol and document it",
+      "area": "backend",
+      "hours": 3,
+      "description": "Push/pull, tokens, conflict detection. Done when documented."
+     },
+     {
+      "title": "Implement GET /sync/pull with since-token",
+      "area": "backend",
+      "hours": 4,
+      "description": "Return changes and deletions since the token. Done when tested."
+     },
+     {
+      "title": "Implement POST /sync/push with version conflict detection",
+      "area": "backend",
+      "hours": 4,
+      "description": "Return both versions on conflict. Done when tested."
+     },
+     {
+      "title": "Log conflict resolutions",
+      "area": "backend",
+      "hours": 2,
+      "description": "Done when resolutions are queryable."
+     },
+     {
+      "title": "iOS local store as source of truth with change tracking",
+      "area": "ios",
+      "hours": 6,
+      "description": "SwiftData with pending changes queue. Done when edits work offline."
+     },
+     {
+      "title": "iOS sync engine (background and on reconnect)",
+      "area": "ios",
+      "hours": 6,
+      "description": "Done when changes sync after reconnecting."
+     },
+     {
+      "title": "iOS conflict resolution screen (side by side, field by field)",
+      "area": "ios",
+      "hours": 5,
+      "description": "Done when a conflict can be resolved."
+     },
+     {
+      "title": "Conflict badge on the 'Today' screen",
+      "area": "ios",
+      "hours": 2,
+      "description": "Done when unresolved conflicts show a badge."
+     },
+     {
+      "title": "Write sync integration tests including conflicts",
+      "area": "testing",
+      "hours": 3,
+      "description": "Done when tests pass."
+     },
+     {
+      "title": "Test offline use at the plot with airplane mode",
+      "area": "testing",
+      "hours": 2,
+      "description": "Done when a full offline session syncs cleanly."
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "key": "E01",
+  "title": "Android app",
+  "summary": "The native Android app (Kotlin, Jetpack Compose), built after the iOS MVP is stable: an Android skeleton, then a port of each MVP area, then the good-to-have features to reach parity.",
+  "plan_ref": "PLAN.md §2",
+  "features": [
+   {
+    "key": "0.7",
+    "title": "Android app",
+    "priority": "Good to have",
+    "seq": 20,
+    "story": "As an Android user, I want a native Android app so that I can use Gardening Companion on my phone.",
+    "acceptance": [
+     "Kotlin and Jetpack Compose app with navigation and design system matching iOS",
+     "Architecture ready for Room-based offline storage",
+     "MSAL sign-in and generated Kotlin API client",
+     "pt-PT and en resources",
+     "CI builds and tests the Android app"
+    ],
+    "depends_on": [
+     "0.1",
+     "0.2",
+     "X.E00.3"
+    ],
+    "tasks": [
+     {
+      "title": "Create Android project (Kotlin, Compose, navigation)",
+      "area": "android",
+      "hours": 4,
+      "description": "Done when it runs on an emulator."
+     },
+     {
+      "title": "Port design system to Compose",
+      "area": "android",
+      "hours": 4,
+      "description": "Colours, typography, components, dark mode. Done when the component gallery matches iOS."
+     },
+     {
+      "title": "Set up Room-ready data layer and repositories",
+      "area": "android",
+      "hours": 3,
+      "description": "Done when a sample entity is cached."
+     },
+     {
+      "title": "Generate Kotlin API client from OpenAPI",
+      "area": "android",
+      "hours": 3,
+      "description": "Done when the app calls /health."
+     },
+     {
+      "title": "Integrate MSAL sign-in for Android",
+      "area": "android",
+      "hours": 4,
+      "description": "Done when sign-in with all providers works."
+     },
+     {
+      "title": "Set up pt-PT and en string resources",
+      "area": "android",
+      "hours": 2,
+      "description": "Done when the app switches language."
+     },
+     {
+      "title": "Add Android build and test to CI",
+      "area": "infra",
+      "hours": 3,
+      "description": "Done when CI is green."
+     },
+     {
+      "title": "Set up Google Play Console internal testing",
+      "area": "infra",
+      "hours": 2,
+      "description": "Done when a build installs from internal testing."
+     },
+     {
+      "title": "Test the skeleton on an Android phone",
+      "area": "testing",
+      "hours": 1,
+      "description": "Done when verified."
+     }
+    ]
+   },
+   {
+    "key": "X.E01.1",
+    "title": "Port Plot mapping to Android",
+    "priority": "Good to have",
+    "seq": 20,
+    "story": "As an Android user, I want plot mapping on Android so that I have the same experience as on iPhone.",
+    "acceptance": [
+     "All MVP behaviour of plot mapping works on Android",
+     "Uses the same backend endpoints as iOS",
+     "Text in pt-PT and en",
+     "Follows Android design conventions where they differ from iOS"
+    ],
+    "depends_on": [
+     "0.7"
+    ],
+    "tasks": [
+     {
+      "title": "Port satellite map and plot boundary drawing (Google Maps SDK)",
+      "area": "android",
+      "hours": 4,
+      "description": "Reimplement the iOS behaviour in Compose using the shared API. Done when it matches the iOS acceptance criteria for plot mapping."
+     },
+     {
+      "title": "Port zones and beds drawing and exact dimensions",
+      "area": "android",
+      "hours": 4,
+      "description": "Reimplement the iOS behaviour in Compose using the shared API. Done when it matches the iOS acceptance criteria for plot mapping."
+     },
+     {
+      "title": "Port points of interest",
+      "area": "android",
+      "hours": 4,
+      "description": "Reimplement the iOS behaviour in Compose using the shared API. Done when it matches the iOS acceptance criteria for plot mapping."
+     },
+     {
+      "title": "Port layout designer",
+      "area": "android",
+      "hours": 4,
+      "description": "Reimplement the iOS behaviour in Compose using the shared API. Done when it matches the iOS acceptance criteria for plot mapping."
+     },
+     {
+      "title": "Test plot mapping on an Android phone",
+      "area": "testing",
+      "hours": 2,
+      "description": "Run the iOS acceptance checks for plot mapping on Android. Done when all pass."
+     }
+    ]
+   },
+   {
+    "key": "X.E01.2",
+    "title": "Port Crops and planting calendar to Android",
+    "priority": "Good to have",
+    "seq": 20,
+    "story": "As an Android user, I want crops and planting calendar on Android so that I have the same experience as on iPhone.",
+    "acceptance": [
+     "All MVP behaviour of crops and planting calendar works on Android",
+     "Uses the same backend endpoints as iOS",
+     "Text in pt-PT and en",
+     "Follows Android design conventions where they differ from iOS"
+    ],
+    "depends_on": [
+     "0.7"
+    ],
+    "tasks": [
+     {
+      "title": "Port choosing crops and ranked suggestions",
+      "area": "android",
+      "hours": 3,
+      "description": "Reimplement the iOS behaviour in Compose using the shared API. Done when it matches the iOS acceptance criteria for crops and planting calendar."
+     },
+     {
+      "title": "Port calendar month view and 'This week' list",
+      "area": "android",
+      "hours": 3,
+      "description": "Reimplement the iOS behaviour in Compose using the shared API. Done when it matches the iOS acceptance criteria for crops and planting calendar."
+     },
+     {
+      "title": "Port poor-fit warnings and day length suggestions",
+      "area": "android",
+      "hours": 3,
+      "description": "Reimplement the iOS behaviour in Compose using the shared API. Done when it matches the iOS acceptance criteria for crops and planting calendar."
+     },
+     {
+      "title": "Test crops and planting calendar on an Android phone",
+      "area": "testing",
+      "hours": 2,
+      "description": "Run the iOS acceptance checks for crops and planting calendar on Android. Done when all pass."
+     }
+    ]
+   },
+   {
+    "key": "X.E01.3",
+    "title": "Port Roadmap, 'Today' screen and first-run setup to Android",
+    "priority": "Good to have",
+    "seq": 20,
+    "story": "As an Android user, I want roadmap, 'today' screen and first-run setup on Android so that I have the same experience as on iPhone.",
+    "acceptance": [
+     "All MVP behaviour of roadmap, 'today' screen and first-run setup works on Android",
+     "Uses the same backend endpoints as iOS",
+     "Text in pt-PT and en",
+     "Follows Android design conventions where they differ from iOS"
+    ],
+    "depends_on": [
+     "0.7"
+    ],
+    "tasks": [
+     {
+      "title": "Port first-run setup flow",
+      "area": "android",
+      "hours": 4,
+      "description": "Reimplement the iOS behaviour in Compose using the shared API. Done when it matches the iOS acceptance criteria for roadmap, 'today' screen and first-run setup."
+     },
+     {
+      "title": "Port 'Today' screen",
+      "area": "android",
+      "hours": 4,
+      "description": "Reimplement the iOS behaviour in Compose using the shared API. Done when it matches the iOS acceptance criteria for roadmap, 'today' screen and first-run setup."
+     },
+     {
+      "title": "Port roadmap next actions and deviation handling",
+      "area": "android",
+      "hours": 4,
+      "description": "Reimplement the iOS behaviour in Compose using the shared API. Done when it matches the iOS acceptance criteria for roadmap, 'today' screen and first-run setup."
+     },
+     {
+      "title": "Test roadmap, 'today' screen and first-run setup on an Android phone",
+      "area": "testing",
+      "hours": 2,
+      "description": "Run the iOS acceptance checks for roadmap, 'today' screen and first-run setup on Android. Done when all pass."
+     }
+    ]
+   },
+   {
+    "key": "X.E01.4",
+    "title": "Port Journal to Android",
+    "priority": "Good to have",
+    "seq": 20,
+    "story": "As an Android user, I want journal on Android so that I have the same experience as on iPhone.",
+    "acceptance": [
+     "All MVP behaviour of journal works on Android",
+     "Uses the same backend endpoints as iOS",
+     "Text in pt-PT and en",
+     "Follows Android design conventions where they differ from iOS"
+    ],
+    "depends_on": [
+     "0.7"
+    ],
+    "tasks": [
+     {
+      "title": "Port journal entries with photos and notes",
+      "area": "android",
+      "hours": 3,
+      "description": "Reimplement the iOS behaviour in Compose using the shared API. Done when it matches the iOS acceptance criteria for journal."
+     },
+     {
+      "title": "Port automatic entries, timeline views and search",
+      "area": "android",
+      "hours": 3,
+      "description": "Reimplement the iOS behaviour in Compose using the shared API. Done when it matches the iOS acceptance criteria for journal."
+     },
+     {
+      "title": "Port harvest log",
+      "area": "android",
+      "hours": 3,
+      "description": "Reimplement the iOS behaviour in Compose using the shared API. Done when it matches the iOS acceptance criteria for journal."
+     },
+     {
+      "title": "Test journal on an Android phone",
+      "area": "testing",
+      "hours": 2,
+      "description": "Run the iOS acceptance checks for journal on Android. Done when all pass."
+     }
+    ]
+   },
+   {
+    "key": "X.E01.5",
+    "title": "Port Tasks and reminders to Android",
+    "priority": "Good to have",
+    "seq": 20,
+    "story": "As an Android user, I want tasks and reminders on Android so that I have the same experience as on iPhone.",
+    "acceptance": [
+     "All MVP behaviour of tasks and reminders works on Android",
+     "Uses the same backend endpoints as iOS",
+     "Text in pt-PT and en",
+     "Follows Android design conventions where they differ from iOS"
+    ],
+    "depends_on": [
+     "0.7"
+    ],
+    "tasks": [
+     {
+      "title": "Port task list views and task details",
+      "area": "android",
+      "hours": 4,
+      "description": "Reimplement the iOS behaviour in Compose using the shared API. Done when it matches the iOS acceptance criteria for tasks and reminders."
+     },
+     {
+      "title": "Port task outcomes, weekend planner and rescheduling",
+      "area": "android",
+      "hours": 4,
+      "description": "Reimplement the iOS behaviour in Compose using the shared API. Done when it matches the iOS acceptance criteria for tasks and reminders."
+     },
+     {
+      "title": "Port on-phone reminders and push notifications (FCM)",
+      "area": "android",
+      "hours": 4,
+      "description": "Reimplement the iOS behaviour in Compose using the shared API. Done when it matches the iOS acceptance criteria for tasks and reminders."
+     },
+     {
+      "title": "Test tasks and reminders on an Android phone",
+      "area": "testing",
+      "hours": 2,
+      "description": "Run the iOS acceptance checks for tasks and reminders on Android. Done when all pass."
+     }
+    ]
+   },
+   {
+    "key": "X.E01.6",
+    "title": "Port Tools to Android",
+    "priority": "Good to have",
+    "seq": 20,
+    "story": "As an Android user, I want tools on Android so that I have the same experience as on iPhone.",
+    "acceptance": [
+     "All MVP behaviour of tools works on Android",
+     "Uses the same backend endpoints as iOS",
+     "Text in pt-PT and en",
+     "Follows Android design conventions where they differ from iOS"
+    ],
+    "depends_on": [
+     "0.7"
+    ],
+    "tasks": [
+     {
+      "title": "Port tools needed per action and 'tools to get' list",
+      "area": "android",
+      "hours": 3,
+      "description": "Reimplement the iOS behaviour in Compose using the shared API. Done when it matches the iOS acceptance criteria for tools."
+     },
+     {
+      "title": "Port 'always own' setting and own tool photos",
+      "area": "android",
+      "hours": 3,
+      "description": "Reimplement the iOS behaviour in Compose using the shared API. Done when it matches the iOS acceptance criteria for tools."
+     },
+     {
+      "title": "Test tools on an Android phone",
+      "area": "testing",
+      "hours": 2,
+      "description": "Run the iOS acceptance checks for tools on Android. Done when all pass."
+     }
+    ]
+   },
+   {
+    "key": "X.E01.7",
+    "title": "Port Irrigation planner to Android",
+    "priority": "Good to have",
+    "seq": 20,
+    "story": "As an Android user, I want irrigation planner on Android so that I have the same experience as on iPhone.",
+    "acceptance": [
+     "All MVP behaviour of irrigation planner works on Android",
+     "Uses the same backend endpoints as iOS",
+     "Text in pt-PT and en",
+     "Follows Android design conventions where they differ from iOS"
+    ],
+    "depends_on": [
+     "0.7"
+    ],
+    "tasks": [
+     {
+      "title": "Port water sources and bucket test",
+      "area": "android",
+      "hours": 4,
+      "description": "Reimplement the iOS behaviour in Compose using the shared API. Done when it matches the iOS acceptance criteria for irrigation planner."
+     },
+     {
+      "title": "Port system layout on the map and sectors",
+      "area": "android",
+      "hours": 4,
+      "description": "Reimplement the iOS behaviour in Compose using the shared API. Done when it matches the iOS acceptance criteria for irrigation planner."
+     },
+     {
+      "title": "Port watering schedule and hand-watering guidance",
+      "area": "android",
+      "hours": 4,
+      "description": "Reimplement the iOS behaviour in Compose using the shared API. Done when it matches the iOS acceptance criteria for irrigation planner."
+     },
+     {
+      "title": "Test irrigation planner on an Android phone",
+      "area": "testing",
+      "hours": 2,
+      "description": "Run the iOS acceptance checks for irrigation planner on Android. Done when all pass."
+     }
+    ]
+   },
+   {
+    "key": "X.E01.8",
+    "title": "Port Guides to Android",
+    "priority": "Good to have",
+    "seq": 20,
+    "story": "As an Android user, I want guides on Android so that I have the same experience as on iPhone.",
+    "acceptance": [
+     "All MVP behaviour of guides works on Android",
+     "Uses the same backend endpoints as iOS",
+     "Text in pt-PT and en",
+     "Follows Android design conventions where they differ from iOS"
+    ],
+    "depends_on": [
+     "0.7"
+    ],
+    "tasks": [
+     {
+      "title": "Port guide viewer with standard step layout",
+      "area": "android",
+      "hours": 4,
+      "description": "Reimplement the iOS behaviour in Compose using the shared API. Done when it matches the iOS acceptance criteria for guides."
+     },
+     {
+      "title": "Port technique and crop guide lists",
+      "area": "android",
+      "hours": 4,
+      "description": "Reimplement the iOS behaviour in Compose using the shared API. Done when it matches the iOS acceptance criteria for guides."
+     },
+     {
+      "title": "Test guides on an Android phone",
+      "area": "testing",
+      "hours": 2,
+      "description": "Run the iOS acceptance checks for guides on Android. Done when all pass."
+     }
+    ]
+   },
+   {
+    "key": "X.E01.9",
+    "title": "Port Weather alerts to Android",
+    "priority": "Good to have",
+    "seq": 20,
+    "story": "As an Android user, I want weather alerts on Android so that I have the same experience as on iPhone.",
+    "acceptance": [
+     "All MVP behaviour of weather alerts works on Android",
+     "Uses the same backend endpoints as iOS",
+     "Text in pt-PT and en",
+     "Follows Android design conventions where they differ from iOS"
+    ],
+    "depends_on": [
+     "0.7"
+    ],
+    "tasks": [
+     {
+      "title": "Port weather screen and crop-aware alerts",
+      "area": "android",
+      "hours": 3,
+      "description": "Reimplement the iOS behaviour in Compose using the shared API. Done when it matches the iOS acceptance criteria for weather alerts."
+     },
+     {
+      "title": "Port skip-watering notices and alert actions",
+      "area": "android",
+      "hours": 3,
+      "description": "Reimplement the iOS behaviour in Compose using the shared API. Done when it matches the iOS acceptance criteria for weather alerts."
+     },
+     {
+      "title": "Test weather alerts on an Android phone",
+      "area": "testing",
+      "hours": 2,
+      "description": "Run the iOS acceptance checks for weather alerts on Android. Done when all pass."
+     }
+    ]
+   },
+   {
+    "key": "X.E01.10",
+    "title": "Port AI photo features to Android",
+    "priority": "Good to have",
+    "seq": 20,
+    "story": "As an Android user, I want ai photo features on Android so that I have the same experience as on iPhone.",
+    "acceptance": [
+     "All MVP behaviour of ai photo features works on Android",
+     "Uses the same backend endpoints as iOS",
+     "Text in pt-PT and en",
+     "Follows Android design conventions where they differ from iOS"
+    ],
+    "depends_on": [
+     "0.7"
+    ],
+    "tasks": [
+     {
+      "title": "Port site assessment capture and results",
+      "area": "android",
+      "hours": 4,
+      "description": "Reimplement the iOS behaviour in Compose using the shared API. Done when it matches the iOS acceptance criteria for ai photo features."
+     },
+     {
+      "title": "Port plant identification",
+      "area": "android",
+      "hours": 4,
+      "description": "Reimplement the iOS behaviour in Compose using the shared API. Done when it matches the iOS acceptance criteria for ai photo features."
+     },
+     {
+      "title": "Port pest and disease diagnosis and harvest checks",
+      "area": "android",
+      "hours": 4,
+      "description": "Reimplement the iOS behaviour in Compose using the shared API. Done when it matches the iOS acceptance criteria for ai photo features."
+     },
+     {
+      "title": "Test ai photo features on an Android phone",
+      "area": "testing",
+      "hours": 2,
+      "description": "Run the iOS acceptance checks for ai photo features on Android. Done when all pass."
+     }
+    ]
+   },
+   {
+    "key": "X.E01.11",
+    "title": "Port Season planner to Android",
+    "priority": "Good to have",
+    "seq": 20,
+    "story": "As an Android user, I want season planner on Android so that I have the same experience as on iPhone.",
+    "acceptance": [
+     "All MVP behaviour of season planner works on Android",
+     "Uses the same backend endpoints as iOS",
+     "Text in pt-PT and en",
+     "Follows Android design conventions where they differ from iOS"
+    ],
+    "depends_on": [
+     "0.7"
+    ],
+    "tasks": [
+     {
+      "title": "Port crops-into-beds plan view",
+      "area": "android",
+      "hours": 5,
+      "description": "Reimplement the iOS behaviour in Compose using the shared API. Done when it matches the iOS acceptance criteria for season planner."
+     },
+     {
+      "title": "Port rotation warnings and space check",
+      "area": "android",
+      "hours": 5,
+      "description": "Reimplement the iOS behaviour in Compose using the shared API. Done when it matches the iOS acceptance criteria for season planner."
+     },
+     {
+      "title": "Test season planner on an Android phone",
+      "area": "testing",
+      "hours": 2,
+      "description": "Run the iOS acceptance checks for season planner on Android. Done when all pass."
+     }
+    ]
+   },
+   {
+    "key": "X.E01.12",
+    "title": "Port AI assistant to Android",
+    "priority": "Good to have",
+    "seq": 20,
+    "story": "As an Android user, I want ai assistant on Android so that I have the same experience as on iPhone.",
+    "acceptance": [
+     "All MVP behaviour of ai assistant works on Android",
+     "Uses the same backend endpoints as iOS",
+     "Text in pt-PT and en",
+     "Follows Android design conventions where they differ from iOS"
+    ],
+    "depends_on": [
+     "0.7"
+    ],
+    "tasks": [
+     {
+      "title": "Port assistant chat with streaming",
+      "area": "android",
+      "hours": 4,
+      "description": "Reimplement the iOS behaviour in Compose using the shared API. Done when it matches the iOS acceptance criteria for ai assistant."
+     },
+     {
+      "title": "Port proposed actions with confirm and undo",
+      "area": "android",
+      "hours": 4,
+      "description": "Reimplement the iOS behaviour in Compose using the shared API. Done when it matches the iOS acceptance criteria for ai assistant."
+     },
+     {
+      "title": "Test ai assistant on an Android phone",
+      "area": "testing",
+      "hours": 2,
+      "description": "Run the iOS acceptance checks for ai assistant on Android. Done when all pass."
+     }
+    ]
+   },
+   {
+    "key": "X.E01.13",
+    "title": "Port Settings, privacy and accessibility to Android",
+    "priority": "Good to have",
+    "seq": 20,
+    "story": "As an Android user, I want settings, privacy and accessibility on Android so that I have the same experience as on iPhone.",
+    "acceptance": [
+     "All MVP behaviour of settings, privacy and accessibility works on Android",
+     "Uses the same backend endpoints as iOS",
+     "Text in pt-PT and en",
+     "Follows Android design conventions where they differ from iOS"
+    ],
+    "depends_on": [
+     "0.7"
+    ],
+    "tasks": [
+     {
+      "title": "Port settings screen and photo privacy",
+      "area": "android",
+      "hours": 3,
+      "description": "Reimplement the iOS behaviour in Compose using the shared API. Done when it matches the iOS acceptance criteria for settings, privacy and accessibility."
+     },
+     {
+      "title": "Port accessibility (TalkBack, font scaling)",
+      "area": "android",
+      "hours": 3,
+      "description": "Reimplement the iOS behaviour in Compose using the shared API. Done when it matches the iOS acceptance criteria for settings, privacy and accessibility."
+     },
+     {
+      "title": "Test settings, privacy and accessibility on an Android phone",
+      "area": "testing",
+      "hours": 2,
+      "description": "Run the iOS acceptance checks for settings, privacy and accessibility on Android. Done when all pass."
+     }
+    ]
+   },
+   {
+    "key": "X.E01.14",
+    "title": "Port good-to-have features to Android",
+    "priority": "Good to have",
+    "seq": 39,
+    "story": "As an Android user, I want the good-to-have features too so that Android reaches parity with iOS.",
+    "acceptance": [
+     "Every good-to-have feature shipped on iOS works on Android",
+     "Parity checklist is complete",
+     "Tested on a real Android phone"
+    ],
+    "depends_on": [
+     "X.E01.1",
+     "X.E01.2",
+     "X.E01.3",
+     "X.E01.4",
+     "X.E01.5",
+     "X.E01.6",
+     "X.E01.7",
+     "X.E01.8",
+     "X.E01.9",
+     "X.E01.10",
+     "X.E01.11",
+     "X.E01.12",
+     "X.E01.13"
+    ],
+    "tasks": [
+     {
+      "title": "Create iOS-to-Android parity checklist for good-to-have features",
+      "area": "android",
+      "hours": 2,
+      "description": "Done when the checklist lists every shipped good-to-have feature."
+     },
+     {
+      "title": "Port good-to-have plot mapping, calendar and crops features",
+      "area": "android",
+      "hours": 8,
+      "description": "Done when the checklist items pass."
+     },
+     {
+      "title": "Port good-to-have journal, tasks and tools features",
+      "area": "android",
+      "hours": 8,
+      "description": "Done when the checklist items pass."
+     },
+     {
+      "title": "Port good-to-have irrigation, weather and guides features",
+      "area": "android",
+      "hours": 8,
+      "description": "Done when the checklist items pass."
+     },
+     {
+      "title": "Port good-to-have AI, planner and improvement features",
+      "area": "android",
+      "hours": 8,
+      "description": "Done when the checklist items pass."
+     },
+     {
+      "title": "Port offline sync to Android (Room and sync engine)",
+      "area": "android",
+      "hours": 8,
+      "description": "Done when Android works offline and syncs."
+     },
+     {
+      "title": "Test Android parity on a real phone",
+      "area": "testing",
+      "hours": 3,
+      "description": "Done when the parity checklist is fully ticked."
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "key": "E20",
+  "title": "Commercial readiness",
+  "summary": "Everything needed before the app is sold to the public: subscriptions, data licences, expert content review, professional illustrations, and legal and store preparation. Future improvement only.",
+  "plan_ref": "PLAN.md §6 M7, §7",
+  "features": [
+   {
+    "key": "7.1",
+    "title": "Freemium subscriptions",
+    "priority": "Future improvement",
+    "seq": 99,
+    "story": "As the owner, I want App Store and Play subscriptions with free and premium tiers so that the app can earn money when it goes commercial.",
+    "acceptance": [
+     "Premium tier unlocks AI features",
+     "Server-side receipt validation for App Store and Google Play",
+     "Usage limits follow the tier",
+     "Users can manage or cancel their subscription"
+    ],
+    "depends_on": [],
+    "tasks": []
+   },
+   {
+    "key": "7.2",
+    "title": "Commercial data licences",
+    "priority": "Future improvement",
+    "seq": 99,
+    "story": "As the owner, I want commercial licences for all data sources so that the app can legally be sold.",
+    "acceptance": [
+     "Open-Meteo paid plan or an alternative weather provider in place",
+     "IPMA and MeteoAlarm reuse terms checked",
+     "SoilGrids attribution shown",
+     "Any plant-ID service licensed for commercial use"
+    ],
+    "depends_on": [],
+    "tasks": []
+   },
+   {
+    "key": "7.3",
+    "title": "Expert review of guides",
+    "priority": "Future improvement",
+    "seq": 99,
+    "story": "As the owner, I want an agronomist to review all guides so that the advice is correct before selling the app.",
+    "acceptance": [
+     "Every guide reviewed by a qualified expert",
+     "Review date and reviewer recorded on each guide",
+     "Corrections merged through the content pipeline"
+    ],
+    "depends_on": [],
+    "tasks": []
+   },
+   {
+    "key": "7.4",
+    "title": "Commissioned illustrator",
+    "priority": "Future improvement",
+    "seq": 99,
+    "story": "As the owner, I want professional illustrations so that the app looks polished for paying users.",
+    "acceptance": [
+     "Consistent illustration style guide agreed",
+     "Key guides and tools illustrated",
+     "Images licensed for commercial use"
+    ],
+    "depends_on": [],
+    "tasks": []
+   },
+   {
+    "key": "7.5",
+    "title": "Privacy policy, GDPR, store listings",
+    "priority": "Future improvement",
+    "seq": 99,
+    "story": "As the owner, I want the legal and store preparation done so that the app can be published publicly.",
+    "acceptance": [
+     "Privacy policy and terms published",
+     "GDPR review completed (data processing, retention, consent)",
+     "AI disclaimers shown, especially around chemicals",
+     "App Store and Google Play listings with screenshots in pt-PT and en"
+    ],
+    "depends_on": [],
+    "tasks": []
+   }
+  ]
+ }
+]
