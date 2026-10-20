@@ -377,6 +377,16 @@ A regular review of how the garden is going, with concrete ideas to improve it.
   - Suggestions with a status (new, accepted, dismissed, snoozed).
   - Dismissal reasons, stored so suggestions aren't repeated.
 
+### 3.19 App-wide features
+
+- **Home screen ("Today"):** next actions, today's tasks, active weather alerts, the forecast and pending AI proposals on one screen.
+- **First-run setup:** a guided flow: location → draw the plot → what already exists → site assessment → choose crops → preferences. At the end, the roadmap is ready.
+- **Settings:** language, units (metric or imperial), notification preferences and quiet hours, morning summary time, the "always own" tools setting, review frequency, and an **AI usage meter**.
+- **Privacy:** GPS data is stripped from photos before they're uploaded or shared, and the plot's exact location is kept private.
+- **Error and crash reporting:** crash reports and basic anonymous usage statistics (Application Insights on the backend, Xcode's crash reports on iOS, Android vitals later).
+- **Accessibility:** larger text, VoiceOver and TalkBack support, and colour choices that work for colour-blind users, built in from the start.
+- **Later (not in MVP):** home screen widgets (today's tasks and alerts), Apple Watch quick logging, Siri shortcuts.
+
 ---
 
 ## 4. Backend architecture
@@ -475,6 +485,8 @@ Each milestone ships backend and app work together and ends with something usabl
 - [ ] Bicep templates for Container Apps, PostgreSQL, Blob Storage, Key Vault and Notification Hubs
 - [ ] i18n scaffolding (pt-PT and en) in the backend and both apps
 - [ ] Account deletion and data export endpoints, which the app stores require
+- [ ] Crash reporting and anonymous usage statistics; GPS data stripped from photos
+- [ ] Accessibility foundations (larger text, VoiceOver, colour-blind-friendly colours) and the settings screen
 
 ### M1 — Plot and roadmap
 - [ ] Draw the plot boundary (tap or walk with GPS), zones and beds (on the map or by exact dimensions), stored in PostGIS
@@ -485,6 +497,7 @@ Each milestone ships backend and app work together and ends with something usabl
 - [ ] Activity log and zone state
 - [ ] Setup questions about what already exists
 - [ ] Roadmap engine, rules layer: next actions for each zone, with time windows and deviation handling
+- [ ] First-run setup flow and the "Today" home screen (extended as later milestones add tasks, alerts and AI proposals)
 
 ### M2 — Journal, tasks, tools and offline sync
 - [ ] Local databases (SwiftData and Room), plus the sync push/pull protocol

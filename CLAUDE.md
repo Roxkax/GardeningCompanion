@@ -68,9 +68,10 @@ The owner is used to Azure DevOps, so the same hierarchy is used, built with sub
 | 2026-10-20 | **Season planner:** crops into beds with dates, quantities and a layout inside each bed. Year view of each bed, follow-on crops, cover crops, 4-group rotation with disease flags, companion planting labelled by evidence level, space check, perennials, drag-and-drop editing with live checks, draft and active plans, learning from the harvest history, and AI goals. Fixed-rule engine (possibly OR-Tools). |
 | 2026-10-20 | **AI assistant:** chat plus "Ask about this" everywhere; text, voice and photo input; hands-free voice mode; answers cite sources; proposed actions are confirmed, logged and can be undone. **Garden memory is visible and editable by the user.** Honesty and safety rules, queued offline questions, history, feedback, and cost control (model routing, prompt caching, summarisation, limits). |
 | 2026-10-20 | **Improvement suggestions:** a garden report (weekly by default, configurable) with statistics, photos and a next-week preview. Suggestions have a reason, evidence, impact and effort; the user can accept (becomes a proposal), dismiss with a reason, or snooze. Patterns over time, and an end-of-season review that feeds the season planner. Statistics are computed with fixed rules first, so there's one AI call per review. |
+| 2026-10-20 | **App-wide features:** "Today" home screen, first-run setup flow, settings (including an AI usage meter), photo GPS stripping and location privacy, crash reporting and anonymous usage statistics, accessibility from the start. **Widgets, Apple Watch and Siri shortcuts are post-MVP.** |
+| 2026-10-20 | **Feature-by-feature review complete** (§3.1–§3.19) |
 
 ## Open decisions
 - Embedding model for pgvector search
 - Image generation model for guide illustrations
 - Sync conflict policy for each entity
-- The feature-by-feature review of `PLAN.md` §3 (in progress)
