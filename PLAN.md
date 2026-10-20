@@ -572,3 +572,4 @@ Each milestone ships backend and app work together and ends with something usabl
 
 ## 8. Open decisions
 
+- None at the moment. New open questions are added here as they come up.
