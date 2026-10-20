@@ -1,0 +1,1667 @@
+[
+ {
+  "id": "0.1",
+  "epic": "Foundations",
+  "feature": "Sign-in and accounts",
+  "description": "Entra External ID sign-in (email, Apple, Google); every record belongs to a user",
+  "priority": "MVP",
+  "source": "owner",
+  "info": "Needed by almost everything"
+ },
+ {
+  "id": "0.2",
+  "epic": "Foundations",
+  "feature": "Portuguese and English",
+  "description": "Whole app and content in pt-PT and English",
+  "priority": "MVP",
+  "source": "owner",
+  "info": "Decided earlier: first version"
+ },
+ {
+  "id": "0.3",
+  "epic": "Foundations",
+  "feature": "Offline sync",
+  "description": "Work offline and sync later; you resolve conflicts yourself",
+  "priority": "Good to have",
+  "source": "owner",
+  "info": "Needed by journal, tasks, map"
+ },
+ {
+  "id": "0.4",
+  "epic": "Foundations",
+  "feature": "Activity log",
+  "description": "Permanent history of everything done; base for roadmap, journal and AI",
+  "priority": "MVP",
+  "source": "owner",
+  "info": "Needed by roadmap, journal and AI"
+ },
+ {
+  "id": "0.5",
+  "epic": "Foundations",
+  "feature": "Knowledge base pipeline",
+  "description": "Crops, guides and tools kept in git (PT/EN), published to the app and AI",
+  "priority": "MVP",
+  "source": "owner",
+  "info": "Needed by calendar, guides and AI"
+ },
+ {
+  "id": "0.6",
+  "epic": "Foundations",
+  "feature": "Account deletion and data export",
+  "description": "Required by Apple and Google for apps with accounts",
+  "priority": "MVP",
+  "source": "owner",
+  "info": "Store requirement"
+ },
+ {
+  "id": "0.7",
+  "epic": "Foundations",
+  "feature": "Android app",
+  "description": "Port each stable iOS milestone to Android",
+  "priority": "Good to have",
+  "source": "owner",
+  "info": "Decided earlier: iOS first"
+ },
+ {
+  "id": "3.1.1",
+  "epic": "Project roadmap",
+  "feature": "Next actions (rules)",
+  "description": "Fixed agronomy rules work out the next actions per zone, with safety limits",
+  "priority": "MVP",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.1.2",
+  "epic": "Project roadmap",
+  "feature": "Next actions (AI)",
+  "description": "AI ranks and adapts next actions, explains why",
+  "priority": "Future improvement",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.1.3",
+  "epic": "Project roadmap",
+  "feature": "Per-zone stages",
+  "description": "Each zone has its own stage, worked out from its state",
+  "priority": "MVP",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.1.4",
+  "epic": "Project roadmap",
+  "feature": "Starting point",
+  "description": "Setup asks what already exists so you don't start from zero",
+  "priority": "MVP",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.1.5",
+  "epic": "Project roadmap",
+  "feature": "Season-aware timing",
+  "description": "Actions scheduled in their ideal time window for your climate",
+  "priority": "MVP",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.1.6",
+  "epic": "Project roadmap",
+  "feature": "Time and cost estimates",
+  "description": "Rough time and cost for each action",
+  "priority": "Good to have",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.1.7",
+  "epic": "Project roadmap",
+  "feature": "Deviation handling",
+  "description": "Mark actions as done differently, skipped, not possible or a problem; plan adapts",
+  "priority": "MVP",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.1.8",
+  "epic": "Project roadmap",
+  "feature": "Content freshness review",
+  "description": "AI proposes updates to outdated content; you review before publishing",
+  "priority": "Future improvement",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.3.1",
+  "epic": "Plot mapping",
+  "feature": "Plot boundary on satellite map",
+  "description": "Draw the plot by tapping corners",
+  "priority": "MVP",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.3.2",
+  "epic": "Plot mapping",
+  "feature": "Walk boundary with GPS",
+  "description": "Walk around the plot to draw it",
+  "priority": "Future improvement",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.3.3",
+  "epic": "Plot mapping",
+  "feature": "Zones and beds",
+  "description": "Draw zones and beds, or enter exact dimensions",
+  "priority": "MVP",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.3.4",
+  "epic": "Plot mapping",
+  "feature": "Points of interest",
+  "description": "Water, electricity, access, buildings, trees with heights",
+  "priority": "MVP",
+  "source": "owner",
+  "info": "Irrigation needs water sources"
+ },
+ {
+  "id": "3.3.5",
+  "epic": "Plot mapping",
+  "feature": "Area, sun and slope",
+  "description": "Calculated automatically from the map and elevation data",
+  "priority": "Good to have",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.3.6",
+  "epic": "Plot mapping",
+  "feature": "Soil type estimate",
+  "description": "Estimated from global soil maps (SoilGrids), no tests",
+  "priority": "Good to have",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.3.7",
+  "epic": "Plot mapping",
+  "feature": "Shade estimation",
+  "description": "Shade from trees and buildings over the day and year, plus observed shade",
+  "priority": "Future improvement",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.3.8",
+  "epic": "Plot mapping",
+  "feature": "Prevailing wind",
+  "description": "Wind direction from weather data, windbreak suggestions",
+  "priority": "Future improvement",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.3.9",
+  "epic": "Plot mapping",
+  "feature": "Layout designer",
+  "description": "Beds with real dimensions, paths, row direction",
+  "priority": "MVP",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.3.10",
+  "epic": "Plot mapping",
+  "feature": "Measuring tool",
+  "description": "Measure distances on the map (e.g. pipe length)",
+  "priority": "Good to have",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.3.11",
+  "epic": "Plot mapping",
+  "feature": "Layout history",
+  "description": "Each season's layout kept as a version",
+  "priority": "Good to have",
+  "source": "owner",
+  "info": "Rotation planner needs it"
+ },
+ {
+  "id": "3.3.12",
+  "epic": "Plot mapping",
+  "feature": "Several plots per user",
+  "description": "e.g. a backyard and a separate field",
+  "priority": "Future improvement",
+  "source": "owner",
+  "info": "Decided earlier: not in MVP"
+ },
+ {
+  "id": "3.4.1",
+  "epic": "Site assessment",
+  "feature": "AI photo assessment",
+  "description": "Vegetation to clear, problem plants, trees to keep, obstacles, terrain, water problems, infrastructure",
+  "priority": "MVP",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.4.2",
+  "epic": "Site assessment",
+  "feature": "Wildlife pressure",
+  "description": "Signs of rabbits, wild boar, birds, moles; fencing advice",
+  "priority": "Good to have",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.4.3",
+  "epic": "Site assessment",
+  "feature": "Fixed photo spots",
+  "description": "Guided photos from the same spots for before-and-after",
+  "priority": "Good to have",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.4.4",
+  "epic": "Site assessment",
+  "feature": "Walk-around video",
+  "description": "Film a zone; the app picks frames for the AI",
+  "priority": "Future improvement",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.4.5",
+  "epic": "Site assessment",
+  "feature": "Equipment advice",
+  "description": "Buy, rent or borrow big equipment (follows \"always own\")",
+  "priority": "Good to have",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.4.6",
+  "epic": "Site assessment",
+  "feature": "Re-assessments",
+  "description": "Repeat the assessment to track progress",
+  "priority": "Good to have",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.5.1",
+  "epic": "Planting calendar",
+  "feature": "Climate-based windows",
+  "description": "Sow, plant-out and harvest windows from local climate history",
+  "priority": "MVP",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.5.2",
+  "epic": "Planting calendar",
+  "feature": "Too-hot windows",
+  "description": "Avoid heat for crops that bolt or stop fruiting",
+  "priority": "MVP",
+  "source": "owner",
+  "info": "Critical in Alentejo"
+ },
+ {
+  "id": "3.5.3",
+  "epic": "Planting calendar",
+  "feature": "Month view and \"This week\"",
+  "description": "Calendar views",
+  "priority": "MVP",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.5.4",
+  "epic": "Planting calendar",
+  "feature": "Forecast adjustment",
+  "description": "Windows shifted by the weather forecast",
+  "priority": "Good to have",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.5.5",
+  "epic": "Planting calendar",
+  "feature": "Zone fit",
+  "description": "What can be planted now in each zone (sun and shade)",
+  "priority": "Good to have",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.5.6",
+  "epic": "Planting calendar",
+  "feature": "Varieties",
+  "description": "Early and late varieties with different timing",
+  "priority": "Future improvement",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.5.7",
+  "epic": "Planting calendar",
+  "feature": "Day length",
+  "description": "Varieties suited to your latitude (e.g. short-day onions)",
+  "priority": "MVP",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.5.8",
+  "epic": "Planting calendar",
+  "feature": "Heat-based harvest estimates",
+  "description": "Harvest dates from heat received since sowing",
+  "priority": "Good to have",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.5.9",
+  "epic": "Planting calendar",
+  "feature": "Staggered sowing reminders",
+  "description": "e.g. lettuce every 2–3 weeks",
+  "priority": "Good to have",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.5.10",
+  "epic": "Planting calendar",
+  "feature": "Export to phone calendar",
+  "description": "Add sowing and harvest dates to iOS Calendar",
+  "priority": "Future improvement",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.6.1",
+  "epic": "Choosing your crops",
+  "feature": "Pick crops",
+  "description": "Choose crops with variety, priority and quantity",
+  "priority": "MVP",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.6.2",
+  "epic": "Choosing your crops",
+  "feature": "Ranked suggestions",
+  "description": "Crops ranked by fit for your location, with reasons",
+  "priority": "MVP",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.6.3",
+  "epic": "Choosing your crops",
+  "feature": "Poor-fit warnings",
+  "description": "Warns about a bad crop or timing, never blocks",
+  "priority": "MVP",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.6.4",
+  "epic": "Choosing your crops",
+  "feature": "How much to plant",
+  "description": "Number of plants and space from the quantity you want",
+  "priority": "Good to have",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.6.5",
+  "epic": "Choosing your crops",
+  "feature": "AI explanation",
+  "description": "Personalised AI explanation of the suggestions",
+  "priority": "Future improvement",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.7.1",
+  "epic": "Guides",
+  "feature": "Step-by-step guides with sources",
+  "description": "PT and EN guides citing sources, with review dates",
+  "priority": "MVP",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.7.2",
+  "epic": "Guides",
+  "feature": "Standard step layout",
+  "description": "What to do, illustration, tools, time, safety, mistakes, \"done right\" check",
+  "priority": "MVP",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.7.3",
+  "epic": "Guides",
+  "feature": "Technique guides",
+  "description": "Clearing, beds, drip irrigation, mulching, compost, sowing, planting out…",
+  "priority": "MVP",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.7.4",
+  "epic": "Guides",
+  "feature": "Crop guides",
+  "description": "Each crop from sowing to harvest",
+  "priority": "MVP",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.7.5",
+  "epic": "Guides",
+  "feature": "Problem guides",
+  "description": "Pests and diseases, organic methods first",
+  "priority": "Future improvement",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.7.6",
+  "epic": "Guides",
+  "feature": "Quantities from your numbers",
+  "description": "e.g. compost for your exact bed size",
+  "priority": "Future improvement",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.7.7",
+  "epic": "Guides",
+  "feature": "Doing mode with read-aloud",
+  "description": "Big text, one step at a time, spoken steps",
+  "priority": "Good to have",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.7.8",
+  "epic": "Guides",
+  "feature": "Ask AI about a step",
+  "description": "Ask the AI about the step you're on",
+  "priority": "Good to have",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.7.9",
+  "epic": "Guides",
+  "feature": "Photo check of your work",
+  "description": "AI checks a photo of the finished step",
+  "priority": "Good to have",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.7.10",
+  "epic": "Guides",
+  "feature": "Unclear-step feedback",
+  "description": "Flag unclear steps for content review",
+  "priority": "Good to have",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.7.11",
+  "epic": "Guides",
+  "feature": "Offline download",
+  "description": "Text and images available offline",
+  "priority": "Future improvement",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.7.12",
+  "epic": "Guides",
+  "feature": "Selected videos",
+  "description": "Links to good videos, with a broken-link check",
+  "priority": "Future improvement",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.7.13",
+  "epic": "Guides",
+  "feature": "AI illustrations",
+  "description": "gpt-image illustrations plus diagrams, reviewed by you",
+  "priority": "Good to have",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.7.14",
+  "epic": "Guides",
+  "feature": "AI-generated video or animations",
+  "description": "Generated once per guide and reviewed",
+  "priority": "Future improvement",
+  "source": "owner",
+  "info": "Decided earlier: not in MVP"
+ },
+ {
+  "id": "3.8.1",
+  "epic": "Journal and timeline",
+  "feature": "Entries with photos and notes",
+  "description": "Log what you did per zone, bed or planting",
+  "priority": "MVP",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.8.2",
+  "epic": "Journal and timeline",
+  "feature": "Quick and bulk logging",
+  "description": "One tap; several beds at once",
+  "priority": "Future improvement",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.8.3",
+  "epic": "Journal and timeline",
+  "feature": "Voice notes",
+  "description": "Dictate notes in the field",
+  "priority": "Future improvement",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.8.4",
+  "epic": "Journal and timeline",
+  "feature": "Automatic entries",
+  "description": "Completing actions, tasks or guide steps logs them",
+  "priority": "MVP",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.8.5",
+  "epic": "Journal and timeline",
+  "feature": "Weather on each day",
+  "description": "Day's rain and temperatures attached automatically",
+  "priority": "Good to have",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.8.6",
+  "epic": "Journal and timeline",
+  "feature": "Change the date",
+  "description": "Log things after the fact",
+  "priority": "Good to have",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.8.7",
+  "epic": "Journal and timeline",
+  "feature": "Timeline views",
+  "description": "History for a zone, bed or planting",
+  "priority": "MVP",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.8.8",
+  "epic": "Journal and timeline",
+  "feature": "Photo time-lapse",
+  "description": "From the fixed photo spots",
+  "priority": "Future improvement",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.8.9",
+  "epic": "Journal and timeline",
+  "feature": "Harvest log",
+  "description": "Weight or count per crop, compared with expected",
+  "priority": "MVP",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.8.10",
+  "epic": "Journal and timeline",
+  "feature": "Harvest value",
+  "description": "Estimated value using prices you enter",
+  "priority": "Future improvement",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.8.11",
+  "epic": "Journal and timeline",
+  "feature": "Search and filters",
+  "description": "Find past entries",
+  "priority": "MVP",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.8.12",
+  "epic": "Journal and timeline",
+  "feature": "Export CSV/PDF",
+  "description": "Export your journal",
+  "priority": "Good to have",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.9.1",
+  "epic": "Tasks and reminders",
+  "feature": "Tasks from all sources",
+  "description": "Roadmap, calendar, care, weather, AI and your own",
+  "priority": "MVP",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.9.2",
+  "epic": "Tasks and reminders",
+  "feature": "Task details",
+  "description": "Date range, time estimate, priority, guide link",
+  "priority": "MVP",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.9.3",
+  "epic": "Tasks and reminders",
+  "feature": "Tools check",
+  "description": "Warns if a tool you need is missing",
+  "priority": "Good to have",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.9.4",
+  "epic": "Tasks and reminders",
+  "feature": "Task outcomes",
+  "description": "Done, skipped or couldn't do (with reason)",
+  "priority": "MVP",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.9.5",
+  "epic": "Tasks and reminders",
+  "feature": "Today, Week and zone views",
+  "description": "Task list views",
+  "priority": "MVP",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.9.6",
+  "epic": "Tasks and reminders",
+  "feature": "Weekend planner",
+  "description": "Pick the best tasks for the hours you have",
+  "priority": "MVP",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.9.7",
+  "epic": "Tasks and reminders",
+  "feature": "Weather-aware rescheduling",
+  "description": "Skip watering before rain, water early in heat…",
+  "priority": "MVP",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.9.8",
+  "epic": "Tasks and reminders",
+  "feature": "Repeating tasks",
+  "description": "e.g. weekly feeding",
+  "priority": "Future improvement",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.9.9",
+  "epic": "Tasks and reminders",
+  "feature": "Missed-task alternatives",
+  "description": "Roadmap suggests an alternative when a window is missed",
+  "priority": "MVP",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.9.10",
+  "epic": "Tasks and reminders",
+  "feature": "On-phone reminders",
+  "description": "Reminders that work offline",
+  "priority": "Good to have",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.9.11",
+  "epic": "Tasks and reminders",
+  "feature": "Morning summary",
+  "description": "One daily notification instead of many",
+  "priority": "Good to have",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.9.12",
+  "epic": "Tasks and reminders",
+  "feature": "Quiet hours",
+  "description": "No notifications at set times",
+  "priority": "Future improvement",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.9.13",
+  "epic": "Tasks and reminders",
+  "feature": "Share tasks with family",
+  "description": "Helpers see and do tasks",
+  "priority": "Good to have",
+  "source": "owner",
+  "info": "Decided earlier: not in MVP"
+ },
+ {
+  "id": "3.10.1",
+  "epic": "Tools",
+  "feature": "My tools with reference images",
+  "description": "List of owned tools, each with an image to recognise it",
+  "priority": "Good to have",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.10.2",
+  "epic": "Tools",
+  "feature": "Own photo of a tool",
+  "description": "Replace the reference image with your photo",
+  "priority": "MVP",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.10.3",
+  "epic": "Tools",
+  "feature": "Tools needed per action",
+  "description": "Actions, tasks and guides list their tools",
+  "priority": "MVP",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.10.4",
+  "epic": "Tools",
+  "feature": "\"Tools to get\" list",
+  "description": "Missing tools ordered by when needed",
+  "priority": "MVP",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.10.5",
+  "epic": "Tools",
+  "feature": "\"Always own\" setting",
+  "description": "Default to buy; hide rent and borrow",
+  "priority": "MVP",
+  "source": "owner",
+  "info": "You use this setting"
+ },
+ {
+  "id": "3.10.6",
+  "epic": "Tools",
+  "feature": "Starter toolkit",
+  "description": "Recommended set for your plot: essential vs nice to have",
+  "priority": "Good to have",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.10.7",
+  "epic": "Tools",
+  "feature": "Buy/rent/borrow advice",
+  "description": "For big equipment (hidden when \"always own\" is on)",
+  "priority": "Good to have",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.10.8",
+  "epic": "Tools",
+  "feature": "Maintenance reminders",
+  "description": "Sharpen, clean, store before frost",
+  "priority": "Good to have",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.10.9",
+  "epic": "Tools",
+  "feature": "Shop links and affiliates",
+  "description": "Commercial idea",
+  "priority": "Good to have",
+  "source": "owner",
+  "info": "Decided earlier: not in MVP"
+ },
+ {
+  "id": "3.11.1",
+  "epic": "Irrigation planner",
+  "feature": "Water sources and bucket test",
+  "description": "Sources from the map; measure flow rate",
+  "priority": "MVP",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.11.2",
+  "epic": "Irrigation planner",
+  "feature": "Method per bed",
+  "description": "Drip line, drippers, soaker hose or sprinklers",
+  "priority": "MVP",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.11.3",
+  "epic": "Irrigation planner",
+  "feature": "System layout on map",
+  "description": "Main pipe, branches, drip lines per bed",
+  "priority": "MVP",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.11.4",
+  "epic": "Irrigation planner",
+  "feature": "Flow check and sectors",
+  "description": "Split into sectors if flow is too low; filter, regulator, backflow",
+  "priority": "MVP",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.11.5",
+  "epic": "Irrigation planner",
+  "feature": "Parts list",
+  "description": "For information only",
+  "priority": "MVP",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.11.6",
+  "epic": "Irrigation planner",
+  "feature": "Watering schedule",
+  "description": "Run times from crop and season guidance, adjusted by weather; creates tasks",
+  "priority": "MVP",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.11.7",
+  "epic": "Irrigation planner",
+  "feature": "Hand-watering guidance",
+  "description": "Before a system is installed",
+  "priority": "MVP",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.11.8",
+  "epic": "Irrigation planner",
+  "feature": "Mulching advice",
+  "description": "Reduce water use",
+  "priority": "Future improvement",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.11.9",
+  "epic": "Irrigation planner",
+  "feature": "Rainwater harvesting estimate",
+  "description": "Roof area × rainfall, tank size",
+  "priority": "Future improvement",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.11.10",
+  "epic": "Irrigation planner",
+  "feature": "Seasonal reminders",
+  "description": "Flush lines, clean filters, drain before frost",
+  "priority": "Good to have",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.11.11",
+  "epic": "Irrigation planner",
+  "feature": "Smart controllers and sensors",
+  "description": "Connect irrigation controllers and soil moisture sensors",
+  "priority": "Future improvement",
+  "source": "owner",
+  "info": "Decided earlier: not in MVP"
+ },
+ {
+  "id": "3.12.1",
+  "epic": "Weather alerts",
+  "feature": "Crop-aware alerts",
+  "description": "Frost, heat, wind, rain, hail, storms, dry spells — only when your crops are at risk",
+  "priority": "MVP",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.12.2",
+  "epic": "Weather alerts",
+  "feature": "Skip-watering notices",
+  "description": "Rain is coming",
+  "priority": "MVP",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.12.3",
+  "epic": "Weather alerts",
+  "feature": "Good-conditions alerts",
+  "description": "e.g. good day to plant out",
+  "priority": "Good to have",
+  "source": "owner",
+  "info": ""
+ },
+ {
+  "id": "3.12.4",
+  "epic": "Weather alerts",
+  "feature": "Actions as tasks",
+  "description": "Each alert creates tasks with guide links",
+  "priority": "MVP",
+  "source": "suggested",
+  "info": ""
+ },
+ {
+  "id": "3.12.5",
+  "epic": "Weather alerts",
+  "feature": "Severity and confidence",
+  "description": "Watch vs warning; forecast confidence",
+  "priority": "Good to have",
+  "source": "suggested",
+  "info": ""
+ },
+ {
+  "id": "3.12.6",
+  "epic": "Weather alerts",
+  "feature": "Quiet-hours override",
+  "description": "Urgent alerts break through quiet hours",
+  "priority": "Good to have",
+  "source": "suggested",
+  "info": ""
+ },
+ {
+  "id": "3.12.7",
+  "epic": "Weather alerts",
+  "feature": "7-day weather screen",
+  "description": "Forecast with gardening notes",
+  "priority": "MVP",
+  "source": "suggested",
+  "info": ""
+ },
+ {
+  "id": "3.12.8",
+  "epic": "Weather alerts",
+  "feature": "Follow-up after event",
+  "description": "Check plants and log damage after frost or storm",
+  "priority": "Good to have",
+  "source": "suggested",
+  "info": ""
+ },
+ {
+  "id": "3.12.9",
+  "epic": "Weather alerts",
+  "feature": "IPMA official warnings",
+  "description": "Portuguese official weather warnings",
+  "priority": "Good to have",
+  "source": "suggested",
+  "info": ""
+ },
+ {
+  "id": "3.12.10",
+  "epic": "Weather alerts",
+  "feature": "Other countries' warnings",
+  "description": "MeteoAlarm or national services",
+  "priority": "Future improvement",
+  "source": "suggested",
+  "info": "Decided earlier: not in MVP"
+ },
+ {
+  "id": "3.13.1",
+  "epic": "Plant identification",
+  "feature": "Photo identification",
+  "description": "Top matches with confidence, PT/EN and scientific names",
+  "priority": "MVP",
+  "source": "suggested",
+  "info": ""
+ },
+ {
+  "id": "3.13.2",
+  "epic": "Plant identification",
+  "feature": "Crop-or-weed verdict",
+  "description": "Especially for seedlings",
+  "priority": "MVP",
+  "source": "suggested",
+  "info": ""
+ },
+ {
+  "id": "3.13.3",
+  "epic": "Plant identification",
+  "feature": "Context for accuracy",
+  "description": "Uses location, season and what's planted in the bed",
+  "priority": "MVP",
+  "source": "suggested",
+  "info": ""
+ },
+ {
+  "id": "3.13.4",
+  "epic": "Plant identification",
+  "feature": "Several photos",
+  "description": "Leaf, flower, whole plant",
+  "priority": "Good to have",
+  "source": "suggested",
+  "info": ""
+ },
+ {
+  "id": "3.13.5",
+  "epic": "Plant identification",
+  "feature": "Invasive and toxic flags",
+  "description": "Warnings only; never says a wild plant is safe to eat",
+  "priority": "MVP",
+  "source": "suggested",
+  "info": ""
+ },
+ {
+  "id": "3.13.6",
+  "epic": "Plant identification",
+  "feature": "One-tap actions",
+  "description": "Add as planting, mark as weed (removal task), keep tree",
+  "priority": "Good to have",
+  "source": "suggested",
+  "info": ""
+ },
+ {
+  "id": "3.13.7",
+  "epic": "Plant identification",
+  "feature": "Corrections",
+  "description": "Fix wrong results; used as context and for testing",
+  "priority": "Good to have",
+  "source": "suggested",
+  "info": ""
+ },
+ {
+  "id": "3.13.8",
+  "epic": "Plant identification",
+  "feature": "Specialist ID service",
+  "description": "Second opinion from a plant-ID service",
+  "priority": "Future improvement",
+  "source": "suggested",
+  "info": "Decided earlier: not in MVP"
+ },
+ {
+  "id": "3.14.1",
+  "epic": "Pest and disease diagnosis",
+  "feature": "Photo diagnosis",
+  "description": "Pests, diseases, nutrient problems and environmental stress",
+  "priority": "MVP",
+  "source": "suggested",
+  "info": ""
+ },
+ {
+  "id": "3.14.2",
+  "epic": "Pest and disease diagnosis",
+  "feature": "Follow-up questions",
+  "description": "AI asks questions when unsure",
+  "priority": "Good to have",
+  "source": "suggested",
+  "info": ""
+ },
+ {
+  "id": "3.14.3",
+  "epic": "Pest and disease diagnosis",
+  "feature": "Treatment plans",
+  "description": "Organic first; chemicals last, never by product name",
+  "priority": "MVP",
+  "source": "suggested",
+  "info": ""
+ },
+ {
+  "id": "3.14.4",
+  "epic": "Pest and disease diagnosis",
+  "feature": "Treatment tasks and check-ups",
+  "description": "Re-photograph later, before-and-after comparison",
+  "priority": "Good to have",
+  "source": "suggested",
+  "info": ""
+ },
+ {
+  "id": "3.14.5",
+  "epic": "Pest and disease diagnosis",
+  "feature": "Spread warnings and bed flags",
+  "description": "Warn other beds; flag soil-borne diseases for rotation",
+  "priority": "Good to have",
+  "source": "suggested",
+  "info": ""
+ },
+ {
+  "id": "3.14.6",
+  "epic": "Pest and disease diagnosis",
+  "feature": "Disease-risk warnings",
+  "description": "Weather-based risk, e.g. mildew",
+  "priority": "Good to have",
+  "source": "suggested",
+  "info": ""
+ },
+ {
+  "id": "3.14.7",
+  "epic": "Pest and disease diagnosis",
+  "feature": "Seasonal scouting tasks",
+  "description": "\"Check under the cabbage leaves this week\"",
+  "priority": "Future improvement",
+  "source": "suggested",
+  "info": ""
+ },
+ {
+  "id": "3.14.8",
+  "epic": "Pest and disease diagnosis",
+  "feature": "Beneficial insects",
+  "description": "Recognise helpful insects so you don't kill them",
+  "priority": "Good to have",
+  "source": "suggested",
+  "info": ""
+ },
+ {
+  "id": "3.15.1",
+  "epic": "Harvest readiness",
+  "feature": "Photo verdict",
+  "description": "Not yet, soon, ready, past its best",
+  "priority": "Good to have",
+  "source": "suggested",
+  "info": ""
+ },
+ {
+  "id": "3.15.2",
+  "epic": "Harvest readiness",
+  "feature": "Advance notice",
+  "description": "Harvest window approaching",
+  "priority": "Good to have",
+  "source": "suggested",
+  "info": ""
+ },
+ {
+  "id": "3.15.3",
+  "epic": "Harvest readiness",
+  "feature": "Signs checklists",
+  "description": "Per crop, incl. \"dig one up\" for root crops",
+  "priority": "MVP",
+  "source": "suggested",
+  "info": ""
+ },
+ {
+  "id": "3.15.4",
+  "epic": "Harvest readiness",
+  "feature": "How to harvest",
+  "description": "Technique, time of day, keep plants producing",
+  "priority": "MVP",
+  "source": "suggested",
+  "info": ""
+ },
+ {
+  "id": "3.15.5",
+  "epic": "Harvest readiness",
+  "feature": "Weather-aware harvest timing",
+  "description": "e.g. pick before heavy rain",
+  "priority": "Good to have",
+  "source": "suggested",
+  "info": ""
+ },
+ {
+  "id": "3.15.6",
+  "epic": "Harvest readiness",
+  "feature": "One-tap harvest logging",
+  "description": "Ready → harvested → quantity",
+  "priority": "MVP",
+  "source": "suggested",
+  "info": ""
+ },
+ {
+  "id": "3.15.7",
+  "epic": "Harvest readiness",
+  "feature": "Glut warning",
+  "description": "Peaks coming, ideas to preserve or give away",
+  "priority": "Future improvement",
+  "source": "suggested",
+  "info": ""
+ },
+ {
+  "id": "3.15.8",
+  "epic": "Harvest readiness",
+  "feature": "Storage and preserving guides",
+  "description": "How to store and preserve each crop",
+  "priority": "Good to have",
+  "source": "suggested",
+  "info": ""
+ },
+ {
+  "id": "3.15.9",
+  "epic": "Harvest readiness",
+  "feature": "Seed saving",
+  "description": "Save seeds from your crops",
+  "priority": "Future improvement",
+  "source": "suggested",
+  "info": "Decided earlier: not in MVP"
+ },
+ {
+  "id": "3.16.1",
+  "epic": "Season planner",
+  "feature": "Crops into beds",
+  "description": "Which crop in which bed, when, how many",
+  "priority": "MVP",
+  "source": "suggested",
+  "info": ""
+ },
+ {
+  "id": "3.16.2",
+  "epic": "Season planner",
+  "feature": "Layout inside each bed",
+  "description": "Rows or grid with spacing",
+  "priority": "Good to have",
+  "source": "suggested",
+  "info": ""
+ },
+ {
+  "id": "3.16.3",
+  "epic": "Season planner",
+  "feature": "Year view per bed",
+  "description": "Gantt-style timeline, empty periods highlighted",
+  "priority": "Good to have",
+  "source": "suggested",
+  "info": ""
+ },
+ {
+  "id": "3.16.4",
+  "epic": "Season planner",
+  "feature": "Follow-on crops",
+  "description": "Next crop after a harvest in the same bed",
+  "priority": "Good to have",
+  "source": "suggested",
+  "info": ""
+ },
+ {
+  "id": "3.16.5",
+  "epic": "Season planner",
+  "feature": "Cover crops",
+  "description": "Green cover for empty beds",
+  "priority": "Future improvement",
+  "source": "suggested",
+  "info": ""
+ },
+ {
+  "id": "3.16.6",
+  "epic": "Season planner",
+  "feature": "Crop rotation",
+  "description": "4-group rotation with warnings",
+  "priority": "MVP",
+  "source": "suggested",
+  "info": ""
+ },
+ {
+  "id": "3.16.7",
+  "epic": "Season planner",
+  "feature": "Companion planting",
+  "description": "Pairings labelled by evidence level",
+  "priority": "Future improvement",
+  "source": "suggested",
+  "info": ""
+ },
+ {
+  "id": "3.16.8",
+  "epic": "Season planner",
+  "feature": "Space check",
+  "description": "Warns when crops don't fit; must-haves first",
+  "priority": "MVP",
+  "source": "suggested",
+  "info": ""
+ },
+ {
+  "id": "3.16.9",
+  "epic": "Season planner",
+  "feature": "Perennials",
+  "description": "Asparagus, strawberries, herbs, fruit trees stay put",
+  "priority": "Good to have",
+  "source": "suggested",
+  "info": ""
+ },
+ {
+  "id": "3.16.10",
+  "epic": "Season planner",
+  "feature": "Drag-and-drop editing",
+  "description": "Edit with live checks",
+  "priority": "Good to have",
+  "source": "suggested",
+  "info": ""
+ },
+ {
+  "id": "3.16.11",
+  "epic": "Season planner",
+  "feature": "Draft and active plans",
+  "description": "Plan next season while this one runs",
+  "priority": "Good to have",
+  "source": "suggested",
+  "info": ""
+ },
+ {
+  "id": "3.16.12",
+  "epic": "Season planner",
+  "feature": "Learning from last year",
+  "description": "Adjust from harvest log and notes",
+  "priority": "Future improvement",
+  "source": "suggested",
+  "info": ""
+ },
+ {
+  "id": "3.16.13",
+  "epic": "Season planner",
+  "feature": "AI goals",
+  "description": "Optimise for most harvest, least work or least water",
+  "priority": "Future improvement",
+  "source": "suggested",
+  "info": ""
+ },
+ {
+  "id": "3.17.1",
+  "epic": "AI assistant",
+  "feature": "Chat with garden context",
+  "description": "Answers about your garden, citing sources, in PT/EN",
+  "priority": "MVP",
+  "source": "suggested",
+  "info": ""
+ },
+ {
+  "id": "3.17.2",
+  "epic": "AI assistant",
+  "feature": "\"Ask about this\"",
+  "description": "Ask from any bed, plant, task, guide step or alert",
+  "priority": "Good to have",
+  "source": "suggested",
+  "info": ""
+ },
+ {
+  "id": "3.17.3",
+  "epic": "AI assistant",
+  "feature": "Voice and photo input",
+  "description": "Speak or send photos in the chat",
+  "priority": "Good to have",
+  "source": "suggested",
+  "info": ""
+ },
+ {
+  "id": "3.17.4",
+  "epic": "AI assistant",
+  "feature": "Hands-free voice mode",
+  "description": "Spoken answers in the field",
+  "priority": "Future improvement",
+  "source": "suggested",
+  "info": ""
+ },
+ {
+  "id": "3.17.5",
+  "epic": "AI assistant",
+  "feature": "Proposed actions",
+  "description": "Creates proposals you confirm; logged and undoable",
+  "priority": "MVP",
+  "source": "suggested",
+  "info": ""
+ },
+ {
+  "id": "3.17.6",
+  "epic": "AI assistant",
+  "feature": "Garden memory notes",
+  "description": "Facts it learns, visible and editable",
+  "priority": "Good to have",
+  "source": "suggested",
+  "info": ""
+ },
+ {
+  "id": "3.17.7",
+  "epic": "AI assistant",
+  "feature": "Queued offline questions",
+  "description": "Answered when back online",
+  "priority": "Future improvement",
+  "source": "suggested",
+  "info": ""
+ },
+ {
+  "id": "3.17.8",
+  "epic": "AI assistant",
+  "feature": "History and search",
+  "description": "Past conversations",
+  "priority": "Good to have",
+  "source": "suggested",
+  "info": ""
+ },
+ {
+  "id": "3.17.9",
+  "epic": "AI assistant",
+  "feature": "Answer feedback",
+  "description": "Thumbs up or down",
+  "priority": "Good to have",
+  "source": "suggested",
+  "info": ""
+ },
+ {
+  "id": "3.18.1",
+  "epic": "Improvement suggestions",
+  "feature": "Garden report",
+  "description": "Weekly stats: done, harvested, weather, photos, next week",
+  "priority": "Good to have",
+  "source": "suggested",
+  "info": ""
+ },
+ {
+  "id": "3.18.2",
+  "epic": "Improvement suggestions",
+  "feature": "AI suggestions with evidence",
+  "description": "Reason, evidence, impact and effort",
+  "priority": "Good to have",
+  "source": "suggested",
+  "info": ""
+ },
+ {
+  "id": "3.18.3",
+  "epic": "Improvement suggestions",
+  "feature": "Accept, dismiss, snooze",
+  "description": "Accept becomes a proposal; dismissals aren't repeated",
+  "priority": "Good to have",
+  "source": "suggested",
+  "info": ""
+ },
+ {
+  "id": "3.18.4",
+  "epic": "Improvement suggestions",
+  "feature": "Patterns over time",
+  "description": "Insights across weeks and seasons",
+  "priority": "Future improvement",
+  "source": "suggested",
+  "info": ""
+ },
+ {
+  "id": "3.18.5",
+  "epic": "Improvement suggestions",
+  "feature": "End-of-season review",
+  "description": "Retrospective feeding next season's plan",
+  "priority": "Good to have",
+  "source": "suggested",
+  "info": ""
+ },
+ {
+  "id": "3.18.6",
+  "epic": "Improvement suggestions",
+  "feature": "Configurable frequency",
+  "description": "Weekly, fortnightly or monthly",
+  "priority": "Future improvement",
+  "source": "suggested",
+  "info": ""
+ },
+ {
+  "id": "3.19.1",
+  "epic": "App-wide",
+  "feature": "\"Today\" home screen",
+  "description": "Next actions, tasks, alerts, forecast, proposals",
+  "priority": "MVP",
+  "source": "suggested",
+  "info": ""
+ },
+ {
+  "id": "3.19.2",
+  "epic": "App-wide",
+  "feature": "First-run setup",
+  "description": "Guided flow from location to crops",
+  "priority": "MVP",
+  "source": "suggested",
+  "info": ""
+ },
+ {
+  "id": "3.19.3",
+  "epic": "App-wide",
+  "feature": "Settings",
+  "description": "Language, units, notifications, preferences",
+  "priority": "MVP",
+  "source": "suggested",
+  "info": ""
+ },
+ {
+  "id": "3.19.4",
+  "epic": "App-wide",
+  "feature": "AI usage meter",
+  "description": "See how much AI you've used",
+  "priority": "Good to have",
+  "source": "suggested",
+  "info": ""
+ },
+ {
+  "id": "3.19.5",
+  "epic": "App-wide",
+  "feature": "Photo and location privacy",
+  "description": "Strip GPS from photos; keep plot location private",
+  "priority": "MVP",
+  "source": "suggested",
+  "info": ""
+ },
+ {
+  "id": "3.19.6",
+  "epic": "App-wide",
+  "feature": "Crash reporting and usage stats",
+  "description": "See problems and anonymous usage",
+  "priority": "MVP",
+  "source": "suggested",
+  "info": ""
+ },
+ {
+  "id": "3.19.7",
+  "epic": "App-wide",
+  "feature": "Accessibility",
+  "description": "Larger text, VoiceOver, colour-blind-friendly colours",
+  "priority": "Good to have",
+  "source": "suggested",
+  "info": ""
+ },
+ {
+  "id": "3.19.8",
+  "epic": "App-wide",
+  "feature": "Home screen widgets",
+  "description": "Today's tasks and alerts",
+  "priority": "Future improvement",
+  "source": "suggested",
+  "info": "Decided earlier: not in MVP"
+ },
+ {
+  "id": "3.19.9",
+  "epic": "App-wide",
+  "feature": "Apple Watch",
+  "description": "Quick logging from the watch",
+  "priority": "Future improvement",
+  "source": "suggested",
+  "info": "Decided earlier: not in MVP"
+ },
+ {
+  "id": "3.19.10",
+  "epic": "App-wide",
+  "feature": "Siri shortcuts",
+  "description": "e.g. \"log watering zone A\"",
+  "priority": "Future improvement",
+  "source": "suggested",
+  "info": "Decided earlier: not in MVP"
+ },
+ {
+  "id": "7.1",
+  "epic": "Commercial readiness",
+  "feature": "Freemium subscriptions",
+  "description": "App Store and Play subscriptions, tier limits",
+  "priority": "Future improvement",
+  "source": "suggested",
+  "info": "Only when going commercial"
+ },
+ {
+  "id": "7.2",
+  "epic": "Commercial readiness",
+  "feature": "Commercial data licences",
+  "description": "Weather and other data sources for commercial use",
+  "priority": "Future improvement",
+  "source": "suggested",
+  "info": "Only when going commercial"
+ },
+ {
+  "id": "7.3",
+  "epic": "Commercial readiness",
+  "feature": "Expert review of guides",
+  "description": "Agronomist reviews all content",
+  "priority": "Future improvement",
+  "source": "suggested",
+  "info": "Only when going commercial"
+ },
+ {
+  "id": "7.4",
+  "epic": "Commercial readiness",
+  "feature": "Commissioned illustrator",
+  "description": "Professional illustrations",
+  "priority": "Future improvement",
+  "source": "suggested",
+  "info": "Only when going commercial"
+ },
+ {
+  "id": "7.5",
+  "epic": "Commercial readiness",
+  "feature": "Privacy policy, GDPR, store listings",
+  "description": "Legal and store preparation",
+  "priority": "Future improvement",
+  "source": "suggested",
+  "info": "Only when going commercial"
+ }
+]

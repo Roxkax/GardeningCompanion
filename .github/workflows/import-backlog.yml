@@ -1,0 +1,36 @@
+name: Import backlog
+
+# Creates labels, sprint milestones and the Epic -> Feature -> Task issues
+# from planning/backlog/backlog.json. Safe to re-run: existing issues are skipped.
+on:
+  workflow_dispatch:
+    inputs:
+      limit:
+        description: "Maximum number of issues to create (0 = all)"
+        default: "0"
+      dry_run:
+        description: "List what would be created without creating anything"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: import-backlog
+  cancel-in-progress: false
+
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    steps:
+      - uses: actions/checkout@v4
+      - name: Import
+        run: python3 planning/backlog/import_backlog.py
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          LIMIT: ${{ inputs.limit }}
+          DRY_RUN: ${{ inputs.dry_run }}
+          PAUSE_SECONDS: "4"
