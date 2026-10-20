@@ -6,8 +6,9 @@ A native mobile app that guides a complete beginner from unused land to a produc
 - **`PLAN.md`** is the detailed execution plan: features, architecture, milestones and cost.
 - **This file** holds the working agreements and the decision log. Record every decision the owner confirms here.
 
-## Current phase: BACKLOG CREATED, READY FOR SPRINT 01
-- Planning is complete. The owner asked for the full backlog to be created on GitHub (2026-10-20).
+## Current phase: APP DESIGN REVIEW
+- The GitHub backlog is being **deleted** (owner's decision, 2026-10-20): design changes may change features and therefore the plan. It will be rebuilt from `planning/backlog/*.json` once the design is signed off. Deletion runs through the **Reset backlog** workflow (`.github/workflows/reset-backlog.yml`), which needs the owner's temporary `BACKLOG_ADMIN_TOKEN` secret.
+- Screens are signed off **one at a time** (the owner found reviewing them all at once confusing).
 - The backlog source of truth is `planning/backlog/*.json`. To change it, edit the fragments, run `python3 planning/backlog/build.py`, and re-run the **Import backlog** workflow, which only creates missing issues. Edits to existing issues must be made on GitHub or with the GitHub tools.
 - Don't start application code until the owner says to start a sprint.
 
@@ -81,6 +82,7 @@ The owner is used to Azure DevOps, so the same hierarchy is used, built with sub
 | 2026-10-20 | **App design started** on the design canvas (https://claude.ai/artifact/LhQtQH3DAuprsSMSv3rDqG). **App map approved:** five tabs (Today, Garden, Snap & Ask camera button in the middle, Plan, Journal), "Learn and Me" opened from the profile picture, 44 screens with codes A1–G6. Screens are reviewed one at a time, starting with A1. |
 | 2026-10-20 | **Design approach:** each screen is shown as a realistic iPhone render (`design/screens/*.png`, source in `design/source/`, rendered with `design/source/shot.js`). Visual style: Figtree, leaf green #2D6A3A for actions, orange only for warnings, off-white #F5F6F0 background, large touch targets. **A1 Welcome and sign in: approved.** **A2 Find your plot: approved.** **A3 Draw your plot: approved.** |
 | 2026-10-20 | **All 46 screens rendered** (A1–G6) at the owner's request, for review together. A4 onwards are awaiting the owner's review. Overview sheets: `design/overview/overview-<A–G>.png`. |
+| 2026-10-20 | **Back to one-screen-at-a-time review** after all 46 renders were made. **The GitHub backlog (issues and sprints) will be deleted** and recreated after the design is signed off. |
 
 ## Open decisions
 - None at the moment
