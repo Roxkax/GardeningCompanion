@@ -65,7 +65,7 @@ All features are in scope for development. The last column only notes what could
 | Weather alerts | Frost, heatwave and wind warnings, and a notice to skip watering when rain is expected | Free |
 | Improvement suggestions | A weekly AI review of the journal, photos, weather and plan | Premium |
 | AI assistant | Knows the user's garden, answers from the knowledge base and proposes actions to confirm | Premium (with free quota) |
-| Journal and timeline | Photos and actions for each bed, plus a harvest and yield log. This is what lets the AI get better over time. | Free |
+| Journal and timeline | See §3.8 | Free |
 | Guides | See §3.7 | Free (Ask AI and photo check: Premium) |
 
 ### 3.3 Plot mapping
@@ -169,6 +169,21 @@ The "how to" behind every roadmap action. Each roadmap action opens its guide.
   - Commercial phase: a commissioned illustrator.
 - **Accuracy:** citing reputable sources is mandatory. The owner reviews guides for clarity, and **an expert (e.g. an agronomist) reviews them before the commercial launch**.
 - **Authoring:** guides are drafted by AI from cited sources and reviewed by the owner, then published through the `content/` pipeline.
+
+### 3.8 Journal and timeline
+
+The record of everything that happens in the garden, and what the AI and roadmap learn from. It works fully offline.
+
+- **Entries for each zone, bed or planting:** watering, feeding, sowing, planting out, weeding, mulching, pruning, treating, harvesting, observations and problems, with photos and notes.
+- **Quick logging:** one tap for common actions, and logging several beds at once (e.g. "watered all of zone A").
+- **Voice notes:** dictated in the field and turned into text by the phone's built-in speech recognition (free and offline).
+- **Automatic entries:** completing a roadmap action, task or guide step adds a journal entry.
+- **Weather on every day:** the day's rain and temperatures are attached automatically.
+- **Changing the date** to log things after the fact.
+- **Timeline views** for a zone, bed or planting, plus a photo time-lapse from the fixed photo spots.
+- **Harvest log:** weight or count for each crop and variety, compared with what was expected, with season totals. Optional estimated value, using prices the user enters.
+- **Search and filters**, and **export** to CSV or PDF.
+- **Backend:** the journal is the user-facing view of the **activity log**, so there's one source of truth and sync stays conflict-free. Photos go through the media service.
 
 ---
 
@@ -281,7 +296,10 @@ Each milestone ships backend and app work together and ends with something usabl
 
 ### M2 — Journal, tasks, materials and offline sync
 - [ ] Local databases (SwiftData and Room), plus the sync push/pull protocol
-- [ ] Journal with photos (SAS upload and thumbnails), tasks with reminders, materials inventory and shopping list
+- [ ] Journal on top of the activity log: quick and bulk logging, voice notes, automatic entries, weather on each day, changing the date
+- [ ] Photos (SAS upload and thumbnails), timeline views, photo time-lapse
+- [ ] Harvest log with comparison to expected yield and optional value; search, filters, CSV/PDF export
+- [ ] Tasks with reminders, materials inventory and shopping list
 
 ### M3 — Knowledge base, calendar and guides
 - [ ] `content/` pipeline publishing to the database and Blob Storage, with offline packages
