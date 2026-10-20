@@ -80,6 +80,7 @@ The owner is used to Azure DevOps, so the same hierarchy is used, built with sub
 | 2026-10-20 | **Basic owned-tools list is part of the MVP** (inside "Tools needed per action"), because MVP tool features need it. Reference images stay Good to have. **Manual sun selector per zone** in the MVP, until automatic sun calculation (Good to have). |
 | 2026-10-20 | **App design started** on the design canvas (https://claude.ai/artifact/LhQtQH3DAuprsSMSv3rDqG). **App map approved:** five tabs (Today, Garden, Snap & Ask camera button in the middle, Plan, Journal), "Learn and Me" opened from the profile picture, 44 screens with codes A1–G6. Screens are reviewed one at a time, starting with A1. |
 | 2026-10-20 | **Design approach:** each screen is shown as a realistic iPhone render (`design/screens/*.png`, source in `design/source/`, rendered with `design/source/shot.js`). Visual style: Figtree, leaf green #2D6A3A for actions, orange only for warnings, off-white #F5F6F0 background, large touch targets. **A1 Welcome and sign in: approved.** **A2 Find your plot: approved.** **A3 Draw your plot: approved.** |
+| 2026-10-20 | **All 46 screens rendered** (A1–G6) at the owner's request, for review together. A4 onwards are awaiting the owner's review. Overview sheets: `design/overview/overview-<A–G>.png`. |
 
 ## Open decisions
 - None at the moment

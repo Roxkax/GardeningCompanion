@@ -3,9 +3,9 @@ const { chromium } = require('playwright');
 const path = require('path');
 
 (async () => {
-  const [input, output, w = '520', h = '980'] = process.argv.slice(2);
+  const [input, output, w = '520', h = '980', scale = '3'] = process.argv.slice(2);
   const browser = await chromium.launch();
-  const page = await browser.newPage({ viewport: { width: +w, height: +h }, deviceScaleFactor: 3 });
+  const page = await browser.newPage({ viewport: { width: +w, height: +h }, deviceScaleFactor: +scale });
   await page.goto('file://' + path.resolve(input));
   await page.evaluate(() => document.fonts.ready);
   await page.waitForTimeout(500);
