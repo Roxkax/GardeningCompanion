@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>B5 Weather alert</title>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="frame.css">
+<style>
+  .content { position: absolute; top: 54px; left: 0; right: 0; bottom: 0; padding: 4px 18px 0; display: flex; flex-direction: column; gap: 16px; overflow: hidden; }
+  .head { display: flex; justify-content: space-between; align-items: flex-end; }
+  .date { font-size: 15px; font-weight: 600; color: var(--muted); }
+  h1 { margin: 0; font-size: 34px; font-weight: 800; line-height: 1.1; }
+  .avatar { width: 44px; height: 44px; border-radius: 999px; background: var(--green); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 17px; font-weight: 700; }
+  .card { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 14px 16px; }
+  .weather { display: flex; align-items: center; gap: 14px; }
+  .alert { background: var(--orange-soft); border: 1px solid #F3C99A; border-radius: 16px; padding: 14px 16px; display: flex; flex-direction: column; gap: 8px; }
+  .alert .t { font-size: 16px; font-weight: 700; color: #7A3A08; display: flex; gap: 10px; align-items: center; }
+  .alert p { margin: 0; font-size: 14.5px; color: #5C3A1A; line-height: 1.45; }
+  .alert .go { align-self: flex-start; background: var(--orange); color: #fff; font-size: 15px; font-weight: 700; padding: 0 16px; height: 44px; border-radius: 11px; display: flex; align-items: center; }
+  .sec { display: flex; justify-content: space-between; align-items: baseline; }
+  h2 { margin: 0; font-size: 21px; font-weight: 800; }
+  .link { font-size: 15px; font-weight: 700; color: var(--green); }
+  .chip { font-size: 12.5px; font-weight: 700; padding: 3px 9px; border-radius: 999px; }
+  .meta { font-size: 13px; font-weight: 600; color: var(--muted); }
+  .action { display: flex; flex-direction: column; gap: 9px; }
+  .action .title { font-size: 17px; font-weight: 700; line-height: 1.3; }
+  .action .sub { font-size: 14px; color: var(--muted); line-height: 1.45; }
+  .btns { display: flex; gap: 10px; }
+  .btns .btn { height: 44px; font-size: 15px; border-radius: 11px; }
+  .tab { position: absolute; left: 0; right: 0; bottom: 0; z-index: 40; background: rgba(255,255,255,.97); border-top: 1px solid var(--line); padding: 8px 6px 30px; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); align-items: end; }
+  .tab a { color: var(--muted); display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 11.5px; font-weight: 600; }
+  .tab a.on { color: var(--green); font-weight: 800; }
+  .tab .cam { width: 58px; height: 58px; border-radius: 999px; background: var(--green); display: flex; align-items: center; justify-content: center; margin: -26px auto 0; border: 4px solid var(--bg); box-shadow: 0 4px 10px rgba(45,106,58,.35); }
+
+  .nav { display: flex; align-items: center; gap: 8px; height: 48px; }
+  .back { width: 44px; height: 44px; border-radius: 999px; display: flex; align-items: center; justify-content: center; margin-left: -10px; }
+  .ntitle { flex: 1; text-align: center; font-size: 17px; font-weight: 700; }
+  .nright { width: 44px; display: flex; justify-content: flex-end; font-size: 16px; font-weight: 700; color: var(--green); }
+  .seg { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); background: #E6E9E0; border-radius: 12px; padding: 3px; }
+  .seg span { height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 10px; font-size: 14.5px; font-weight: 600; color: var(--muted); }
+  .seg span.on { background: #fff; color: var(--text); font-weight: 800; box-shadow: 0 1px 3px rgba(0,0,0,.12); }
+  .day { font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin: 2px 2px -6px; }
+  .list { background: #fff; border: 1px solid var(--line); border-radius: 16px; overflow: hidden; }
+  .item { display: flex; gap: 12px; align-items: center; padding: 11px 14px; border-bottom: 1px solid #EEF0EA; min-height: 58px; }
+  .item:last-child { border-bottom: none; }
+  .box { width: 24px; height: 24px; border-radius: 7px; border: 2px solid #A9B2A3; flex: none; display: flex; align-items: center; justify-content: center; }
+  .box.done { background: var(--green); border-color: var(--green); }
+  .it { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+  .it b { font-size: 15.5px; font-weight: 700; }
+  .it span { font-size: 13px; color: var(--muted); font-weight: 600; }
+  .zc { font-size: 11.5px; font-weight: 800; padding: 2px 7px; border-radius: 6px; }
+  .za { background: var(--green-soft); color: var(--green-ink); }
+  .zb { background: var(--blue-soft); color: var(--blue-ink); }
+  .zcc { background: #F1E7DA; color: #6A4317; }
+  .row { display: flex; align-items: center; gap: 10px; }
+  .label { font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+  .kv { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+  .kv div { background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 10px 12px; }
+  .kv b { display: block; font-size: 15.5px; font-weight: 800; }
+  .kv span { font-size: 12.5px; color: var(--muted); font-weight: 600; }
+  .bottom { position: absolute; left: 0; right: 0; bottom: 0; z-index: 30; background: rgba(245,246,240,.97); border-top: 1px solid var(--line); padding: 12px 18px 34px; display: flex; flex-direction: column; gap: 10px; }
+</style>
+</head>
+<body>
+<div class="stage"><div class="phone"><div class="screen">
+  <div class="island"></div>
+  <div class="status">
+    <span>9:41</span>
+    <span class="icons">
+      <svg width="18" height="12" viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1" fill="#1F2A20"/><rect x="5" y="5.5" width="3" height="6.5" rx="1" fill="#1F2A20"/><rect x="10" y="3" width="3" height="9" rx="1" fill="#1F2A20"/><rect x="15" y="0" width="3" height="12" rx="1" fill="#1F2A20"/></svg>
+      <svg width="16" height="12" viewBox="0 0 16 12"><path d="M8 11.5l2.2-2.6a3.2 3.2 0 0 0-4.4 0z" fill="#1F2A20"/><path d="M3.6 6.9a6.3 6.3 0 0 1 8.8 0l-1.4 1.6a4.2 4.2 0 0 0-6 0z" fill="#1F2A20"/><path d="M1.2 4.2a9.7 9.7 0 0 1 13.6 0l-1.4 1.6a7.6 7.6 0 0 0-10.8 0z" fill="#1F2A20"/></svg>
+      <svg width="27" height="13" viewBox="0 0 27 13"><rect x="0.5" y="0.5" width="23" height="12" rx="3.5" fill="none" stroke="#1F2A20" opacity=".4"/><rect x="2" y="2" width="18" height="9" rx="2" fill="#1F2A20"/><path d="M25 4.5v4a2 2 0 0 0 0-4z" fill="#1F2A20" opacity=".4"/></svg>
+    </span>
+  </div>
+
+
+  <div class="content" style="gap: 14px; bottom: 120px">
+    <div class="nav"><div class="back"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1F2A20" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></div><div class="ntitle">Weather alert</div><div class="nright"></div></div>
+    <div style="background: var(--orange-soft); border: 1px solid #F3C99A; border-radius: 18px; padding: 16px; display: flex; flex-direction: column; gap: 10px">
+      <div class="row" style="gap: 8px"><span class="chip" style="background: #9A4A0C; color: #fff">Warning</span><span style="font-size: 13.5px; font-weight: 700; color: #7A3A08">Thursday night · 22–23 Oct</span></div>
+      <div style="font-size: 25px; font-weight: 800; line-height: 1.15; color: #5A2A06">Frost possible on Thursday night</div>
+      <div class="row" style="gap: 18px; color: #5C3A1A">
+        <div><div style="font-size: 26px; font-weight: 800">0 °C</div><div style="font-size: 12.5px; font-weight: 700">Lowest, around 5 am</div></div>
+        <div><div style="font-size: 26px; font-weight: 800">70%</div><div style="font-size: 12.5px; font-weight: 700">Forecast confidence</div></div>
+      </div>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 8px">
+      <div class="label">At risk in your garden</div>
+      <div class="list">
+        <div class="item"><div style="width: 40px; height: 40px; border-radius: 10px; background: var(--green-soft); display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2D6A3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21V11"/><path d="M12 11C12 7 9 5 5 5c0 4 3 6 7 6zM12 13c0-4 3-6 7-6 0 4-3 6-7 6z"/></svg></div><div class="it"><b>Lettuce seedlings</b><span class="row" style="gap: 6px"><span class="zc za">Zone A</span>Bed A3 · planted 8 days ago</span></div></div>
+        <div class="item"><div style="width: 40px; height: 40px; border-radius: 10px; background: #EEF0EA; display: flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4E5A4C" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg></div><div class="it"><b>Cabbages and broad beans</b><span>Frost-hardy · no action needed</span></div></div>
+      </div>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 8px">
+      <div class="label">What to do</div>
+      <div class="list">
+        <div class="item" style="align-items: flex-start"><div class="box done" style="margin-top: 2px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg></div><div class="it"><b>Cover bed A3 with frost fleece</b><span>Thursday before sunset · 15 min · guide</span></div></div>
+        <div class="item" style="align-items: flex-start"><div class="box done" style="margin-top: 2px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg></div><div class="it"><b>Water bed A3 on Thursday morning</b><span>Moist soil holds heat better · 10 min</span></div></div>
+      </div>
+    </div>
+    <div class="row" style="gap: 8px; font-size: 13px; color: var(--muted); padding: 0 2px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4E5A4C" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.01"/></svg>IPMA has a yellow cold warning for Évora district.</div>
+  </div>
+  <div class="bottom">
+    <div class="btn primary">Add 2 tasks</div>
+  </div>
+  <div class="home"></div>
+</div></div></div>
+</body>
+</html>
