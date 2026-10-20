@@ -206,7 +206,8 @@ The garden to-do list: what to do and when, with reminders. It works offline.
 
 Which tools the user has, which they'll need, and when. **No consumable or stock tracking:** compost, seeds, drip line and similar are only mentioned in guides and tasks as information (e.g. "about 3 bags of compost for this bed"). There's no inventory or cost tracking.
 
-- **My tools:** a simple list of owned tools (no quantities), optionally with a photo and where it's kept.
+- **Images for identification:** every tool in the catalog has a **reference image**, so a beginner can recognise it (e.g. what a hoe or a mattock looks like). Images appear wherever a tool is mentioned: in guides, tasks, the "tools to get" list and the starter toolkit.
+- **My tools:** a simple list of owned tools (no quantities), each shown with its reference image. The user can replace it with their own photo of their actual tool. Optionally records where it's kept.
 - **Tools needed for each action:** roadmap actions, tasks and guides list their tools. The app compares them with the user's list and flags missing tools before they're needed.
 - **"Tools to get" list:** missing tools, ordered by when they're needed, each marked buy, rent or borrow.
 - **"Always own" setting (opt-in):** when on, every missing tool defaults to **buy**, and rent or borrow suggestions are hidden. The buy/rent/borrow information is still kept. **The owner uses this setting.**
@@ -214,7 +215,7 @@ Which tools the user has, which they'll need, and when. **No consumable or stock
 - **Buy vs rent vs borrow advice** for big equipment (e.g. a rototiller), unless "always own" is on.
 - **Tool maintenance reminders** (sharpening, cleaning, storing irrigation parts before frost), which become tasks.
 - **Later (post-MVP, commercial):** shop links or affiliate partnerships.
-- **Backend:** a tool catalog in the knowledge base (purpose, typical price range, usually rented or bought), the user's tool list, tools required by each action and guide, the missing-tools calculation, and the user's preference setting. Works offline.
+- **Backend:** a tool catalog in the knowledge base (reference image, purpose, typical price range, usually rented or bought; images included in the offline guide packages), the user's tool list, tools required by each action and guide, the missing-tools calculation, and the user's preference setting. Works offline.
 
 ---
 
