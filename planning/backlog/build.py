@@ -85,6 +85,18 @@ def schedule(epics):
     return sprints
 
 
+def dependency_title(dep, titles):
+    """Resolve a feature key, or a loose "E00:<name>" reference to a Foundations feature."""
+    if dep in titles:
+        return titles[dep]
+    name = dep.split(":", 1)[-1].strip().lower()
+    words = [w for w in name.replace("-", " ").split() if len(w) > 2]
+    best = max(titles.items(), key=lambda kv: sum(w.rstrip("s") in kv[1].lower() for w in words))
+    if words and sum(w.rstrip("s") in best[1].lower() for w in words) >= max(1, len(words) - 1):
+        return best[1]
+    return f"Foundations: {dep.split(':', 1)[-1].strip()}" if dep.startswith("E00:") else dep
+
+
 def marker(key):
     return f"\n\n<!-- backlog-key: {key} -->"
 
@@ -104,7 +116,7 @@ def render(epics, sprints):
         for f in e["features"]:
             hours = sum(t["hours"] for t in f["tasks"])
             spr = sorted({t["sprint"] for t in f["tasks"]})
-            deps = [titles.get(d, d) for d in f.get("depends_on", [])]
+            deps = [dependency_title(d, titles) for d in f.get("depends_on", [])]
             lines = [f"**User story:** {f['story']}", "", "**Acceptance criteria**"]
             lines += [f"- [ ] {a}" for a in f["acceptance"]]
             lines += ["", f"**Release tier:** {f['priority']}"]

@@ -16,7 +16,7 @@ A mobile app that guides a complete beginner from **unused land to a productive,
 | Platforms | **Mobile only**, native: **iOS (Swift/SwiftUI)** and **Android (Kotlin/Jetpack Compose)**. **iOS is built first**, and each milestone is ported to Android once it's stable. |
 | Location | Adapts to each user's location. Alentejo is the first test case. |
 | Languages | **Portuguese (pt-PT) and English** from the first version |
-| Offline | Journal, tasks, tools, plot map, calendar and downloaded guides work offline. AI photo analysis is queued until the device is online. |
+| Offline | Journal, tasks, tools, plot map, calendar and downloaded guides work offline. AI photo analysis is queued until the device is online. **Prioritised as Good to have** (see §6). |
 | AI actions | The assistant **proposes changes, which are applied only after the user confirms** |
 | Satellite | The user **draws the plot and zones on a satellite map**. The app adds area, sun, slope and soil information. Automatic detection comes later. |
 | Guides | **Text and illustrations, plus selected videos.** AI-generated animations come later. |
@@ -475,86 +475,17 @@ docs/      architecture decisions (ADRs), API notes
 
 ---
 
-## 6. Milestones
+## 6. Releases and sprints
 
-Each milestone ships backend and app work together and ends with something usable on the real plot in Alentejo. **All features are essential:** milestones set the order, not what's in scope.
+Milestones M0–M7 were replaced by **release tiers and sprints**, based on the owner's priorities in `planning/feature-priorities.xlsx` (the owner's choices, with Claude's suggestion wherever a row was left blank).
 
-### M0 — Foundations
-- [ ] Repo structure, .NET solution, Docker Compose (PostgreSQL + PostGIS + Azurite)
-- [ ] CI: build, test, lint for the backend and both apps, plus OpenAPI client generation
-- [ ] Entra External ID set up, with sign-in working on iOS and Android
-- [ ] Bicep templates for Container Apps, PostgreSQL, Blob Storage, Key Vault and Notification Hubs
-- [ ] i18n scaffolding (pt-PT and en) in the backend and both apps
-- [ ] Account deletion and data export endpoints, which the app stores require
-- [ ] Crash reporting and anonymous usage statistics; GPS data stripped from photos
-- [ ] Accessibility foundations (larger text, VoiceOver, colour-blind-friendly colours) and the settings screen
+- **Release tiers** (GitHub labels): **MVP** → **Good to have** → **Future improvement** (not scheduled).
+- **Sprints** (GitHub milestones): a capacity of **100 effort points per sprint, where 1 point = 1 hour** including the owner's testing time. Tasks are ordered by tier, then by phase (foundations → plot → crops and calendar → roadmap → journal and tasks → tools and irrigation → guides → weather → AI photo features → season planner → assistant → release), then filled into sprints in that order. A new sprint starts at the MVP / Good to have boundary.
+- **Work items** (GitHub issues): Epic (Feature type + `epic` label) → Feature (PBI) → Task, linked as sub-issues. Tasks carry an area label and their estimate.
+- **iOS first:** the MVP is iOS only and ends with a TestFlight release. Android is ported at the start of Good to have, and good-to-have features are ported at the end.
+- **Offline sync is Good to have** (owner priority). The MVP works online, but the data model uses client-generated IDs and server versions from the start, so sync can be added without migrations.
 
-### M1 — Plot and roadmap
-- [ ] Draw the plot boundary (tap or walk with GPS), zones and beds (on the map or by exact dimensions), stored in PostGIS
-- [ ] Points of interest: water, electricity, access, buildings and trees with heights
-- [ ] Enrichment: area, sun exposure, slope (elevation data), soil estimate (SoilGrids), prevailing wind
-- [ ] Shade estimation from obstacles, plus shade the user has observed
-- [ ] Layout designer (dimensions, paths, row direction), measuring tool, layout history by season
-- [ ] Activity log and zone state
-- [ ] Setup questions about what already exists
-- [ ] Roadmap engine, rules layer: next actions for each zone, with time windows and deviation handling
-- [ ] First-run setup flow and the "Today" home screen (extended as later milestones add tasks, alerts and AI proposals)
-
-### M2 — Journal, tasks, tools and offline sync
-- [ ] Local databases (SwiftData and Room), plus the sync push/pull protocol
-- [ ] Journal on top of the activity log: quick and bulk logging, voice notes, automatic entries, weather on each day, changing the date
-- [ ] Photos (SAS upload and thumbnails), timeline views, photo time-lapse
-- [ ] Harvest log with comparison to expected yield and optional value; search, filters, CSV/PDF export
-- [ ] Tasks: sources, date ranges, tools check, outcomes recorded in the activity log, Today/Week/zone views, repeating tasks
-- [ ] Reminders: on-phone reminders, morning summary, quiet hours; weekend planner
-- [ ] Tools: my tools, tools needed per action, "tools to get" list, starter toolkit, "always own" setting, maintenance reminders
-
-### M3 — Knowledge base, calendar and guides
-- [ ] `content/` pipeline publishing to the database and Blob Storage, with offline packages
-- [ ] Crop catalog (30–50 crops relevant to Mediterranean climates first), PT and EN
-- [ ] Choosing your crops: "my crops" list, suitability scoring, warnings, how much to plant
-- [ ] Climate-driven sowing and planting calendar
-- [ ] Guide format (standard step layout, parameters filled from the user's data), "doing" mode with read-aloud, step completion recorded in the activity log, feedback on unclear steps
-- [ ] First guides: land clearing, bed building, compost, drip irrigation, mulching, sowing, planting out
-- [ ] Harvest-sign checklists for each crop, plus storage and preserving guides
-- [ ] Illustration workflow (gpt-image illustrations and tool images in a consistent style, reviewed by the owner, plus diagrams) and a broken-video-link check job
-- [ ] Sources and "last reviewed" dates on all content, plus the AI content-freshness job that proposes updates as pull requests
-
-### M4 — AI photo features
-- [ ] AI layer on Foundry, with quotas by plan tier and cost logging
-- [ ] Site assessment
-- [ ] Plant identification: context-aware, several photos, crop-or-weed verdict, one-tap actions, corrections fed into the AI test set
-- [ ] Pest and disease diagnosis: all causes, follow-up questions, treatment plans (organic first, no product names), check-ups with before-and-after comparison, spread warnings, disease flags in bed history
-- [ ] Disease-risk rules on the weather data, seasonal scouting tasks, beneficial insect recognition
-- [ ] Harvest readiness: photo verdicts, advance notice of harvest windows, one-tap logging, glut warnings
-- [ ] Offline photo queue, with push notifications when results are ready
-- [ ] An evaluation set of real photos from the plot, re-run whenever a prompt or model changes
-
-### M5 — AI assistant and smart alerts
-- [ ] Assistant: chat and "Ask about this", streamed answers with cited sources, context builder, text, voice and photo input, hands-free voice mode
-- [ ] Garden memory notes (view, edit, delete), queued offline questions, conversation history, answer feedback
-- [ ] Model routing (cheap vs strong), prompt caching, conversation summarisation
-- [ ] Tool use that creates pending proposals, a confirmation interface and an audit log
-- [ ] Roadmap engine, AI layer: ranking, adapting to deviations, explanations, time and cost estimates
-- [ ] Weather alerts: crop-aware limits, alert types including good-conditions alerts, actions as tasks, severity and confidence, quiet-hours override, follow-up after the event
-- [ ] Weather screen with 7-day gardening forecast; IPMA official warnings
-- [ ] Garden report (statistics from the activity log, before-and-after photos) and AI improvement suggestions with evidence, accept, dismiss or snooze
-- [ ] End-of-season review feeding the season planner draft
-
-### M6 — Planning
-- [ ] Season planner engine: crops into beds, rotation, follow-on crops, cover crops, companion pairings with evidence levels, space check, perennials
-- [ ] Year view of each bed, layout inside each bed, drag-and-drop editing with live checks, draft and active plans
-- [ ] AI goals for the plan
-- [ ] Irrigation planner: water sources and bucket test, method per bed, system layout on the map, flow check and sectors, parts list (for information only)
-- [ ] Watering schedule from crop and season guidance, adjusted by the weather, with automatic watering tasks; hand-watering guidance
-- [ ] Mulching advice, rainwater harvesting estimate, seasonal irrigation reminders
-- [ ] Next-season planning from the harvest and yield history
-
-### M7 — Commercial readiness
-- [ ] Freemium tiers with App Store and Play subscriptions (server-side receipt validation)
-- [ ] Commercial licences for data sources (Open-Meteo paid plan or an alternative, and the plant-ID service if used)
-- [ ] Privacy policy, GDPR review, AI disclaimers (especially around pesticides and chemicals), store listings
-- [ ] Expert (agronomist) review of all guides, and a commissioned illustrator
+The full sprint plan, with hours per sprint and epic, is in **`planning/backlog/BACKLOG.md`**. The task source is the JSON fragments in `planning/backlog/`. `build.py` validates and schedules them, and the **Import backlog** GitHub Actions workflow creates the issues.
 
 ---
 
