@@ -1,0 +1,1588 @@
+[
+ {
+  "key": "E11",
+  "title": "Irrigation planner",
+  "summary": "Design the watering system from the water source to each bed, check the flow, list the parts and produce a weather-adjusted watering schedule. No water-needs calculation and no water quality check.",
+  "plan_ref": "PLAN.md §3.11",
+  "features": [
+   {
+    "key": "3.11.1",
+    "title": "Water sources and bucket test",
+    "priority": "MVP",
+    "seq": 6,
+    "story": "As a beginner gardener, I want to record my water sources and measure their flow with a bucket test so that the irrigation design matches what my water supply can deliver.",
+    "acceptance": [
+     "Water sources come from the points of interest on the map (well, mains tap, tank)",
+     "The app guides a bucket test: start a timer, stop when 10 L is full, flow rate (L/h) is calculated and saved",
+     "Each source can have several measurements; the latest is used",
+     "Flow rate can be edited by hand"
+    ],
+    "depends_on": [
+     "3.3.4",
+     "E00:API skeleton"
+    ],
+    "tasks": [
+     {
+      "title": "Add water source and flow measurement tables",
+      "area": "backend",
+      "hours": 3,
+      "description": "EF Core entities and migration for water sources (linked to a map point of interest) and flow measurements. Done when the migration applies and seed data loads locally."
+     },
+     {
+      "title": "Create water source API endpoints",
+      "area": "backend",
+      "hours": 3,
+      "description": "CRUD endpoints for water sources and flow measurements, scoped to the user. Done when OpenAPI is updated and integration tests pass."
+     },
+     {
+      "title": "Implement flow rate calculation from bucket test",
+      "area": "backend",
+      "hours": 2,
+      "description": "Calculate L/h from bucket volume and elapsed seconds, with validation for unrealistic values. Done with unit tests."
+     },
+     {
+      "title": "Build water source list and detail screen",
+      "area": "ios",
+      "hours": 4,
+      "description": "SwiftUI screens listing water sources from map points of interest with their latest flow rate. Done when sources show and can be edited."
+     },
+     {
+      "title": "Build guided bucket test screen with timer",
+      "area": "ios",
+      "hours": 4,
+      "description": "Step-by-step bucket test: choose volume, start/stop timer, show calculated flow and save. Done when a measurement is saved to the API."
+     },
+     {
+      "title": "Write bucket test instructions (PT/EN)",
+      "area": "content",
+      "hours": 2,
+      "description": "Short how-to text and illustration brief for the bucket test, in pt-PT and English. Done when published through the content pipeline."
+     },
+     {
+      "title": "Test water sources and bucket test on iPhone at the plot",
+      "area": "testing",
+      "hours": 2,
+      "description": "Measure the real well/tap flow at the plot and confirm values are saved and shown correctly."
+     }
+    ]
+   },
+   {
+    "key": "3.11.2",
+    "title": "Method per bed",
+    "priority": "MVP",
+    "seq": 6,
+    "story": "As a beginner gardener, I want the app to recommend an irrigation method for each bed so that I don't have to research drip lines versus sprinklers myself.",
+    "acceptance": [
+     "Each bed gets a recommended method: drip line, individual drippers, soaker hose or micro-sprinklers",
+     "The recommendation uses the bed's crops, size and the local climate (drip is the default in dry climates)",
+     "The user can override the method per bed",
+     "The reason for the recommendation is shown"
+    ],
+    "depends_on": [
+     "3.3.3",
+     "3.6.1",
+     "E00:Knowledge base pipeline"
+    ],
+    "tasks": [
+     {
+      "title": "Add irrigation method rules to the knowledge base",
+      "area": "content",
+      "hours": 3,
+      "description": "Author rules mapping crop types, bed size and climate to irrigation methods, with dripper spacing per crop. Done when the rules load through the content pipeline."
+     },
+     {
+      "title": "Add irrigation method fields to the bed model",
+      "area": "backend",
+      "hours": 2,
+      "description": "Store recommended method, chosen method and override flag per bed. Done when migration applies."
+     },
+     {
+      "title": "Implement method recommendation service",
+      "area": "backend",
+      "hours": 4,
+      "description": "Rules-based service returning method, dripper spacing and a reason for a bed. Done with unit tests for typical Alentejo beds."
+     },
+     {
+      "title": "Expose method recommendation in the API",
+      "area": "backend",
+      "hours": 2,
+      "description": "Endpoint returning recommendations for all beds of a plot and accepting overrides. Done when integration tests pass."
+     },
+     {
+      "title": "Build per-bed method screen with override",
+      "area": "ios",
+      "hours": 4,
+      "description": "Show each bed's recommended method and reason, with a picker to override. Done when changes persist."
+     },
+     {
+      "title": "Test method recommendations on iPhone",
+      "area": "testing",
+      "hours": 1,
+      "description": "Check recommendations make sense for the owner's beds and overrides persist."
+     }
+    ]
+   },
+   {
+    "key": "3.11.3",
+    "title": "System layout on map",
+    "priority": "MVP",
+    "seq": 6,
+    "story": "As a beginner gardener, I want to see my irrigation system drawn on the map so that I know where to lay the main pipe, branches and drip lines.",
+    "acceptance": [
+     "The main pipe runs from the chosen water source to the beds, using lengths from the map",
+     "Branch lines connect to each bed; drip lines run along each bed's rows",
+     "Pipe lengths are calculated and shown",
+     "The user can adjust the pipe route by moving points on the map",
+     "The layout is saved as part of the irrigation system model"
+    ],
+    "depends_on": [
+     "3.11.1",
+     "3.11.2",
+     "3.3.9"
+    ],
+    "tasks": [
+     {
+      "title": "Design irrigation system data model",
+      "area": "backend",
+      "hours": 3,
+      "description": "Model for irrigation systems, sectors, pipe segments (PostGIS lines) and drip lines linked to beds. Done when migration applies."
+     },
+     {
+      "title": "Implement automatic layout generation",
+      "area": "backend",
+      "hours": 6,
+      "description": "Generate a default route from source to beds (main pipe, branches, drip lines along rows) and compute lengths with PostGIS. Done with tests on sample plots."
+     },
+     {
+      "title": "Create irrigation layout API",
+      "area": "backend",
+      "hours": 3,
+      "description": "Endpoints to generate, read and update the layout, returning GeoJSON. Done when integration tests pass."
+     },
+     {
+      "title": "Draw irrigation layout on the map",
+      "area": "ios",
+      "hours": 6,
+      "description": "Render main pipe, branches and drip lines with distinct styles over the plot in MapKit. Done when the generated layout displays."
+     },
+     {
+      "title": "Allow editing the pipe route on the map",
+      "area": "ios",
+      "hours": 5,
+      "description": "Drag route points to adjust the pipe path; lengths update. Done when edits save to the API."
+     },
+     {
+      "title": "Test irrigation layout on iPhone at the plot",
+      "area": "testing",
+      "hours": 2,
+      "description": "Walk the planned route at the plot and check lengths and layout are realistic."
+     }
+    ]
+   },
+   {
+    "key": "3.11.4",
+    "title": "Flow check and sectors",
+    "priority": "MVP",
+    "seq": 6,
+    "story": "As a beginner gardener, I want the app to check if my water flow is enough and split the system into sectors if needed so that every bed gets water.",
+    "acceptance": [
+     "Total flow demand is calculated from dripper count and flow per dripper",
+     "If demand exceeds the source's flow, beds are grouped into sectors that run one after another",
+     "The design always includes a filter, a pressure regulator and a backflow preventer",
+     "Sectors are shown on the map with different colours"
+    ],
+    "depends_on": [
+     "3.11.3"
+    ],
+    "tasks": [
+     {
+      "title": "Implement flow demand calculation",
+      "area": "backend",
+      "hours": 3,
+      "description": "Compute total L/h per bed and system from dripper spacing, row lengths and emitter flow. Done with unit tests."
+     },
+     {
+      "title": "Implement sector splitting algorithm",
+      "area": "backend",
+      "hours": 4,
+      "description": "Group beds into sectors so each sector's demand fits the source flow with a safety margin. Done with unit tests for edge cases."
+     },
+     {
+      "title": "Add required components to the design",
+      "area": "backend",
+      "hours": 2,
+      "description": "Always include filter, pressure regulator and backflow preventer in the system model. Done when they appear in the API response."
+     },
+     {
+      "title": "Show flow check result and sectors on iOS",
+      "area": "ios",
+      "hours": 4,
+      "description": "Show demand vs available flow, a warning when exceeded, and colour sectors on the map. Done when sectors render."
+     },
+     {
+      "title": "Test flow check with real flow measurements",
+      "area": "testing",
+      "hours": 1,
+      "description": "Use the owner's measured flow and confirm sectors are reasonable."
+     }
+    ]
+   },
+   {
+    "key": "3.11.5",
+    "title": "Parts list",
+    "priority": "MVP",
+    "seq": 6,
+    "story": "As a beginner gardener, I want a parts list for my irrigation design so that I know what to buy, without having to track stock.",
+    "acceptance": [
+     "Parts list includes pipe metres per diameter, drip line metres, drippers, fittings, filter, regulator and backflow preventer",
+     "Quantities come from the saved layout",
+     "The list is for information only (no inventory or prices tracked)",
+     "The list can be shared or copied as text"
+    ],
+    "depends_on": [
+     "3.11.4"
+    ],
+    "tasks": [
+     {
+      "title": "Add irrigation parts catalog to the knowledge base",
+      "area": "content",
+      "hours": 3,
+      "description": "Generic parts (pipes, fittings, drippers, filters) with units and typical usage rules, in PT and EN. Done when published."
+     },
+     {
+      "title": "Implement parts list calculation",
+      "area": "backend",
+      "hours": 4,
+      "description": "Derive quantities from the layout: metres by type, fittings at junctions and bed connections. Done with unit tests."
+     },
+     {
+      "title": "Create parts list API endpoint",
+      "area": "backend",
+      "hours": 1,
+      "description": "Return the parts list for a plot's irrigation system. Done when integration test passes."
+     },
+     {
+      "title": "Build parts list screen with share",
+      "area": "ios",
+      "hours": 3,
+      "description": "Show grouped parts list with quantities and a share-as-text action. Done when sharing works."
+     },
+     {
+      "title": "Test parts list against the layout",
+      "area": "testing",
+      "hours": 1,
+      "description": "Check quantities make sense for the owner's design."
+     }
+    ]
+   },
+   {
+    "key": "3.11.6",
+    "title": "Watering schedule",
+    "priority": "MVP",
+    "seq": 6,
+    "story": "As a beginner gardener, I want a watering schedule that adjusts to the weather so that I water the right amount without calculating anything.",
+    "acceptance": [
+     "Run times per sector come from standard guidance per crop and season in the knowledge base",
+     "The schedule skips watering before rain and increases it during heatwaves",
+     "Early-morning watering is recommended",
+     "Watering tasks are created automatically from the schedule",
+     "The user can adjust run times; adjustments are kept"
+    ],
+    "depends_on": [
+     "3.11.4",
+     "3.9.1",
+     "E00:Weather data service",
+     "E00:Knowledge base pipeline"
+    ],
+    "tasks": [
+     {
+      "title": "Author watering guidance per crop and season",
+      "area": "content",
+      "hours": 4,
+      "description": "Run-time and frequency guidance per crop group and season (drip and by hand), PT and EN, citing sources. Done when published."
+     },
+     {
+      "title": "Implement base schedule generator",
+      "area": "backend",
+      "hours": 4,
+      "description": "Build a weekly schedule per sector from crops in each sector and the season guidance. Done with unit tests."
+     },
+     {
+      "title": "Implement daily weather adjustment job",
+      "area": "backend",
+      "hours": 4,
+      "description": "Daily job that skips runs before significant rain and increases run times in heatwaves, using the weather data service. Done with tests using sample forecasts."
+     },
+     {
+      "title": "Create watering tasks from the schedule",
+      "area": "backend",
+      "hours": 3,
+      "description": "Generate watering tasks for each scheduled run, linked to the sector. Done when tasks appear in the task API."
+     },
+     {
+      "title": "Store user run-time adjustments",
+      "area": "backend",
+      "hours": 2,
+      "description": "Persist per-sector overrides that the generator respects. Done with tests."
+     },
+     {
+      "title": "Build watering schedule screen",
+      "area": "ios",
+      "hours": 5,
+      "description": "Week view per sector with run times, weather adjustments explained, and editing of run times. Done when changes persist."
+     },
+     {
+      "title": "Test watering schedule over a week",
+      "area": "testing",
+      "hours": 2,
+      "description": "Follow the schedule for a week and check weather adjustments and tasks are correct."
+     }
+    ]
+   },
+   {
+    "key": "3.11.7",
+    "title": "Hand-watering guidance",
+    "priority": "MVP",
+    "seq": 6,
+    "story": "As a beginner gardener without an irrigation system yet, I want hand-watering guidance for each crop so that my plants survive while I set things up.",
+    "acceptance": [
+     "Guidance per crop and season for hose or watering can",
+     "Shown on each bed when no irrigation system is installed",
+     "Adjusts frequency advice to the weather (hot, rainy)",
+     "Available in PT and EN"
+    ],
+    "depends_on": [
+     "3.11.6"
+    ],
+    "tasks": [
+     {
+      "title": "Author hand-watering guidance content",
+      "area": "content",
+      "hours": 3,
+      "description": "Per crop group and season, how often and how much to water by hand, PT and EN. Done when published."
+     },
+     {
+      "title": "Add 'no system yet' mode to the irrigation model",
+      "area": "backend",
+      "hours": 2,
+      "description": "Flag beds without irrigation and return hand-watering guidance for them. Done with tests."
+     },
+     {
+      "title": "Show hand-watering guidance on bed screens",
+      "area": "ios",
+      "hours": 3,
+      "description": "Display guidance and weather notes for beds without a system. Done when visible for flagged beds."
+     },
+     {
+      "title": "Test hand-watering guidance on iPhone",
+      "area": "testing",
+      "hours": 1,
+      "description": "Confirm guidance shows for beds without irrigation."
+     }
+    ]
+   },
+   {
+    "key": "3.11.8",
+    "title": "Mulching advice",
+    "priority": "Future improvement",
+    "seq": 99,
+    "story": "As a gardener, I want mulching advice so that I use less water.",
+    "acceptance": [
+     "Mulching suggestions per bed and crop",
+     "Explains water savings in plain language",
+     "Links to the mulching guide"
+    ],
+    "depends_on": [],
+    "tasks": []
+   },
+   {
+    "key": "3.11.9",
+    "title": "Rainwater harvesting estimate",
+    "priority": "Future improvement",
+    "seq": 99,
+    "story": "As a gardener, I want to know how much rainwater I could collect so that I can decide whether a tank is worth it.",
+    "acceptance": [
+     "Uses roof area of buildings on the map and local rainfall",
+     "Shows litres per year and a suggested tank size",
+     "Clearly labelled as an estimate"
+    ],
+    "depends_on": [],
+    "tasks": []
+   },
+   {
+    "key": "3.11.10",
+    "title": "Seasonal reminders",
+    "priority": "Good to have",
+    "seq": 31,
+    "story": "As a gardener, I want seasonal irrigation maintenance reminders so that my system keeps working and doesn't freeze.",
+    "acceptance": [
+     "Reminders to flush lines, clean filters and drain before frost",
+     "Timing based on season and the local frost forecast",
+     "Reminders become tasks"
+    ],
+    "depends_on": [
+     "3.11.3",
+     "3.9.1"
+    ],
+    "tasks": [
+     {
+      "title": "Author seasonal irrigation maintenance content",
+      "area": "content",
+      "hours": 2,
+      "description": "Maintenance actions with timing rules and short how-tos, PT and EN. Done when published."
+     },
+     {
+      "title": "Implement seasonal reminder scheduler",
+      "area": "backend",
+      "hours": 3,
+      "description": "Create maintenance tasks by season and on the first frost forecast. Done with tests."
+     },
+     {
+      "title": "Show maintenance reminders in irrigation screen",
+      "area": "ios",
+      "hours": 2,
+      "description": "List upcoming maintenance with links to guides. Done when tasks appear."
+     },
+     {
+      "title": "Test seasonal reminders",
+      "area": "testing",
+      "hours": 1,
+      "description": "Simulate seasons and confirm reminders are created."
+     }
+    ]
+   },
+   {
+    "key": "3.11.11",
+    "title": "Smart controllers and sensors",
+    "priority": "Future improvement",
+    "seq": 99,
+    "story": "As a gardener, I want to connect smart irrigation controllers and soil moisture sensors so that watering becomes automatic.",
+    "acceptance": [
+     "Connect at least one controller brand",
+     "Soil moisture readings adjust the schedule",
+     "Works without the integration as before"
+    ],
+    "depends_on": [],
+    "tasks": []
+   }
+  ]
+ },
+ {
+  "key": "E12",
+  "title": "Weather alerts",
+  "summary": "Warn the gardener when weather threatens what is actually planted, with actions that become tasks, a 7-day gardening forecast and, later, official IPMA warnings.",
+  "plan_ref": "PLAN.md §3.12",
+  "features": [
+   {
+    "key": "3.12.1",
+    "title": "Crop-aware alerts",
+    "priority": "MVP",
+    "seq": 8,
+    "story": "As a gardener, I want weather alerts only when something I've planted is at risk so that notifications are useful, not noise.",
+    "acceptance": [
+     "Alert types: frost, heat, strong wind, heavy rain, hail, storms and dry spells",
+     "An alert is sent only if a current planting's crop limits are crossed",
+     "Duplicate alerts for the same event are not repeated",
+     "Alerts are sent 1–3 days ahead via push notification"
+    ],
+    "depends_on": [
+     "E00:Weather data service",
+     "E00:Push notifications",
+     "3.6.1",
+     "E00:Knowledge base pipeline"
+    ],
+    "tasks": [
+     {
+      "title": "Add crop weather limits to the knowledge base",
+      "area": "content",
+      "hours": 3,
+      "description": "Frost, heat, wind and rain tolerance per crop and growth stage, citing sources. Done when published."
+     },
+     {
+      "title": "Design alert data model",
+      "area": "backend",
+      "hours": 2,
+      "description": "Entities for alert events, affected plantings and delivery status, with dedupe keys. Done when migration applies."
+     },
+     {
+      "title": "Implement forecast threshold evaluator",
+      "area": "backend",
+      "hours": 5,
+      "description": "Compare each plot's forecast with limits of crops currently planted; produce alert candidates per type. Done with unit tests using sample forecasts."
+     },
+     {
+      "title": "Implement alert dedupe and scheduling job",
+      "area": "backend",
+      "hours": 4,
+      "description": "Scheduled job that runs several times a day, removes duplicates and queues notifications. Done with tests."
+     },
+     {
+      "title": "Send alerts via push notifications",
+      "area": "backend",
+      "hours": 2,
+      "description": "Deliver queued alerts through the push notification service, with deep links. Done when a test alert reaches the phone."
+     },
+     {
+      "title": "Build alert list and detail screen",
+      "area": "ios",
+      "hours": 4,
+      "description": "List active alerts with affected plantings and detail view. Done when alerts display from the API."
+     },
+     {
+      "title": "Handle alert push notifications and deep links",
+      "area": "ios",
+      "hours": 3,
+      "description": "Open the alert detail from a notification. Done when tapping a notification opens the right alert."
+     },
+     {
+      "title": "Test crop-aware alerts with simulated forecasts",
+      "area": "testing",
+      "hours": 2,
+      "description": "Inject test forecasts and confirm alerts only fire for at-risk plantings."
+     }
+    ]
+   },
+   {
+    "key": "3.12.2",
+    "title": "Skip-watering notices",
+    "priority": "MVP",
+    "seq": 8,
+    "story": "As a gardener, I want to be told when rain is coming so that I can skip watering.",
+    "acceptance": [
+     "A notice is sent when significant rain is forecast before a scheduled watering",
+     "The related watering task is marked as skippable",
+     "No notice if nothing is scheduled"
+    ],
+    "depends_on": [
+     "3.12.1",
+     "3.11.6"
+    ],
+    "tasks": [
+     {
+      "title": "Implement rain-before-watering rule",
+      "area": "backend",
+      "hours": 3,
+      "description": "Detect forecast rain above a threshold before scheduled watering and create a notice. Done with tests."
+     },
+     {
+      "title": "Link notice to watering tasks",
+      "area": "backend",
+      "hours": 2,
+      "description": "Mark affected watering tasks as skippable with the reason. Done when the task API shows it."
+     },
+     {
+      "title": "Show skip-watering notice on iOS",
+      "area": "ios",
+      "hours": 2,
+      "description": "Display the notice and let the user skip the task in one tap. Done when skip is recorded."
+     },
+     {
+      "title": "Test skip-watering notices",
+      "area": "testing",
+      "hours": 1,
+      "description": "Simulate rain forecasts and check notices and task updates."
+     }
+    ]
+   },
+   {
+    "key": "3.12.3",
+    "title": "Good-conditions alerts",
+    "priority": "Good to have",
+    "seq": 32,
+    "story": "As a gardener, I want to know when conditions are ideal for a job so that I can plan my time well.",
+    "acceptance": [
+     "Alerts such as 'mild and overcast tomorrow, a good day to plant out'",
+     "Only for actions that are currently relevant in the roadmap or calendar",
+     "Can be turned off in settings"
+    ],
+    "depends_on": [
+     "3.12.1",
+     "3.5.1"
+    ],
+    "tasks": [
+     {
+      "title": "Define good-conditions rules",
+      "area": "content",
+      "hours": 2,
+      "description": "Weather conditions that suit planting out, sowing, spraying and other jobs. Done when published."
+     },
+     {
+      "title": "Implement good-conditions evaluator",
+      "area": "backend",
+      "hours": 3,
+      "description": "Match forecast days with pending actions and create positive alerts. Done with tests."
+     },
+     {
+      "title": "Add good-conditions setting and display",
+      "area": "ios",
+      "hours": 2,
+      "description": "Show positive alerts with their own style and a settings toggle. Done when toggle works."
+     },
+     {
+      "title": "Test good-conditions alerts",
+      "area": "testing",
+      "hours": 1,
+      "description": "Confirm alerts appear only for relevant pending actions."
+     }
+    ]
+   },
+   {
+    "key": "3.12.4",
+    "title": "Actions as tasks",
+    "priority": "MVP",
+    "seq": 8,
+    "story": "As a gardener, I want each alert to tell me what to do and add it to my tasks so that I can protect my plants in time.",
+    "acceptance": [
+     "Each alert includes concrete actions (e.g. cover peppers with fleece tonight)",
+     "Each action links to its guide",
+     "Actions can be added as tasks in one tap, with the alert's time window"
+    ],
+    "depends_on": [
+     "3.12.1",
+     "3.9.1"
+    ],
+    "tasks": [
+     {
+      "title": "Author protective actions per alert type and crop",
+      "area": "content",
+      "hours": 3,
+      "description": "Protective actions with guide links for each alert type and crop group, PT and EN. Done when published."
+     },
+     {
+      "title": "Attach actions to alert events",
+      "area": "backend",
+      "hours": 3,
+      "description": "Select relevant actions for affected plantings and include them in the alert. Done with tests."
+     },
+     {
+      "title": "Create tasks from alert actions",
+      "area": "backend",
+      "hours": 2,
+      "description": "Endpoint to turn alert actions into tasks with due windows. Done when tasks are created."
+     },
+     {
+      "title": "Show actions in alert detail with 'add to tasks'",
+      "area": "ios",
+      "hours": 3,
+      "description": "List actions with guide links and one-tap task creation. Done when tasks appear in the task list."
+     },
+     {
+      "title": "Test alert actions end to end",
+      "area": "testing",
+      "hours": 1,
+      "description": "Trigger a test frost alert and add its actions as tasks."
+     }
+    ]
+   },
+   {
+    "key": "3.12.5",
+    "title": "Severity and confidence",
+    "priority": "Good to have",
+    "seq": 32,
+    "story": "As a gardener, I want to know how serious and how certain an alert is so that I can decide how to react.",
+    "acceptance": [
+     "Alerts have watch and warning levels",
+     "Forecast confidence is shown, lower for days further out",
+     "Severity affects notification style"
+    ],
+    "depends_on": [
+     "3.12.1"
+    ],
+    "tasks": [
+     {
+      "title": "Add severity and confidence to alerts",
+      "area": "backend",
+      "hours": 3,
+      "description": "Compute severity from how far limits are exceeded and confidence from lead time and model agreement. Done with tests."
+     },
+     {
+      "title": "Display severity and confidence on iOS",
+      "area": "ios",
+      "hours": 2,
+      "description": "Badges and plain-language confidence on alert screens. Done when visible."
+     },
+     {
+      "title": "Test severity levels",
+      "area": "testing",
+      "hours": 1,
+      "description": "Check levels with simulated forecasts."
+     }
+    ]
+   },
+   {
+    "key": "3.12.6",
+    "title": "Quiet-hours override",
+    "priority": "Good to have",
+    "seq": 32,
+    "story": "As a gardener, I want urgent alerts to reach me even during quiet hours so that I don't lose plants to a frost overnight.",
+    "acceptance": [
+     "Only warning-level, time-critical alerts can override quiet hours",
+     "The user can disable the override in settings",
+     "Override use is logged"
+    ],
+    "depends_on": [
+     "3.12.5",
+     "3.9.12"
+    ],
+    "tasks": [
+     {
+      "title": "Implement quiet-hours override rule",
+      "area": "backend",
+      "hours": 2,
+      "description": "Allow urgent alerts through quiet hours based on severity and timing. Done with tests."
+     },
+     {
+      "title": "Use time-sensitive notification level on iOS",
+      "area": "ios",
+      "hours": 2,
+      "description": "Send urgent alerts as time-sensitive notifications and add a settings toggle. Done when override works on device."
+     },
+     {
+      "title": "Test quiet-hours override",
+      "area": "testing",
+      "hours": 1,
+      "description": "Set quiet hours and confirm an urgent test alert gets through."
+     }
+    ]
+   },
+   {
+    "key": "3.12.7",
+    "title": "7-day weather screen",
+    "priority": "MVP",
+    "seq": 8,
+    "story": "As a gardener, I want a 7-day forecast for my plot with gardening notes so that I can plan my week.",
+    "acceptance": [
+     "Shows 7 days of temperature, rain, wind for the plot location",
+     "Each day has gardening notes (good to work, sow, spray or not)",
+     "Active alerts are highlighted",
+     "Last forecast is cached for viewing without a connection"
+    ],
+    "depends_on": [
+     "E00:Weather data service"
+    ],
+    "tasks": [
+     {
+      "title": "Create forecast endpoint for a plot",
+      "area": "backend",
+      "hours": 2,
+      "description": "Return 7-day forecast from the weather data service for the plot's location. Done when integration test passes."
+     },
+     {
+      "title": "Implement daily gardening notes",
+      "area": "backend",
+      "hours": 3,
+      "description": "Rules that turn each day's forecast into short notes (good to sow, avoid spraying, etc.). Done with tests."
+     },
+     {
+      "title": "Build 7-day weather screen",
+      "area": "ios",
+      "hours": 5,
+      "description": "Day cards with icons, temperatures, rain, wind, notes and alert highlights. Done when it shows real forecast data."
+     },
+     {
+      "title": "Cache the last forecast on device",
+      "area": "ios",
+      "hours": 2,
+      "description": "Store the latest forecast for offline viewing. Done when the screen works in airplane mode."
+     },
+     {
+      "title": "Test weather screen against a reference forecast",
+      "area": "testing",
+      "hours": 1,
+      "description": "Compare with IPMA or another source for the plot location."
+     }
+    ]
+   },
+   {
+    "key": "3.12.8",
+    "title": "Follow-up after event",
+    "priority": "Good to have",
+    "seq": 32,
+    "story": "As a gardener, I want the app to ask me to check my plants after a frost or storm so that I notice and log damage.",
+    "acceptance": [
+     "After a frost or storm alert passes, a follow-up task is created",
+     "The task asks to check affected plantings and log damage",
+     "Damage notes go to the journal"
+    ],
+    "depends_on": [
+     "3.12.1",
+     "3.8.1"
+    ],
+    "tasks": [
+     {
+      "title": "Schedule follow-up after alert events",
+      "area": "backend",
+      "hours": 2,
+      "description": "Create a follow-up task after the event window ends. Done with tests."
+     },
+     {
+      "title": "Build damage check flow on iOS",
+      "area": "ios",
+      "hours": 3,
+      "description": "Checklist of affected plantings with quick damage logging to the journal. Done when entries save."
+     },
+     {
+      "title": "Test follow-up after a simulated frost",
+      "area": "testing",
+      "hours": 1,
+      "description": "Confirm the task appears and damage logs to the journal."
+     }
+    ]
+   },
+   {
+    "key": "3.12.9",
+    "title": "IPMA official warnings",
+    "priority": "Good to have",
+    "seq": 32,
+    "story": "As a gardener in Portugal, I want official IPMA weather warnings in the app so that I get authoritative alerts.",
+    "acceptance": [
+     "IPMA warnings for the plot's district are fetched several times a day",
+     "Shown alongside crop-aware alerts, labelled as official",
+     "Reuse terms checked and attribution shown"
+    ],
+    "depends_on": [
+     "E00:Weather data service",
+     "3.12.1"
+    ],
+    "tasks": [
+     {
+      "title": "Check IPMA open data terms and endpoints",
+      "area": "infra",
+      "hours": 1,
+      "description": "Confirm reuse terms and identify the warnings endpoint and district codes. Done when documented in docs/."
+     },
+     {
+      "title": "Build IPMA warnings adapter",
+      "area": "backend",
+      "hours": 4,
+      "description": "Fetch and parse IPMA warnings, map plot location to district, cache results. Done with tests on sample payloads."
+     },
+     {
+      "title": "Merge official warnings into alerts",
+      "area": "backend",
+      "hours": 2,
+      "description": "Store official warnings as alerts with source and attribution. Done when they appear in the alert API."
+     },
+     {
+      "title": "Display official warnings on iOS",
+      "area": "ios",
+      "hours": 2,
+      "description": "Show IPMA warnings with an 'official' label and attribution. Done when visible."
+     },
+     {
+      "title": "Test IPMA warnings",
+      "area": "testing",
+      "hours": 1,
+      "description": "Check against the IPMA website for the owner's district."
+     }
+    ]
+   },
+   {
+    "key": "3.12.10",
+    "title": "Other countries' warnings",
+    "priority": "Future improvement",
+    "seq": 99,
+    "story": "As a gardener outside Portugal, I want official warnings from my country so that alerts are authoritative wherever I am.",
+    "acceptance": [
+     "MeteoAlarm or national services integrated",
+     "Reuse terms checked for commercial use",
+     "Falls back to forecast-based alerts where not available"
+    ],
+    "depends_on": [],
+    "tasks": []
+   }
+  ]
+ },
+ {
+  "key": "E13",
+  "title": "Plant identification",
+  "summary": "Identify plants from photos with Claude, including crop-or-weed verdicts for seedlings, safety flags and context from the garden, backed by an eval set of real photos.",
+  "plan_ref": "PLAN.md §3.13",
+  "features": [
+   {
+    "key": "3.13.1",
+    "title": "Photo identification",
+    "priority": "MVP",
+    "seq": 9,
+    "story": "As a beginner gardener, I want to photograph a plant and learn what it is so that I know whether to keep it.",
+    "acceptance": [
+     "Take or pick a photo and get the top possibilities with confidence levels",
+     "Common names in PT and EN plus the scientific name",
+     "Results are saved with the photo in the journal",
+     "Photos taken offline are queued and identified when back online"
+    ],
+    "depends_on": [
+     "E00:AI layer core",
+     "E00:Media service"
+    ],
+    "tasks": [
+     {
+      "title": "Design identification prompt and structured output schema",
+      "area": "backend",
+      "hours": 4,
+      "description": "Write the Claude prompt and JSON schema (candidates, confidence, names, flags, next step). Done when reviewed and versioned."
+     },
+     {
+      "title": "Implement 'identify' task in the AI layer",
+      "area": "backend",
+      "hours": 4,
+      "description": "Call Claude via the AI layer with the photo, validate the structured output and store the result. Done with tests using recorded responses."
+     },
+     {
+      "title": "Create identification API endpoint",
+      "area": "backend",
+      "hours": 2,
+      "description": "Accept a photo reference, run identification, return the result. Done when integration test passes."
+     },
+     {
+      "title": "Save identification to the activity log and journal",
+      "area": "backend",
+      "hours": 2,
+      "description": "Record result and photo as a journal entry. Done when it appears in the journal API."
+     },
+     {
+      "title": "Build camera capture and result screen",
+      "area": "ios",
+      "hours": 5,
+      "description": "Capture or pick a photo, show progress, display candidates with confidence and names. Done when real results display."
+     },
+     {
+      "title": "Queue identification photos when offline",
+      "area": "ios",
+      "hours": 3,
+      "description": "Store photos taken offline and submit them when back online, with a notification. Done when tested in airplane mode."
+     },
+     {
+      "title": "Build identification eval set",
+      "area": "testing",
+      "hours": 3,
+      "description": "Collect 20–30 photos from the plot with known answers and record expected results. Done when the set is stored in the repo."
+     },
+     {
+      "title": "Create eval runner for identification",
+      "area": "backend",
+      "hours": 3,
+      "description": "Script that runs the eval set through the prompt and reports accuracy. Done when it runs locally."
+     },
+     {
+      "title": "Test identification on iPhone at the plot",
+      "area": "testing",
+      "hours": 2,
+      "description": "Identify real plants on the plot and check results."
+     }
+    ]
+   },
+   {
+    "key": "3.13.2",
+    "title": "Crop-or-weed verdict",
+    "priority": "MVP",
+    "seq": 9,
+    "story": "As a beginner gardener, I want to know if a seedling is my crop or a weed so that I don't pull the wrong one.",
+    "acceptance": [
+     "Each identification includes a crop-or-weed verdict",
+     "Seedlings get honest confidence; when unsure the app suggests re-photographing in a week",
+     "Verdict uses what was sown in that bed"
+    ],
+    "depends_on": [
+     "3.13.1",
+     "3.13.3"
+    ],
+    "tasks": [
+     {
+      "title": "Extend prompt and schema with crop-or-weed verdict",
+      "area": "backend",
+      "hours": 2,
+      "description": "Add verdict and seedling uncertainty guidance to the prompt and output. Done when tests pass."
+     },
+     {
+      "title": "Add seedling photos to the eval set",
+      "area": "testing",
+      "hours": 2,
+      "description": "Add photos of crop and weed seedlings from the plot. Done when stored with expected verdicts."
+     },
+     {
+      "title": "Show verdict and re-photograph suggestion on iOS",
+      "area": "ios",
+      "hours": 3,
+      "description": "Prominent verdict badge and a reminder to re-photograph when unsure. Done when the reminder creates a task."
+     },
+     {
+      "title": "Test crop-or-weed verdict on seedlings",
+      "area": "testing",
+      "hours": 1,
+      "description": "Check verdicts on real seedlings in the beds."
+     }
+    ]
+   },
+   {
+    "key": "3.13.3",
+    "title": "Context for accuracy",
+    "priority": "MVP",
+    "seq": 9,
+    "story": "As a gardener, I want identification to use my location, season and what's planted in the bed so that results are more accurate.",
+    "acceptance": [
+     "The request includes location (region, not exact coordinates), season and plantings of the selected bed",
+     "The user can choose the bed or 'unknown location'",
+     "Context use is visible in the result ('based on: carrots sown here 2 weeks ago')"
+    ],
+    "depends_on": [
+     "3.13.1",
+     "3.3.3"
+    ],
+    "tasks": [
+     {
+      "title": "Build identification context assembler",
+      "area": "backend",
+      "hours": 3,
+      "description": "Gather region, season and bed plantings for the AI request, without exact coordinates. Done with tests."
+     },
+     {
+      "title": "Add bed selection to the identification flow",
+      "area": "ios",
+      "hours": 2,
+      "description": "Pick a bed or 'unknown' before or after taking the photo. Done when context is sent."
+     },
+     {
+      "title": "Show context used in the result",
+      "area": "ios",
+      "hours": 1,
+      "description": "Display a short 'based on' line. Done when visible."
+     },
+     {
+      "title": "Compare eval accuracy with and without context",
+      "area": "testing",
+      "hours": 2,
+      "description": "Run the eval set both ways and record the difference."
+     }
+    ]
+   },
+   {
+    "key": "3.13.4",
+    "title": "Several photos",
+    "priority": "Good to have",
+    "seq": 33,
+    "story": "As a gardener, I want to send several photos of a plant so that identification is more accurate.",
+    "acceptance": [
+     "Up to 4 photos per identification (leaf, flower, whole plant)",
+     "Tips on what to photograph are shown",
+     "All photos are sent in one AI request"
+    ],
+    "depends_on": [
+     "3.13.1"
+    ],
+    "tasks": [
+     {
+      "title": "Support multiple images in the identify task",
+      "area": "backend",
+      "hours": 2,
+      "description": "Accept and send up to 4 images per request. Done with tests."
+     },
+     {
+      "title": "Build multi-photo capture with tips",
+      "area": "ios",
+      "hours": 3,
+      "description": "Capture several photos with guidance for leaf, flower and whole plant. Done when all upload."
+     },
+     {
+      "title": "Test multi-photo identification",
+      "area": "testing",
+      "hours": 1,
+      "description": "Compare results with one vs several photos."
+     }
+    ]
+   },
+   {
+    "key": "3.13.5",
+    "title": "Invasive and toxic flags",
+    "priority": "MVP",
+    "seq": 9,
+    "story": "As a gardener, I want warnings for invasive or toxic plants so that I stay safe and handle them properly.",
+    "acceptance": [
+     "Results flag invasive and toxic plants with a clear warning",
+     "The app never says a wild plant is safe to eat",
+     "A disclaimer is shown on every identification"
+    ],
+    "depends_on": [
+     "3.13.1"
+    ],
+    "tasks": [
+     {
+      "title": "Add safety rules to the identification prompt",
+      "area": "backend",
+      "hours": 2,
+      "description": "Rules for invasive/toxic flags and never confirming edibility of wild plants. Done with tests on unsafe cases."
+     },
+     {
+      "title": "Write safety disclaimer text (PT/EN)",
+      "area": "content",
+      "hours": 1,
+      "description": "Short disclaimer for identification results. Done when published."
+     },
+     {
+      "title": "Show safety flags and disclaimer on iOS",
+      "area": "ios",
+      "hours": 2,
+      "description": "Warning banners for invasive/toxic results and a disclaimer footer. Done when visible."
+     },
+     {
+      "title": "Test safety flags with known toxic plants",
+      "area": "testing",
+      "hours": 1,
+      "description": "Use photos of toxic plants (e.g. oleander) and confirm warnings."
+     }
+    ]
+   },
+   {
+    "key": "3.13.6",
+    "title": "One-tap actions",
+    "priority": "Good to have",
+    "seq": 33,
+    "story": "As a gardener, I want to act on an identification in one tap so that I don't have to re-enter anything.",
+    "acceptance": [
+     "'Add as a planting' creates a planting in the chosen bed",
+     "'Mark as weed' creates a removal task with the right method",
+     "'Keep' adds a tree to the map as a point of interest"
+    ],
+    "depends_on": [
+     "3.13.1",
+     "3.9.1",
+     "3.3.4"
+    ],
+    "tasks": [
+     {
+      "title": "Implement identification action endpoints",
+      "area": "backend",
+      "hours": 3,
+      "description": "Endpoints to add planting, create removal task (method from knowledge base) or add a map point. Done with tests."
+     },
+     {
+      "title": "Add weed removal methods to the knowledge base",
+      "area": "content",
+      "hours": 2,
+      "description": "Removal method per common weed (by hand, roots, repeated cutting). Done when published."
+     },
+     {
+      "title": "Add action buttons to the result screen",
+      "area": "ios",
+      "hours": 3,
+      "description": "Three actions with confirmation. Done when each creates the right record."
+     },
+     {
+      "title": "Test one-tap actions",
+      "area": "testing",
+      "hours": 1,
+      "description": "Run each action on a real identification."
+     }
+    ]
+   },
+   {
+    "key": "3.13.7",
+    "title": "Corrections",
+    "priority": "Good to have",
+    "seq": 33,
+    "story": "As a gardener, I want to correct a wrong identification so that the app learns and future results improve.",
+    "acceptance": [
+     "The user can mark a result wrong and enter the right plant",
+     "Corrections are saved and used as context next time",
+     "Corrections are added to the eval set"
+    ],
+    "depends_on": [
+     "3.13.1"
+    ],
+    "tasks": [
+     {
+      "title": "Store identification corrections",
+      "area": "backend",
+      "hours": 2,
+      "description": "Save the corrected species linked to the original result. Done when migration applies."
+     },
+     {
+      "title": "Use past corrections as context",
+      "area": "backend",
+      "hours": 2,
+      "description": "Include the user's relevant corrections in future requests. Done with tests."
+     },
+     {
+      "title": "Export corrections to the eval set",
+      "area": "backend",
+      "hours": 2,
+      "description": "Script to add corrected cases to the eval set. Done when it runs."
+     },
+     {
+      "title": "Build correction flow on iOS",
+      "area": "ios",
+      "hours": 2,
+      "description": "'This is wrong' with a species search. Done when saved."
+     },
+     {
+      "title": "Test corrections",
+      "area": "testing",
+      "hours": 1,
+      "description": "Correct a result and check it's used next time."
+     }
+    ]
+   },
+   {
+    "key": "3.13.8",
+    "title": "Specialist ID service",
+    "priority": "Future improvement",
+    "seq": 99,
+    "story": "As a gardener, I want a second opinion from a specialist plant-ID service so that uncertain results are more reliable.",
+    "acceptance": [
+     "Integrates a specialist service (e.g. Pl@ntNet or Kindwise) with a commercial licence",
+     "Used when Claude's confidence is low",
+     "Both opinions shown"
+    ],
+    "depends_on": [],
+    "tasks": []
+   }
+  ]
+ },
+ {
+  "key": "E14",
+  "title": "Pest and disease diagnosis",
+  "summary": "Diagnose plant problems from photos (pests, diseases, nutrients and stress) and give treatment plans that start with organic methods and never name chemical products.",
+  "plan_ref": "PLAN.md §3.14",
+  "features": [
+   {
+    "key": "3.14.1",
+    "title": "Photo diagnosis",
+    "priority": "MVP",
+    "seq": 9,
+    "story": "As a beginner gardener, I want to photograph a sick plant and learn what's wrong so that I can fix it before it spreads.",
+    "acceptance": [
+     "Causes considered: pests, fungal, bacterial and viral diseases, nutrient problems and environmental stress",
+     "Uses crop, growth stage, recent weather, watering schedule and recent journal entries",
+     "Top causes are shown with confidence",
+     "Serious or spreading outbreaks suggest contacting the regional agricultural services",
+     "Results are saved to the journal; offline photos are queued"
+    ],
+    "depends_on": [
+     "E00:AI layer core",
+     "E00:Media service",
+     "3.13.1"
+    ],
+    "tasks": [
+     {
+      "title": "Design diagnosis prompt and structured output schema",
+      "area": "backend",
+      "hours": 4,
+      "description": "Prompt covering all cause types including stress, and a JSON schema for causes, confidence, severity and next steps. Done when reviewed and versioned."
+     },
+     {
+      "title": "Build diagnosis context assembler",
+      "area": "backend",
+      "hours": 3,
+      "description": "Gather crop, stage, recent weather, watering schedule and journal entries. Done with tests."
+     },
+     {
+      "title": "Implement 'diagnose' task in the AI layer",
+      "area": "backend",
+      "hours": 4,
+      "description": "Call Claude with photos and context, validate output, store result. Done with tests using recorded responses."
+     },
+     {
+      "title": "Create diagnosis API endpoint",
+      "area": "backend",
+      "hours": 2,
+      "description": "Accept photos and planting, return diagnosis, save to activity log. Done when integration test passes."
+     },
+     {
+      "title": "Build diagnosis capture and result screen",
+      "area": "ios",
+      "hours": 5,
+      "description": "Select planting, take photos, show causes with confidence and severity. Done when real results display."
+     },
+     {
+      "title": "Queue diagnosis photos when offline",
+      "area": "ios",
+      "hours": 2,
+      "description": "Reuse the offline photo queue for diagnoses. Done when tested in airplane mode."
+     },
+     {
+      "title": "Write referral text for regional services",
+      "area": "content",
+      "hours": 1,
+      "description": "When-to-refer guidance and how to find regional agricultural services (e.g. DRAP Alentejo). Done when published."
+     },
+     {
+      "title": "Build diagnosis eval set",
+      "area": "testing",
+      "hours": 3,
+      "description": "Collect photos of common problems (incl. sunscald, blossom end rot) with known causes. Done when stored."
+     },
+     {
+      "title": "Test diagnosis on iPhone with real problems",
+      "area": "testing",
+      "hours": 2,
+      "description": "Diagnose real issues on the plot and review results."
+     }
+    ]
+   },
+   {
+    "key": "3.14.2",
+    "title": "Follow-up questions",
+    "priority": "Good to have",
+    "seq": 34,
+    "story": "As a gardener, I want the AI to ask me questions when it's unsure so that the diagnosis is more accurate.",
+    "acceptance": [
+     "When confidence is low, the AI asks 1–3 short questions",
+     "Answers are sent back and the diagnosis is refined",
+     "The user can skip questions"
+    ],
+    "depends_on": [
+     "3.14.1"
+    ],
+    "tasks": [
+     {
+      "title": "Support multi-turn diagnosis in the AI layer",
+      "area": "backend",
+      "hours": 4,
+      "description": "Allow the diagnose task to return questions and accept answers to refine results. Done with tests."
+     },
+     {
+      "title": "Build question-and-answer flow on iOS",
+      "area": "ios",
+      "hours": 3,
+      "description": "Show questions with quick-answer options and free text. Done when refined results display."
+     },
+     {
+      "title": "Test follow-up questions",
+      "area": "testing",
+      "hours": 1,
+      "description": "Use ambiguous photos and check questions improve results."
+     }
+    ]
+   },
+   {
+    "key": "3.14.3",
+    "title": "Treatment plans",
+    "priority": "MVP",
+    "seq": 9,
+    "story": "As a gardener, I want a treatment plan that starts with the mildest options so that I solve problems safely.",
+    "acceptance": [
+     "Prevention and organic methods are listed first",
+     "Chemicals only as a last resort and never by product name",
+     "The user is pointed to a local agricultural supply shop for approved products, with safety guidance",
+     "Each step links to a guide where available"
+    ],
+    "depends_on": [
+     "3.14.1",
+     "E00:Knowledge base pipeline"
+    ],
+    "tasks": [
+     {
+      "title": "Author organic treatments for common pests and diseases",
+      "area": "content",
+      "hours": 6,
+      "description": "Organic and preventive treatments for the 30 most common problems in Mediterranean gardens, PT and EN, with sources. Done when published."
+     },
+     {
+      "title": "Write chemical last-resort and safety guidance",
+      "area": "content",
+      "hours": 2,
+      "description": "Generic guidance to consult a local supply shop for approved products, plus safety notes; no product names. Done when published."
+     },
+     {
+      "title": "Ground treatment plans in the knowledge base",
+      "area": "backend",
+      "hours": 3,
+      "description": "Retrieve matching treatments for diagnosed causes and enforce the no-product-names rule. Done with tests."
+     },
+     {
+      "title": "Show treatment plan on iOS",
+      "area": "ios",
+      "hours": 3,
+      "description": "Ordered steps from mildest to strongest with guide links and safety notes. Done when visible."
+     },
+     {
+      "title": "Review treatment content for safety",
+      "area": "testing",
+      "hours": 1,
+      "description": "Check no product names appear and organic options come first."
+     }
+    ]
+   },
+   {
+    "key": "3.14.4",
+    "title": "Treatment tasks and check-ups",
+    "priority": "Good to have",
+    "seq": 34,
+    "story": "As a gardener, I want treatment steps added as tasks with a check-up so that I know whether the treatment worked.",
+    "acceptance": [
+     "Treatment steps can be added as tasks",
+     "A check-up task asks to re-photograph after a few days",
+     "Before and after photos are compared and the result logged"
+    ],
+    "depends_on": [
+     "3.14.3",
+     "3.9.1"
+    ],
+    "tasks": [
+     {
+      "title": "Create tasks from treatment steps",
+      "area": "backend",
+      "hours": 2,
+      "description": "Turn chosen steps into tasks and schedule a check-up. Done with tests."
+     },
+     {
+      "title": "Implement before-and-after comparison",
+      "area": "backend",
+      "hours": 3,
+      "description": "AI comparison of original and check-up photos with an improvement verdict. Done with tests."
+     },
+     {
+      "title": "Build check-up flow on iOS",
+      "area": "ios",
+      "hours": 3,
+      "description": "Re-photograph from the task and show the comparison. Done when result is logged."
+     },
+     {
+      "title": "Test treatment check-ups",
+      "area": "testing",
+      "hours": 1,
+      "description": "Run a full treatment and check-up cycle."
+     }
+    ]
+   },
+   {
+    "key": "3.14.5",
+    "title": "Spread warnings and bed flags",
+    "priority": "Good to have",
+    "seq": 34,
+    "story": "As a gardener, I want warnings when a problem could spread and soil-borne diseases flagged on the bed so that I protect other plants and future crops.",
+    "acceptance": [
+     "Other beds with susceptible crops get a warning",
+     "Soil-borne diseases are flagged in the bed's history",
+     "The season planner reads these flags to avoid the same crop family"
+    ],
+    "depends_on": [
+     "3.14.1"
+    ],
+    "tasks": [
+     {
+      "title": "Add spread and soil-borne data to the knowledge base",
+      "area": "content",
+      "hours": 2,
+      "description": "Mark which problems spread and which are soil-borne, with affected crop families. Done when published."
+     },
+     {
+      "title": "Implement spread warnings and bed disease flags",
+      "area": "backend",
+      "hours": 3,
+      "description": "Warn other beds with susceptible crops and record soil-borne flags on the bed. Done with tests."
+     },
+     {
+      "title": "Show spread warnings and bed flags on iOS",
+      "area": "ios",
+      "hours": 2,
+      "description": "Warnings on affected beds and flags in bed history. Done when visible."
+     },
+     {
+      "title": "Test spread warnings",
+      "area": "testing",
+      "hours": 1,
+      "description": "Diagnose a spreading problem and check warnings appear."
+     }
+    ]
+   },
+   {
+    "key": "3.14.6",
+    "title": "Disease-risk warnings",
+    "priority": "Good to have",
+    "seq": 34,
+    "story": "As a gardener, I want warnings when the weather favours a disease so that I can prevent it.",
+    "acceptance": [
+     "Fixed rules on the forecast detect disease-friendly conditions (e.g. warm and humid for 3 days)",
+     "Warnings only for crops currently planted",
+     "Preventive actions included and can become tasks"
+    ],
+    "depends_on": [
+     "3.12.1",
+     "E00:Weather data service"
+    ],
+    "tasks": [
+     {
+      "title": "Author disease-risk weather rules",
+      "area": "content",
+      "hours": 3,
+      "description": "Weather conditions for common diseases (mildew, blight, rust) per crop, with sources. Done when published."
+     },
+     {
+      "title": "Implement disease-risk evaluator",
+      "area": "backend",
+      "hours": 3,
+      "description": "Run rules on forecasts for current plantings and create warnings via the alert system. Done with tests."
+     },
+     {
+      "title": "Show disease-risk warnings on iOS",
+      "area": "ios",
+      "hours": 2,
+      "description": "Display as alerts with preventive actions. Done when visible."
+     },
+     {
+      "title": "Test disease-risk warnings with simulated weather",
+      "area": "testing",
+      "hours": 1,
+      "description": "Inject humid forecasts and confirm warnings."
+     }
+    ]
+   },
+   {
+    "key": "3.14.7",
+    "title": "Seasonal scouting tasks",
+    "priority": "Future improvement",
+    "seq": 99,
+    "story": "As a gardener, I want reminders to check for common pests at the right time so that I catch problems early.",
+    "acceptance": [
+     "Scouting tasks per crop, region and season",
+     "Each links to how to spot the pest",
+     "Can be turned off"
+    ],
+    "depends_on": [],
+    "tasks": []
+   },
+   {
+    "key": "3.14.8",
+    "title": "Beneficial insects",
+    "priority": "Good to have",
+    "seq": 34,
+    "story": "As a gardener, I want the app to recognise helpful insects so that I don't kill them by mistake.",
+    "acceptance": [
+     "Diagnosis and identification flag beneficial insects (e.g. ladybird larvae)",
+     "Explains what they eat and why to keep them",
+     "Included in the diagnosis eval set"
+    ],
+    "depends_on": [
+     "3.14.1"
+    ],
+    "tasks": [
+     {
+      "title": "Author beneficial insects content",
+      "area": "content",
+      "hours": 2,
+      "description": "Common beneficial insects with photos briefs and roles, PT and EN. Done when published."
+     },
+     {
+      "title": "Add beneficial insect handling to prompts",
+      "area": "backend",
+      "hours": 2,
+      "description": "Recognise and flag beneficial insects in diagnosis and identification. Done with tests."
+     },
+     {
+      "title": "Show beneficial insect result on iOS",
+      "area": "ios",
+      "hours": 2,
+      "description": "Friendly 'keep this one' result with explanation. Done when visible."
+     },
+     {
+      "title": "Add beneficial insects to the eval set",
+      "area": "testing",
+      "hours": 1,
+      "description": "Add photos and confirm recognition."
+     }
+    ]
+   }
+  ]
+ }
+]
