@@ -13,7 +13,7 @@ A mobile app that guides a complete beginner from **unused land to a productive,
 
 | Topic | Decision |
 |---|---|
-| Platforms | **Mobile only**, native: **iOS (Swift/SwiftUI)** and **Android (Kotlin/Jetpack Compose)** |
+| Platforms | **Mobile only**, native: **iOS (Swift/SwiftUI)** and **Android (Kotlin/Jetpack Compose)**. **iOS is built first**, and each milestone is ported to Android once it's stable. |
 | Location | Adapts to each user's location. Alentejo is the first test case. |
 | Languages | **Portuguese (pt-PT) and English** from the first version |
 | Offline | Journal, tasks, materials, plot map, calendar and downloaded guides work offline. AI photo analysis is queued until the device is online. |
@@ -190,6 +190,5 @@ Each milestone ships backend and app work together and ends with something usabl
 
 ## 8. Open decisions
 
-- [ ] **Which platform first?** A solo developer building two native apps should finish the vertical slice on one platform, then port it.
 - [ ] Embedding model for pgvector search. Claude doesn't produce embeddings, so this needs a separate model, for example one on Foundry.
 - [ ] The exact sync conflict policy for each entity (last-write-wins per record or per field).
