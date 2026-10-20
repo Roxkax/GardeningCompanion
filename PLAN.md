@@ -59,7 +59,7 @@ All features are in scope for development. The last column only notes what could
 | Harvest readiness | A photo, plus days since sowing and the variety's maturity, gives a verdict with a confidence level | Premium |
 | Future planting planner | Rules (season windows, crop rotation by family, spacing, companion plants, succession planting) generate the plan. The AI explains and adjusts it. | Free (rules) / Premium (AI) |
 | Plant identification | See §3.13 | Premium |
-| Pest and disease diagnosis | The same photo-analysis pipeline as identification | Premium |
+| Pest and disease diagnosis | See §3.14 | Premium (risk warnings and scouting tasks: Free) |
 | Tools | See §3.10 | Free |
 | Irrigation planner | See §3.11 | Free |
 | Weather alerts | See §3.12 | Free |
@@ -271,6 +271,30 @@ Point the camera at a plant to learn what it is and what to do about it.
   - A specialist plant-ID service could give a second opinion later, with a commercial licence.
 - **Backend:** an "identify" task in the AI layer with structured results and context gathering. Results are stored in the activity log, and corrections are kept for the AI test set.
 
+### 3.14 Pest and disease diagnosis
+
+Photograph a plant that looks wrong, find the cause, and get a treatment plan.
+
+- **All causes:** pests, fungal, bacterial and viral diseases, nutrient problems, and **environmental stress** (heat, sunscald, over- or under-watering, frost damage).
+- **Context:** crop and growth stage, recent weather, watering schedule, and recent journal entries such as earlier treatments.
+- **Follow-up questions** from the AI when it's unsure, before giving a diagnosis.
+- **Treatment plan, mildest first:**
+  - Prevention and organic methods first.
+  - Chemicals only as a last resort, **never naming specific products** (approvals vary by country). The user is pointed to a local agricultural supply shop for approved products, with safety guidance.
+- **Treatment tasks plus a check-up** (e.g. re-photograph in 5 days), with a before-and-after comparison.
+- **Spread warning** for other beds with susceptible crops. Soil-borne diseases are flagged in the bed's history, so the season planner avoids that crop family there.
+- **Warnings before problems appear:** fixed disease-risk rules run on the weather data (e.g. "warm and humid for 3 days, high mildew risk on courgettes"). Linked to weather alerts.
+- **Seasonal pest scouting tasks** for the user's crops, region and time of year.
+- **Helpful insects:** recognises beneficial insects (e.g. ladybird larvae) so the user doesn't kill them.
+- History, corrections and the AI test set, as with plant identification. Offline photos are queued.
+- **Limits:** results show confidence. For serious or spreading outbreaks, the app suggests the regional agricultural services (e.g. DRAP Alentejo).
+- **Backend:**
+  - A "diagnose" task in the AI layer that supports follow-up questions.
+  - Disease-risk rules on the weather data.
+  - Pest and disease entries in the knowledge base, with organic treatments.
+  - Scheduled check-ups.
+  - Disease flags in each bed's history, which the season planner reads.
+
 ---
 
 ## 4. Backend architecture
@@ -403,7 +427,9 @@ Each milestone ships backend and app work together and ends with something usabl
 - [ ] AI layer on Foundry, with quotas by plan tier and cost logging
 - [ ] Site assessment
 - [ ] Plant identification: context-aware, several photos, crop-or-weed verdict, one-tap actions, corrections fed into the AI test set
-- [ ] Pest and disease diagnosis, harvest readiness
+- [ ] Pest and disease diagnosis: all causes, follow-up questions, treatment plans (organic first, no product names), check-ups with before-and-after comparison, spread warnings, disease flags in bed history
+- [ ] Disease-risk rules on the weather data, seasonal scouting tasks, beneficial insect recognition
+- [ ] Harvest readiness
 - [ ] Offline photo queue, with push notifications when results are ready
 - [ ] An evaluation set of real photos from the plot, re-run whenever a prompt or model changes
 
