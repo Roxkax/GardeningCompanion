@@ -66,7 +66,7 @@ All features are in scope for development. The last column only notes what could
 | Improvement suggestions | A weekly AI review of the journal, photos, weather and plan | Premium |
 | AI assistant | Knows the user's garden, answers from the knowledge base and proposes actions to confirm | Premium (with free quota) |
 | Journal and timeline | Photos and actions for each bed, plus a harvest and yield log. This is what lets the AI get better over time. | Free |
-| Guides | Step-by-step guides in PT and EN, with illustrations and selected videos, downloadable for offline use | Free |
+| Guides | See §3.7 | Free (Ask AI and photo check: Premium) |
 
 ### 3.3 Plot mapping
 
@@ -147,6 +147,28 @@ The user chooses which crops to grow, helped by suggestions ranked by suitabilit
   - A **suitability score** worked out with fixed rules (no AI), so suggestions work offline.
   - Space estimates from typical yields and spacing.
   - Potential premium: a personalised AI explanation of the suggestions.
+
+### 3.7 Guides
+
+The "how to" behind every roadmap action. Each roadmap action opens its guide.
+
+- **Step-by-step guides in PT and EN**, with illustrations, diagrams and selected videos. Each guide cites its sources and shows a "last reviewed" date.
+- **Standard layout for every step:** what to do, an illustration, tools and materials, time needed, safety notes, common mistakes, and "how to tell it's done right".
+- **Three kinds of guide:**
+  - Techniques: clearing, building beds, drip irrigation, mulching, composting, sowing, planting out, staking, pruning.
+  - Crop guides: each crop from sowing to harvest.
+  - Problem guides: pests and diseases, organic methods first.
+- **Uses your numbers:** quantities and measurements calculated from the user's data (e.g. "for your 1.2 × 6 m bed you need 14 m of drip line and 3 bags of compost").
+- **"Doing" mode:** big text, one step at a time, and steps read aloud with the phone's built-in voice (free and offline). Ticking off a step records it in the activity log.
+- **Ask the AI about a step** (potential premium).
+- **Photo check of the work** at a step, reviewed by the AI (potential premium).
+- **"This step was unclear" feedback**, which feeds the content review.
+- **Offline:** text and images are downloaded. Videos are links (YouTube etc.) and only play online. A job periodically checks for broken video links.
+- **Illustrations:**
+  - Now: AI-generated images from a separate image model (Claude can't generate images), each reviewed by the owner, plus simple diagrams we draw.
+  - Commercial phase: a commissioned illustrator.
+- **Accuracy:** citing reputable sources is mandatory. The owner reviews guides for clarity, and **an expert (e.g. an agronomist) reviews them before the commercial launch**.
+- **Authoring:** guides are drafted by AI from cited sources and reviewed by the owner, then published through the `content/` pipeline.
 
 ---
 
@@ -266,7 +288,9 @@ Each milestone ships backend and app work together and ends with something usabl
 - [ ] Crop catalog (30–50 crops relevant to Mediterranean climates first), PT and EN
 - [ ] Choosing your crops: "my crops" list, suitability scoring, warnings, how much to plant
 - [ ] Climate-driven sowing and planting calendar
-- [ ] First guides: soil preparation, compost, drip irrigation, sowing, transplanting
+- [ ] Guide format (standard step layout, parameters filled from the user's data), "doing" mode with read-aloud, step completion recorded in the activity log, feedback on unclear steps
+- [ ] First guides: land clearing, bed building, compost, drip irrigation, mulching, sowing, planting out
+- [ ] Illustration workflow (AI images reviewed by the owner, plus diagrams) and a broken-video-link check job
 - [ ] Sources and "last reviewed" dates on all content, plus the AI content-freshness job that proposes updates as pull requests
 
 ### M4 — AI photo features
@@ -290,6 +314,7 @@ Each milestone ships backend and app work together and ends with something usabl
 - [ ] Freemium tiers with App Store and Play subscriptions (server-side receipt validation)
 - [ ] Commercial licences for data sources (Open-Meteo paid plan or an alternative, and the plant-ID service if used)
 - [ ] Privacy policy, GDPR review, AI disclaimers (especially around pesticides and chemicals), store listings
+- [ ] Expert (agronomist) review of all guides, and a commissioned illustrator
 
 ---
 
@@ -306,4 +331,5 @@ Each milestone ships backend and app work together and ends with something usabl
 ## 8. Open decisions
 
 - [ ] Embedding model for pgvector search. Claude doesn't produce embeddings, so this needs a separate model, for example one on Foundry.
+- [ ] Image generation model for guide illustrations (Claude can't generate images), plus its commercial licence terms.
 - [ ] The exact sync conflict policy for each editable entity (last-write-wins per record or per field). Activity log entries are only ever added, so they don't need one.

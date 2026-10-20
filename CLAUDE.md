@@ -55,8 +55,10 @@ The owner is used to Azure DevOps, so the same hierarchy is used, built with sub
 | 2026-10-20 | **Site assessment has no soil analysis:** no soil tests, no lab tests, no judging the soil from photos. It covers vegetation to clear, problem plants, trees to keep, obstacles, terrain, visible water problems, infrastructure, wildlife pressure, fixed photo spots, walk-around video, equipment advice and re-assessments. The soil type estimate from SoilGrids in plot mapping stays. The well water test moves to the irrigation planner. |
 | 2026-10-20 | **Planting calendar:** based on climate (temperature rules applied to local climate history), with direct sow, plant-out and harvest windows. Includes too-hot windows, forecast adjustment, zone fit, varieties, day length, harvest estimates from growing degree days, staggered sowing and export to the phone calendar. **No indoor seed starting, no microclimate correction, no lunar calendar.** |
 | 2026-10-20 | **New feature, choosing your crops:** the user picks crops (variety, priority, quantity) helped by suggestions ranked with fixed rules (climate, zone, water, difficulty, timing). It warns about poor fits but never blocks a choice, and estimates how much to plant. It's a Design-phase step in the roadmap, and drives the calendar, planners, irrigation, materials and assistant. |
+| 2026-10-20 | **Guides:** a standard step layout, three kinds of guide (techniques, crops, problems), quantities from the user's numbers, "doing" mode with read-aloud, Ask AI and photo check per step, feedback on unclear steps, and offline text and images with videos online only. Illustrations: AI images reviewed by the owner plus diagrams now, an illustrator later. Mandatory sources, and an **expert review before the commercial launch**. |
 
 ## Open decisions
 - Embedding model for pgvector search
+- Image generation model for guide illustrations
 - Sync conflict policy for each entity
 - The feature-by-feature review of `PLAN.md` §3 (in progress)
