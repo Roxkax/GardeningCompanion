@@ -15,6 +15,7 @@ A native mobile app that guides a complete beginner from unused land to a produc
 - **Ask one question at a time.** Don't send batches of questions.
 - **Requirements flow:** the owner describes features from the mobile user's point of view. Claude works out what the backend needs and **confirms it with the owner before treating it as decided**.
 - **Feasibility:** be honest about limits (e.g. AI can't measure soil pH from a photo) and propose realistic alternatives.
+- **Scope:** while the app is for personal use, **every feature is essential and in scope**. Premium is only noted as a *potential* tier for the commercial phase. It never removes a feature from the plan.
 - **Cost:** keep Azure costs as low as possible during the individual phase. Prefer pay-per-use and scale-to-zero services.
 - **Commercial readiness:** design for multiple users from day one, and flag licensing or terms-of-service issues for commercial use.
 - **Git:** commit and push planning documents to `master` after each confirmed change.
@@ -47,6 +48,9 @@ The owner is used to Azure DevOps, so the same hierarchy is used, built with sub
 | 2026-10-20 | **Business model:** freemium. Core features are free and AI features are premium. AI usage limits are tied to the plan tier from day one. |
 | 2026-10-20 | **Work tracking:** GitHub issues in an Epic → Feature → Task hierarchy, using sub-issues |
 | 2026-10-20 | **Roadmap is dynamic:** not a fixed list generated once. It continuously works out next actions from the garden's state, the actions done (including deviations) and current best practices. It covers each zone separately, is season-aware, starts from what already exists, and has time and cost estimates per action. |
+| 2026-10-20 | **Roadmap engine design:** an activity log where entries are never overwritten, a state view per zone, a rules layer plus an AI layer to produce next actions, recalculation on events plus a daily check, and traceability of the content version and model behind each recommendation |
+| 2026-10-20 | **Current best practice:** the knowledge base cites sources and has review dates. An AI job proposes content updates, and **a person reviews each update before it's published**. Nothing is published automatically from the web. |
+| 2026-10-20 | **All features are essential** during personal use. Premium is only a *potential* tier for later commercial use. |
 
 ## Open decisions
 - Embedding model for pgvector search
