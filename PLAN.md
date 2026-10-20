@@ -166,7 +166,7 @@ The "how to" behind every roadmap action. Each roadmap action opens its guide.
 - **"This step was unclear" feedback**, which feeds the content review.
 - **Offline:** text and images are downloaded. Videos are links (YouTube etc.) and only play online. A job periodically checks for broken video links.
 - **Illustrations:**
-  - Now: AI-generated images from a separate image model (Claude can't generate images), each reviewed by the owner, plus simple diagrams we draw.
+  - Now: AI-generated images from **OpenAI gpt-image via Azure OpenAI** (Claude can't generate images), each reviewed by the owner, plus simple diagrams we draw. The same model makes the tool reference images (§3.10). Images are generated once when content is authored, not for each user.
   - Commercial phase: a commissioned illustrator.
 - **Accuracy:** citing reputable sources is mandatory. The owner reviews guides for clarity, and **an expert (e.g. an agronomist) reviews them before the commercial launch**.
 - **Authoring:** guides are drafted by AI from cited sources and reviewed by the owner, then published through the `content/` pipeline.
@@ -517,7 +517,7 @@ Each milestone ships backend and app work together and ends with something usabl
 - [ ] Guide format (standard step layout, parameters filled from the user's data), "doing" mode with read-aloud, step completion recorded in the activity log, feedback on unclear steps
 - [ ] First guides: land clearing, bed building, compost, drip irrigation, mulching, sowing, planting out
 - [ ] Harvest-sign checklists for each crop, plus storage and preserving guides
-- [ ] Illustration workflow (AI images reviewed by the owner, plus diagrams) and a broken-video-link check job
+- [ ] Illustration workflow (gpt-image illustrations and tool images in a consistent style, reviewed by the owner, plus diagrams) and a broken-video-link check job
 - [ ] Sources and "last reviewed" dates on all content, plus the AI content-freshness job that proposes updates as pull requests
 
 ### M4 — AI photo features
@@ -566,9 +566,9 @@ Each milestone ships backend and app work together and ends with something usabl
 - SoilGrids is CC-BY, so it needs attribution. Check the API's rate limits.
 - Specialist plant-ID APIs (Pl@ntNet, Kindwise): their free tiers are non-commercial.
 - Check the availability and pricing of Claude models in Microsoft Foundry.
+- Check OpenAI's current terms for commercial use of gpt-image outputs, and Azure OpenAI's content policies.
 
 ---
 
 ## 8. Open decisions
 
-- [ ] Image generation model for guide illustrations (Claude can't generate images), plus its commercial licence terms.
