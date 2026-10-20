@@ -58,7 +58,7 @@ All features are in scope for development. The last column only notes what could
 | When to plant what | See §3.5 | Free |
 | Harvest readiness | A photo, plus days since sowing and the variety's maturity, gives a verdict with a confidence level | Premium |
 | Future planting planner | Rules (season windows, crop rotation by family, spacing, companion plants, succession planting) generate the plan. The AI explains and adjusts it. | Free (rules) / Premium (AI) |
-| Plant identification | Claude vision first. A specialist plant-ID service is optional later. | Premium |
+| Plant identification | See §3.13 | Premium |
 | Pest and disease diagnosis | The same photo-analysis pipeline as identification | Premium |
 | Tools | See §3.10 | Free |
 | Irrigation planner | See §3.11 | Free |
@@ -253,6 +253,24 @@ Warns when weather is coming that could harm the garden, and says what to do abo
 - **Official warnings:** IPMA (Portugal) in the MVP. Other countries later, via MeteoAlarm or national services (reuse terms to be checked).
 - **Backend:** a job fetches the forecast for each plot several times a day, plus official warnings. It compares them with the limits of the crops currently planted, removes duplicate alerts, sends push notifications, creates tasks, and schedules the follow-up after the event.
 
+### 3.13 Plant identification
+
+Point the camera at a plant to learn what it is and what to do about it.
+
+- **Situations covered:** unknown plants on the land, **seedlings** ("my carrot or a weed?"), existing trees and shrubs, and plants at a nursery before buying.
+- **Result:** the top possibilities with confidence levels, common names in PT and EN plus the scientific name, a **crop-or-weed verdict**, flags for invasive or toxic plants, and the next step.
+- **Context for accuracy:** location, season, and what's planted in that bed.
+- **Several photos** (leaf, flower, whole plant), with tips on how to shoot them.
+- **One-tap actions:** add as a planting; mark as weed (creates a removal task with the right method); keep (adds the tree to the map as a point of interest).
+- **Corrections:** saved, used as context next time, and added to the AI test set.
+- **History:** every identification is saved in the journal with its photo.
+- **Offline:** photos are queued until the device is online.
+- **Limits and safety:**
+  - Seedling identification is shown with honest confidence, and the app suggests re-photographing in a week when unsure.
+  - **The app never says a wild plant is safe to eat.** Toxicity results are warnings only, with a disclaimer.
+  - A specialist plant-ID service could give a second opinion later, with a commercial licence.
+- **Backend:** an "identify" task in the AI layer with structured results and context gathering. Results are stored in the activity log, and corrections are kept for the AI test set.
+
 ---
 
 ## 4. Backend architecture
@@ -383,7 +401,9 @@ Each milestone ships backend and app work together and ends with something usabl
 
 ### M4 — AI photo features
 - [ ] AI layer on Foundry, with quotas by plan tier and cost logging
-- [ ] Site assessment, plant identification, pest and disease diagnosis, harvest readiness
+- [ ] Site assessment
+- [ ] Plant identification: context-aware, several photos, crop-or-weed verdict, one-tap actions, corrections fed into the AI test set
+- [ ] Pest and disease diagnosis, harvest readiness
 - [ ] Offline photo queue, with push notifications when results are ready
 - [ ] An evaluation set of real photos from the plot, re-run whenever a prompt or model changes
 
