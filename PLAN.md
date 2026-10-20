@@ -53,7 +53,7 @@ All features are in scope for development. The last column only notes what could
 |---|---|---|
 | Plot mapping | See §3.3 | Free |
 | Site assessment by camera | See §3.4 | Premium |
-| When to plant what | A climate-driven calendar: crop rules based on temperature thresholds and frost risk, rather than fixed months, so it works anywhere | Free |
+| When to plant what | See §3.5 | Free |
 | Harvest readiness | A photo, plus days since sowing and the variety's maturity, gives a verdict with a confidence level | Premium |
 | Future planting planner | Rules (season windows, crop rotation by family, spacing, companion plants, succession planting) generate the plan. The AI explains and adjusts it. | Free (rules) / Premium (AI) |
 | Plant identification | Claude vision first. A specialist plant-ID service is optional later. | Premium |
@@ -99,6 +99,24 @@ For each zone, the app works out what's there now, what needs clearing or fixing
 - **Equipment advice:** rent or buy, based on the work needed and the plot size.
 - **Re-assessments** at any time, to track progress.
 - **Backend:** a stored assessment for each zone, with photos, AI findings (each with a confidence level) and estimates. Every assessment is recorded in the activity log, so the roadmap updates.
+
+### 3.5 Planting calendar
+
+Shows what to sow or plant, and when, for the user's exact location, kept up to date with the weather. **No indoor seed starting** and **no microclimate correction.**
+
+- **Based on climate, not fixed months:** crop rules (minimum soil temperature to germinate, minimum air temperature to plant out, frost and heat tolerance) are applied to 30 years of local climate data, so the calendar works anywhere.
+- **Windows for each crop:** sow directly, plant out (seedlings bought from a nursery), and expected harvest.
+- **Too-hot windows as well as frost:** for crops that go to seed in heat (lettuce, spinach), and for tomatoes, which stop setting fruit above about 35 °C. In Alentejo, autumn and winter are the main season for brassicas, lettuce and broad beans.
+- **Views:** a month calendar and a "What to do this week" list.
+- **Adjusted by the forecast:** for example, planting out is pushed back when a cold snap is coming.
+- **Fits each zone:** "what can I plant now in zone A", based on its sun and shade.
+- **Varieties:** early and late varieties mature at different times. The user picks a variety or uses a generic default.
+- **Day length:** suggests varieties suited to the latitude (e.g. short-day onions in southern Portugal).
+- **Harvest estimates** from the heat each planting has actually received since sowing (growing degree days), not a fixed number of days.
+- **Staggered sowing reminders** (e.g. lettuce every 2–3 weeks) for a continuous harvest.
+- **Export** to the phone's calendar.
+- Adding a crop from the calendar creates a planned planting, which updates the roadmap, tasks and materials.
+- **Backend:** crop rules in the knowledge base, local climate history fetched once per plot and cached, a fixed calculation of windows (no AI), and a daily job for harvest estimates and forecast adjustments. The result is cached on the phone for offline use.
 
 ---
 
