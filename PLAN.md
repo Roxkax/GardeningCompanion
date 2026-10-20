@@ -61,7 +61,7 @@ All features are in scope for development. The last column only notes what could
 | Plant identification | Claude vision first. A specialist plant-ID service is optional later. | Premium |
 | Pest and disease diagnosis | The same photo-analysis pipeline as identification | Premium |
 | Tools | See §3.10 | Free |
-| Irrigation planner | Water needs from evapotranspiration (ET₀) × a crop coefficient (Kc) × area − rain, giving a drip layout, run times and a parts list (for information only, not tracked). Includes a well water quality check (salinity and pH meter), which was moved here from site assessment. | Free |
+| Irrigation planner | See §3.11 | Free |
 | Weather alerts | Frost, heatwave and wind warnings, and a notice to skip watering when rain is expected | Free |
 | Improvement suggestions | A weekly AI review of the journal, photos, weather and plan | Premium |
 | AI assistant | Knows the user's garden, answers from the knowledge base and proposes actions to confirm | Premium (with free quota) |
@@ -217,6 +217,28 @@ Which tools the user has, which they'll need, and when. **No consumable or stock
 - **Later (post-MVP, commercial):** shop links or affiliate partnerships.
 - **Backend:** a tool catalog in the knowledge base (reference image, purpose, typical price range, usually rented or bought; images included in the offline guide packages), the user's tool list, tools required by each action and guide, the missing-tools calculation, and the user's preference setting. Works offline.
 
+### 3.11 Irrigation planner
+
+Designs the watering system and says when, and roughly how long, to water. **No water needs calculation (ET₀ × Kc), no water budget, and no water quality check.**
+
+- **Water sources** from the map's points of interest (well, mains tap, tank), with a **bucket test** to measure flow rate (time to fill 10 L).
+- **Recommended method for each bed:** drip line, individual drippers, soaker hose or micro-sprinklers. Drip is the default for dry climates such as Alentejo.
+- **System layout on the map:** main pipe from the source (lengths from the measuring tool), branch lines, and drip lines along each bed's rows, with dripper spacing for each crop.
+- **Flow check:** if the source can't supply everything at once, the system is split into sectors that run one after another. Includes a filter (vital with well water), a pressure regulator and a backflow preventer.
+- **Parts list** for the layout, for information only.
+- **Watering schedule:** run times from standard guidance for each crop and season in the knowledge base, adjusted by the weather (skip before rain, more in heatwaves), early morning recommended. Creates watering tasks automatically. The user fine-tunes from observation, with help from the journal and AI.
+- **Hand-watering guidance** for each crop and season, before a system is installed.
+- **Mulching advice** to reduce water use.
+- **Rainwater harvesting estimate:** roof area of buildings on the map × local rainfall gives litres that could be collected, plus a suggested tank size.
+- **Seasonal reminders:** flush lines, clean filters, drain before frost.
+- **Later (not in MVP):** smart irrigation controllers and soil moisture sensors.
+- **Backend:**
+  - Water sources and their flow rates.
+  - An irrigation system model on the map (sectors, pipes and drip lines linked to beds).
+  - Fixed calculations (no AI) for the flow check, sectors, parts list and rainwater estimate.
+  - Watering guidance in the knowledge base.
+  - A daily job that adjusts the schedule to the weather and creates watering tasks.
+
 ---
 
 ## 4. Backend architecture
@@ -237,7 +259,7 @@ Which tools the user has, which they'll need, and when. **No consumable or stock
          └──── Worker (Container Apps Jobs / queue) ─────┐
                thumbnails · AI jobs · weather alerts ·   │
                weekly reviews · reminders  ──► Notification Hubs (APNs/FCM)
-   External data: Open-Meteo (weather, climate, ET₀, elevation) · SoilGrids (soil)
+   External data: Open-Meteo (weather, climate, elevation) · SoilGrids (soil)
    Identity: Entra External ID (email, Sign in with Apple, Google)
 ```
 
@@ -263,12 +285,12 @@ Which tools the user has, which they'll need, and when. **No consumable or stock
    - Usage is limited per user according to their plan tier.
    - Every request is logged with its cost.
    - The model can be swapped.
-7. **Knowledge base:** crops (temperature thresholds, frost tolerance, days to maturity, rotation family, spacing, Kc), techniques and guides.
+7. **Knowledge base:** crops (temperature thresholds, frost tolerance, days to maturity, rotation family, spacing, watering guidance by season), tools, techniques and guides.
    - The **source of truth lives in git** under `content/` as YAML and Markdown, in both PT and EN.
    - A pipeline publishes it to the database and Blob Storage, and builds offline packages.
    - The AI uses it as grounding: PostgreSQL full-text search first, then pgvector embeddings.
    - **Kept current:** each item cites its sources (e.g. FAO, agricultural extension services) and has a "last reviewed" date. A scheduled AI job flags outdated content and proposes updates as pull requests to `content/`. **A person reviews each update before it's published.** Nothing is published automatically from the web.
-8. **External data adapters:** Open-Meteo (forecast, historical climate, ET₀, elevation) and SoilGrids (soil). The results are cached for each plot.
+8. **External data adapters:** Open-Meteo (forecast, historical climate, elevation) and SoilGrids (soil). The results are cached for each plot.
 9. **Worker:** queue processing and scheduled jobs (roadmap recalculation, weather alerts, reminders, weekly reviews, content freshness review).
 10. **Notifications:** Azure Notification Hubs (free tier), sending to APNs and FCM.
 11. **Later:** App Store and Play subscription receipt validation, IoT and sensor ingestion, a content admin interface, and a Python service for raster or ML work.
@@ -359,7 +381,9 @@ Each milestone ships backend and app work together and ends with something usabl
 
 ### M6 — Planning
 - [ ] Planner for rotation, succession and companion planting
-- [ ] Irrigation planner (ET₀ × Kc) with a parts list (for information only)
+- [ ] Irrigation planner: water sources and bucket test, method per bed, system layout on the map, flow check and sectors, parts list (for information only)
+- [ ] Watering schedule from crop and season guidance, adjusted by the weather, with automatic watering tasks; hand-watering guidance
+- [ ] Mulching advice, rainwater harvesting estimate, seasonal irrigation reminders
 - [ ] Next-season planning from the harvest and yield history
 
 ### M7 — Commercial readiness
