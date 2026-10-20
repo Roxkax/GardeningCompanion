@@ -71,7 +71,7 @@ The owner is used to Azure DevOps, so the same hierarchy is used, built with sub
 | 2026-10-20 | **App-wide features:** "Today" home screen, first-run setup flow, settings (including an AI usage meter), photo GPS stripping and location privacy, crash reporting and anonymous usage statistics, accessibility from the start. **Widgets, Apple Watch and Siri shortcuts are post-MVP.** |
 | 2026-10-20 | **Feature-by-feature review complete** (§3.1–§3.19) |
 | 2026-10-20 | **Sync conflicts are resolved by the user:** the server keeps its version and returns both, and the app shows them side by side so the user keeps one or combines them field by field. Doesn't block other work (badge on "Today"), and every resolution is logged. Activity log entries never conflict. |
+| 2026-10-20 | **Knowledge base search:** OpenAI `text-embedding-3-small` (via Azure OpenAI / Foundry) in pgvector, plus PostgreSQL keyword search, from the start. Embeddings are generated when content is published. |
 
 ## Open decisions
-- Embedding model for pgvector search
 - Image generation model for guide illustrations
