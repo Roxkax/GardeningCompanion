@@ -1,0 +1,2026 @@
+[
+ {
+  "key": "E15",
+  "title": "Harvest readiness",
+  "summary": "Helps the user know when and how to harvest each crop: ripeness checklists, technique, photo verdicts, timely notices and one-tap harvest logging.",
+  "plan_ref": "PLAN.md §3.15",
+  "features": [
+   {
+    "key": "3.15.1",
+    "title": "Photo verdict",
+    "priority": "Good to have",
+    "seq": 35,
+    "story": "As a beginner, I want to photograph a crop and be told if it's ready to pick so that I harvest at the best moment.",
+    "acceptance": [
+     "A photo of a planting returns one of: not yet (with days to go), ready soon, ready now, past its best",
+     "Each verdict shows a confidence level",
+     "Planting date and variety maturity are used as context",
+     "Crops that can't be judged by photo redirect to the signs checklist",
+     "Photos taken offline are queued and analysed when online"
+    ],
+    "depends_on": [
+     "E00:AI layer core",
+     "E00:Media/photo upload service",
+     "3.15.3",
+     "3.8.9"
+    ],
+    "tasks": [
+     {
+      "title": "Define harvest-readiness AI task and structured output schema",
+      "area": "backend",
+      "hours": 3,
+      "description": "Add a 'harvest readiness' task to the AI layer returning verdict, days-to-go and confidence as JSON. Done when the schema is validated in unit tests."
+     },
+     {
+      "title": "Build context for verdict: crop, variety, planting date, weather",
+      "area": "backend",
+      "hours": 3,
+      "description": "Gather planting and crop data plus accumulated heat into the prompt context. Done when context is assembled from real records in a test."
+     },
+     {
+      "title": "Write harvest-readiness prompt and safety rules",
+      "area": "backend",
+      "hours": 3,
+      "description": "Prompt with per-crop visual cues and fallback to checklist for root crops. Done when 10 sample photos return sensible verdicts."
+     },
+     {
+      "title": "Expose POST /plantings/{id}/harvest-check endpoint",
+      "area": "backend",
+      "hours": 3,
+      "description": "Endpoint accepts an uploaded photo reference, runs the AI task, stores the result in the activity log. Done with an integration test."
+     },
+     {
+      "title": "iOS: 'Is it ready?' camera flow on planting screen",
+      "area": "ios",
+      "hours": 5,
+      "description": "Capture photo, upload, show progress and the verdict card with confidence and next step. Done when it works end-to-end on device."
+     },
+     {
+      "title": "iOS: queue harvest checks taken offline",
+      "area": "ios",
+      "hours": 3,
+      "description": "Store pending checks and submit on reconnect, with a notification when the result is ready."
+     },
+     {
+      "title": "Add harvest photos to the AI evaluation set",
+      "area": "testing",
+      "hours": 2,
+      "description": "Collect 10–15 real harvest photos with known answers and add them to the eval set."
+     },
+     {
+      "title": "Test photo verdict on iPhone at the plot",
+      "area": "testing",
+      "hours": 2,
+      "description": "Run the flow on 3+ crops in the garden and record accuracy notes."
+     }
+    ]
+   },
+   {
+    "key": "3.15.2",
+    "title": "Advance notice",
+    "priority": "Good to have",
+    "seq": 35,
+    "story": "As a gardener, I want to be told when a harvest window is approaching so that I don't miss it.",
+    "acceptance": [
+     "A notification is sent when a planting's estimated harvest window starts within N days",
+     "The notice links to the photo check or signs checklist",
+     "Notices are not repeated for the same planting window",
+     "Respects quiet hours"
+    ],
+    "depends_on": [
+     "3.5.8",
+     "E00:Push notification infrastructure",
+     "3.15.3"
+    ],
+    "tasks": [
+     {
+      "title": "Daily job: find plantings entering their harvest window",
+      "area": "backend",
+      "hours": 3,
+      "description": "Scheduled job compares harvest estimates with today and creates notices. Done with unit tests on sample plantings."
+     },
+     {
+      "title": "Deduplicate and record harvest notices",
+      "area": "backend",
+      "hours": 2,
+      "description": "Store sent notices per planting window so they're sent once."
+     },
+     {
+      "title": "Send harvest-window push notification",
+      "area": "backend",
+      "hours": 2,
+      "description": "Use the push infrastructure with a deep link to the planting."
+     },
+     {
+      "title": "iOS: handle harvest notice deep link",
+      "area": "ios",
+      "hours": 2,
+      "description": "Open the planting with the readiness options highlighted."
+     },
+     {
+      "title": "Test advance notice with a simulated planting",
+      "area": "testing",
+      "hours": 1,
+      "description": "Create a planting with a near window and confirm the notice arrives once."
+     }
+    ]
+   },
+   {
+    "key": "3.15.3",
+    "title": "Signs checklists",
+    "priority": "MVP",
+    "seq": 9,
+    "story": "As a beginner, I want a checklist of ripeness signs for each crop so that I can judge readiness myself, even for root crops.",
+    "acceptance": [
+     "Each crop in the catalog has a harvest-signs checklist in PT and EN",
+     "Root and hidden crops include 'dig one up to check' instructions",
+     "The checklist opens from the planting screen",
+     "Works without AI and offline once loaded"
+    ],
+    "depends_on": [
+     "0.5",
+     "3.6.1"
+    ],
+    "tasks": [
+     {
+      "title": "Add harvest-signs fields to the crop content schema",
+      "area": "content",
+      "hours": 2,
+      "description": "Extend crop YAML with a signs list and a 'dig to check' flag, validated by the content pipeline."
+     },
+     {
+      "title": "Write harvest-signs checklists for the first 15 crops (PT/EN)",
+      "area": "content",
+      "hours": 6,
+      "description": "Author cited checklists for the most common Mediterranean crops."
+     },
+     {
+      "title": "Write harvest-signs checklists for the remaining crops (PT/EN)",
+      "area": "content",
+      "hours": 6,
+      "description": "Complete checklists for the rest of the crop catalog."
+     },
+     {
+      "title": "Expose harvest signs in the crop API",
+      "area": "backend",
+      "hours": 2,
+      "description": "Return checklist items with the crop detail endpoint."
+     },
+     {
+      "title": "iOS: harvest signs checklist screen",
+      "area": "ios",
+      "hours": 4,
+      "description": "Checklist view from the planting screen, tickable items, 'dig one up' callout."
+     },
+     {
+      "title": "Test checklists on iPhone for 3 crops",
+      "area": "testing",
+      "hours": 1,
+      "description": "Review clarity and correctness on device."
+     }
+    ]
+   },
+   {
+    "key": "3.15.4",
+    "title": "How to harvest",
+    "priority": "MVP",
+    "seq": 9,
+    "story": "As a beginner, I want to know how and when in the day to harvest each crop so that I don't damage plants and they keep producing.",
+    "acceptance": [
+     "Each crop shows harvest technique, best time of day and how to keep it producing",
+     "Shown on the planting screen and linked from harvest tasks",
+     "Available in PT and EN",
+     "Content cites sources"
+    ],
+    "depends_on": [
+     "0.5",
+     "3.7.1"
+    ],
+    "tasks": [
+     {
+      "title": "Add harvest technique fields to the crop content schema",
+      "area": "content",
+      "hours": 1,
+      "description": "Technique, time of day, keep-producing tips, sources."
+     },
+     {
+      "title": "Write harvest technique content for the first 15 crops (PT/EN)",
+      "area": "content",
+      "hours": 5,
+      "description": "Author and cite technique notes."
+     },
+     {
+      "title": "Write harvest technique content for the remaining crops (PT/EN)",
+      "area": "content",
+      "hours": 5,
+      "description": "Complete the catalog."
+     },
+     {
+      "title": "iOS: 'How to harvest' section on planting screen",
+      "area": "ios",
+      "hours": 3,
+      "description": "Show technique and tips, linked from harvest tasks."
+     },
+     {
+      "title": "Test harvest technique content on iPhone",
+      "area": "testing",
+      "hours": 1,
+      "description": "Read through on device for clarity."
+     }
+    ]
+   },
+   {
+    "key": "3.15.5",
+    "title": "Weather-aware harvest timing",
+    "priority": "Good to have",
+    "seq": 35,
+    "story": "As a gardener, I want to be warned to harvest before damaging weather so that I don't lose ripe crops.",
+    "acceptance": [
+     "When heavy rain, hail or a heatwave is forecast, ripe or nearly ripe plantings get a 'harvest before' suggestion",
+     "Suggestion creates a task with a date range",
+     "Only for crops sensitive to that weather",
+     "Linked to the weather alert"
+    ],
+    "depends_on": [
+     "3.12.1",
+     "3.9.1",
+     "E00:Weather data service"
+    ],
+    "tasks": [
+     {
+      "title": "Add weather-sensitivity flags per crop (split, rot, heat)",
+      "area": "content",
+      "hours": 2,
+      "description": "Mark which crops are damaged by rain, hail or heat at harvest stage."
+     },
+     {
+      "title": "Rule: ripe plantings + damaging forecast → harvest suggestion",
+      "area": "backend",
+      "hours": 4,
+      "description": "Evaluate forecasts against ripe plantings and create a harvest task. Unit tests for rain and heat."
+     },
+     {
+      "title": "Attach harvest suggestions to weather alerts",
+      "area": "backend",
+      "hours": 2,
+      "description": "Include the harvest action in the related alert payload."
+     },
+     {
+      "title": "iOS: show 'harvest before' action in alert and task",
+      "area": "ios",
+      "hours": 2,
+      "description": "Render the action with deep link."
+     },
+     {
+      "title": "Test with a simulated rain forecast",
+      "area": "testing",
+      "hours": 1,
+      "description": "Confirm suggestion appears only for ripe sensitive crops."
+     }
+    ]
+   },
+   {
+    "key": "3.15.6",
+    "title": "One-tap harvest logging",
+    "priority": "MVP",
+    "seq": 9,
+    "story": "As a gardener, I want to log a harvest in one tap and enter the quantity so that my harvest log stays complete with no effort.",
+    "acceptance": [
+     "A 'Harvested' button on the planting screen and on harvest tasks",
+     "Prompts for weight or count with sensible units per crop",
+     "Creates a harvest entry in the activity log and journal",
+     "Can mark the planting as finished or still producing"
+    ],
+    "depends_on": [
+     "3.8.9",
+     "3.8.1"
+    ],
+    "tasks": [
+     {
+      "title": "Harvest event command and API endpoint",
+      "area": "backend",
+      "hours": 3,
+      "description": "Record harvest quantity, unit and 'planting finished' flag in the activity log; integration test."
+     },
+     {
+      "title": "Default units per crop (kg, count, bunch)",
+      "area": "content",
+      "hours": 1,
+      "description": "Add a default harvest unit to crop content."
+     },
+     {
+      "title": "iOS: 'Harvested' button and quantity sheet",
+      "area": "ios",
+      "hours": 4,
+      "description": "Quick sheet with numeric pad and unit, from planting screen and tasks."
+     },
+     {
+      "title": "iOS: update planting state after harvest",
+      "area": "ios",
+      "hours": 2,
+      "description": "Mark finished or still producing and refresh roadmap/Today."
+     },
+     {
+      "title": "Test harvest logging on iPhone",
+      "area": "testing",
+      "hours": 1,
+      "description": "Log 3 harvests and verify the harvest log totals."
+     }
+    ]
+   },
+   {
+    "key": "3.15.7",
+    "title": "Glut warning",
+    "priority": "Future improvement",
+    "seq": 99,
+    "story": "As a gardener, I want to be warned when a crop will peak so that I can preserve or give away the surplus.",
+    "acceptance": [
+     "Forecasts peaks from plantings and harvest history",
+     "Suggests preserving ideas or giving away",
+     "Shown a week before the peak"
+    ],
+    "depends_on": [
+     "3.15.8",
+     "3.8.9"
+    ],
+    "tasks": []
+   },
+   {
+    "key": "3.15.8",
+    "title": "Storage and preserving guides",
+    "priority": "Good to have",
+    "seq": 35,
+    "story": "As a gardener, I want to know how to store and preserve each crop so that nothing goes to waste.",
+    "acceptance": [
+     "Each crop has storage advice (where, how long it keeps)",
+     "Simple preserving guides: drying, freezing, jarring",
+     "Linked from the harvest log entry and planting screen",
+     "PT and EN, with sources"
+    ],
+    "depends_on": [
+     "0.5",
+     "3.7.1"
+    ],
+    "tasks": [
+     {
+      "title": "Add storage fields to crop content schema",
+      "area": "content",
+      "hours": 1,
+      "description": "Storage method, shelf life, preserving options."
+     },
+     {
+      "title": "Write storage advice for all catalog crops (PT/EN)",
+      "area": "content",
+      "hours": 6,
+      "description": "Author cited storage notes."
+     },
+     {
+      "title": "Write preserving guides: drying, freezing, jarring (PT/EN)",
+      "area": "content",
+      "hours": 6,
+      "description": "Three step-by-step guides with safety notes, in the standard guide layout."
+     },
+     {
+      "title": "iOS: storage section and links from harvest entries",
+      "area": "ios",
+      "hours": 3,
+      "description": "Show storage advice after logging a harvest and on the planting screen."
+     },
+     {
+      "title": "Test storage content on iPhone",
+      "area": "testing",
+      "hours": 1,
+      "description": "Review on device."
+     }
+    ]
+   },
+   {
+    "key": "3.15.9",
+    "title": "Seed saving",
+    "priority": "Future improvement",
+    "seq": 99,
+    "story": "As a gardener, I want guidance on saving seeds from my crops so that I can replant my best varieties.",
+    "acceptance": [
+     "Per-crop seed-saving guidance",
+     "'Leave for seed' option in harvest verdicts",
+     "Seed saving tracked in the journal"
+    ],
+    "depends_on": [
+     "3.15.1"
+    ],
+    "tasks": []
+   }
+  ]
+ },
+ {
+  "key": "E16",
+  "title": "Season planner",
+  "summary": "Plans which crop goes in which bed, when and how many, with rotation, space checks, timelines and editing, using a fixed-rule engine (possibly OR-Tools).",
+  "plan_ref": "PLAN.md §3.16",
+  "features": [
+   {
+    "key": "3.16.1",
+    "title": "Crops into beds",
+    "priority": "MVP",
+    "seq": 10,
+    "story": "As a gardener, I want the app to place my chosen crops into my beds with dates and plant counts so that I have a concrete season plan.",
+    "acceptance": [
+     "Generates a season plan assigning each chosen crop to a bed with sow/plant-out dates and plant count",
+     "Uses bed size, sun, calendar windows and crop spacing",
+     "Must-have crops are placed first",
+     "Confirming the plan creates planned plantings and tasks and updates the roadmap",
+     "Plan is stored and versioned"
+    ],
+    "depends_on": [
+     "3.6.1",
+     "3.3.3",
+     "3.5.1",
+     "3.9.1",
+     "3.1.1"
+    ],
+    "tasks": [
+     {
+      "title": "Season plan data model and migration",
+      "area": "backend",
+      "hours": 4,
+      "description": "Plan, plan items (crop, bed, dates, count), version and status."
+     },
+     {
+      "title": "Spike: evaluate Google OR-Tools in .NET for bed assignment",
+      "area": "backend",
+      "hours": 4,
+      "description": "Prototype constraint model; decide OR-Tools vs simple greedy. Done with a short decision note in docs/."
+     },
+     {
+      "title": "Planning engine: assign crops to beds with space and windows",
+      "area": "backend",
+      "hours": 8,
+      "description": "Implement the solver with constraints for space, timing and priority."
+     },
+     {
+      "title": "Planning engine: compute plant counts from quantity and spacing",
+      "area": "backend",
+      "hours": 3,
+      "description": "Use crop yields and spacing; unit tests."
+     },
+     {
+      "title": "Planning engine unit tests with sample gardens",
+      "area": "backend",
+      "hours": 4,
+      "description": "Cover small, crowded and empty gardens."
+     },
+     {
+      "title": "API: generate, get and confirm season plan",
+      "area": "backend",
+      "hours": 4,
+      "description": "Endpoints with validation; confirming emits activity log events."
+     },
+     {
+      "title": "Confirm plan → planned plantings, tasks and roadmap update",
+      "area": "backend",
+      "hours": 4,
+      "description": "Create plantings and tasks from plan items and trigger roadmap recalculation."
+     },
+     {
+      "title": "iOS: season plan screen (list by bed)",
+      "area": "ios",
+      "hours": 6,
+      "description": "Show beds with assigned crops, dates and counts."
+     },
+     {
+      "title": "iOS: generate and confirm plan flow",
+      "area": "ios",
+      "hours": 4,
+      "description": "Buttons, progress, confirmation summary."
+     },
+     {
+      "title": "Test season plan with the real garden on iPhone",
+      "area": "testing",
+      "hours": 3,
+      "description": "Generate a plan for the Alentejo plot and check it makes sense."
+     }
+    ]
+   },
+   {
+    "key": "3.16.2",
+    "title": "Layout inside each bed",
+    "priority": "Good to have",
+    "seq": 36,
+    "story": "As a gardener, I want to see where each plant goes inside a bed so that I plant with the right spacing.",
+    "acceptance": [
+     "Each bed shows rows or a grid with plant positions",
+     "Spacing comes from crop data",
+     "Row direction follows the bed setting",
+     "Plant counts match the plan"
+    ],
+    "depends_on": [
+     "3.16.1",
+     "3.3.9"
+    ],
+    "tasks": [
+     {
+      "title": "Engine: compute rows/grid positions within a bed",
+      "area": "backend",
+      "hours": 5,
+      "description": "Lay out plants respecting spacing and row direction; unit tests."
+     },
+     {
+      "title": "API: return bed layout for a plan",
+      "area": "backend",
+      "hours": 2,
+      "description": "Positions per plan item."
+     },
+     {
+      "title": "iOS: bed layout drawing view",
+      "area": "ios",
+      "hours": 6,
+      "description": "Scaled drawing of the bed with plant markers and legend."
+     },
+     {
+      "title": "Test bed layout on iPhone",
+      "area": "testing",
+      "hours": 1,
+      "description": "Check spacing visually on 2 beds."
+     }
+    ]
+   },
+   {
+    "key": "3.16.3",
+    "title": "Year view per bed",
+    "priority": "Good to have",
+    "seq": 36,
+    "story": "As a gardener, I want a year timeline for each bed so that I see when beds are busy and when they're empty.",
+    "acceptance": [
+     "Gantt-style timeline per bed across 12 months",
+     "Shows each planting's occupancy from sowing to end of harvest",
+     "Empty periods are highlighted",
+     "Tap a block to open the plan item"
+    ],
+    "depends_on": [
+     "3.16.1"
+    ],
+    "tasks": [
+     {
+      "title": "API: bed occupancy timeline for a year",
+      "area": "backend",
+      "hours": 3,
+      "description": "Return occupancy intervals and gaps per bed."
+     },
+     {
+      "title": "iOS: Gantt-style year view component",
+      "area": "ios",
+      "hours": 8,
+      "description": "Scrollable timeline with bars per bed and gap highlighting."
+     },
+     {
+      "title": "iOS: navigation from timeline to plan items",
+      "area": "ios",
+      "hours": 2,
+      "description": "Tap a bar to open details."
+     },
+     {
+      "title": "Test year view on iPhone",
+      "area": "testing",
+      "hours": 1,
+      "description": "Check with a full season plan."
+     }
+    ]
+   },
+   {
+    "key": "3.16.4",
+    "title": "Follow-on crops",
+    "priority": "Good to have",
+    "seq": 36,
+    "story": "As a gardener, I want suggestions for what to plant after a harvest in the same bed so that beds stay productive.",
+    "acceptance": [
+     "After a planting's expected end, the planner suggests follow-on crops that fit the window",
+     "Suggestions respect rotation and my chosen crops",
+     "Accepting adds the crop to the plan"
+    ],
+    "depends_on": [
+     "3.16.1",
+     "3.16.6",
+     "3.16.3"
+    ],
+    "tasks": [
+     {
+      "title": "Engine: suggest follow-on crops for bed gaps",
+      "area": "backend",
+      "hours": 5,
+      "description": "Find crops whose windows fit the gap and pass rotation; unit tests."
+     },
+     {
+      "title": "API: follow-on suggestions per bed",
+      "area": "backend",
+      "hours": 2,
+      "description": "Return ranked suggestions."
+     },
+     {
+      "title": "iOS: follow-on suggestions in year view and bed screen",
+      "area": "ios",
+      "hours": 4,
+      "description": "Show suggestions in gaps with an Add button."
+     },
+     {
+      "title": "Test follow-on crops on iPhone",
+      "area": "testing",
+      "hours": 1,
+      "description": "Verify suggestions for early-potato bed."
+     }
+    ]
+   },
+   {
+    "key": "3.16.5",
+    "title": "Cover crops",
+    "priority": "Future improvement",
+    "seq": 99,
+    "story": "As a gardener, I want cover crop suggestions for empty beds so that the ground is protected and improved.",
+    "acceptance": [
+     "Suggests cover crops for long empty periods",
+     "Includes sowing and cutting dates",
+     "Respects rotation"
+    ],
+    "depends_on": [
+     "3.16.3"
+    ],
+    "tasks": []
+   },
+   {
+    "key": "3.16.6",
+    "title": "Crop rotation",
+    "priority": "MVP",
+    "seq": 10,
+    "story": "As a gardener, I want the planner to follow crop rotation so that my soil and plants stay healthy year after year.",
+    "acceptance": [
+     "Every crop belongs to one of 4 rotation groups (legumes, brassicas, roots, fruiting)",
+     "The planner avoids putting the same group in a bed in consecutive seasons",
+     "Breaking rotation shows a warning with the reason",
+     "Beds with disease flags avoid susceptible families"
+    ],
+    "depends_on": [
+     "3.16.1",
+     "0.4"
+    ],
+    "tasks": [
+     {
+      "title": "Add rotation group and family to crop content",
+      "area": "content",
+      "hours": 2,
+      "description": "Classify all catalog crops."
+     },
+     {
+      "title": "Bed history projection from the activity log",
+      "area": "backend",
+      "hours": 4,
+      "description": "Families grown per bed per season, plus disease flags."
+     },
+     {
+      "title": "Rotation constraint in the planning engine",
+      "area": "backend",
+      "hours": 4,
+      "description": "Penalise or block same group; unit tests."
+     },
+     {
+      "title": "Rotation warnings API",
+      "area": "backend",
+      "hours": 2,
+      "description": "Return warnings for manual placements."
+     },
+     {
+      "title": "iOS: rotation warning badges on plan items",
+      "area": "ios",
+      "hours": 3,
+      "description": "Show warnings with explanations."
+     },
+     {
+      "title": "Test rotation with a two-season scenario",
+      "area": "testing",
+      "hours": 2,
+      "description": "Simulate last season's history and check warnings."
+     }
+    ]
+   },
+   {
+    "key": "3.16.7",
+    "title": "Companion planting",
+    "priority": "Future improvement",
+    "seq": 99,
+    "story": "As a gardener, I want companion planting suggestions labelled by evidence so that I know which pairings really help.",
+    "acceptance": [
+     "Pairings stored with evidence level",
+     "Shown in plan and bed layout",
+     "Bad pairings warned"
+    ],
+    "depends_on": [
+     "3.16.2"
+    ],
+    "tasks": []
+   },
+   {
+    "key": "3.16.8",
+    "title": "Space check",
+    "priority": "MVP",
+    "seq": 10,
+    "story": "As a gardener, I want to know when my crops don't fit in my beds so that I can prioritise.",
+    "acceptance": [
+     "Total space needed vs available is shown",
+     "When too little space, must-haves are placed first and the rest listed as 'not placed'",
+     "Suggestions to reduce quantities or add a bed",
+     "Recalculates when crops or beds change"
+    ],
+    "depends_on": [
+     "3.16.1",
+     "3.6.4"
+    ],
+    "tasks": [
+     {
+      "title": "Engine: space demand vs capacity calculation",
+      "area": "backend",
+      "hours": 3,
+      "description": "Compute area needed per crop and compare with beds; unit tests."
+     },
+     {
+      "title": "Engine: priority-first placement with 'not placed' list",
+      "area": "backend",
+      "hours": 3,
+      "description": "Must-haves first; return unplaced items with reasons."
+     },
+     {
+      "title": "iOS: space check summary and unplaced list",
+      "area": "ios",
+      "hours": 4,
+      "description": "Bar showing used vs available, list of unplaced crops with options."
+     },
+     {
+      "title": "Test space check with too many crops",
+      "area": "testing",
+      "hours": 1,
+      "description": "Add excess crops and verify behaviour."
+     }
+    ]
+   },
+   {
+    "key": "3.16.9",
+    "title": "Perennials",
+    "priority": "Good to have",
+    "seq": 36,
+    "story": "As a gardener, I want perennials to keep their beds so that the planner doesn't move them.",
+    "acceptance": [
+     "Crops flagged perennial occupy their bed permanently",
+     "Planner never reassigns perennial beds",
+     "Perennials show in year view as full-year bars"
+    ],
+    "depends_on": [
+     "3.16.1"
+    ],
+    "tasks": [
+     {
+      "title": "Add perennial flag and lifespan to crop content",
+      "area": "content",
+      "hours": 1,
+      "description": "Asparagus, strawberries, herbs, fruit trees."
+     },
+     {
+      "title": "Engine: lock perennial beds in planning",
+      "area": "backend",
+      "hours": 3,
+      "description": "Treat perennial plantings as fixed; unit tests."
+     },
+     {
+      "title": "iOS: perennial indicators in plan and year view",
+      "area": "ios",
+      "hours": 2,
+      "description": "Lock icon and full-year bar."
+     },
+     {
+      "title": "Test perennials in plan",
+      "area": "testing",
+      "hours": 1,
+      "description": "Add strawberries and regenerate the plan."
+     }
+    ]
+   },
+   {
+    "key": "3.16.10",
+    "title": "Drag-and-drop editing",
+    "priority": "Good to have",
+    "seq": 36,
+    "story": "As a gardener, I want to drag crops between beds and dates so that I can adjust the plan myself.",
+    "acceptance": [
+     "Drag a plan item to another bed or date",
+     "Rotation, spacing and timing are re-checked live with warnings",
+     "Changes can be undone",
+     "Saved as a new plan version"
+    ],
+    "depends_on": [
+     "3.16.1",
+     "3.16.3",
+     "3.16.6",
+     "3.16.8"
+    ],
+    "tasks": [
+     {
+      "title": "API: validate a proposed plan change",
+      "area": "backend",
+      "hours": 4,
+      "description": "Return warnings for rotation, space and window conflicts."
+     },
+     {
+      "title": "API: save edited plan as new version",
+      "area": "backend",
+      "hours": 2,
+      "description": "Versioning with undo support."
+     },
+     {
+      "title": "iOS: drag-and-drop on bed list and year view",
+      "area": "ios",
+      "hours": 8,
+      "description": "Drag interactions with drop targets."
+     },
+     {
+      "title": "iOS: live warnings and undo",
+      "area": "ios",
+      "hours": 3,
+      "description": "Show validation results and undo stack."
+     },
+     {
+      "title": "Test drag-and-drop editing on iPhone",
+      "area": "testing",
+      "hours": 2,
+      "description": "Move crops and check warnings."
+     }
+    ]
+   },
+   {
+    "key": "3.16.11",
+    "title": "Draft and active plans",
+    "priority": "Good to have",
+    "seq": 36,
+    "story": "As a gardener, I want to draft next season's plan while the current one runs so that I can prepare ahead.",
+    "acceptance": [
+     "One active plan and one or more drafts per season",
+     "Drafts don't create tasks until activated",
+     "Activating a draft replaces the next season's plan cleanly",
+     "Drafts are listed with dates"
+    ],
+    "depends_on": [
+     "3.16.1"
+    ],
+    "tasks": [
+     {
+      "title": "Plan status model: draft vs active, per season",
+      "area": "backend",
+      "hours": 3,
+      "description": "Migration and rules for one active plan per season."
+     },
+     {
+      "title": "API: create draft, activate draft",
+      "area": "backend",
+      "hours": 3,
+      "description": "Activation triggers planting/task creation."
+     },
+     {
+      "title": "iOS: plan switcher and draft list",
+      "area": "ios",
+      "hours": 4,
+      "description": "Switch between active and draft plans."
+     },
+     {
+      "title": "Test draft activation",
+      "area": "testing",
+      "hours": 1,
+      "description": "Create a draft and activate it."
+     }
+    ]
+   },
+   {
+    "key": "3.16.12",
+    "title": "Learning from last year",
+    "priority": "Future improvement",
+    "seq": 99,
+    "story": "As a gardener, I want next season's plan to learn from my harvests so that quantities improve.",
+    "acceptance": [
+     "Uses harvest log and notes",
+     "Suggests quantity changes with reasons",
+     "User confirms changes"
+    ],
+    "depends_on": [
+     "3.8.9",
+     "3.16.11"
+    ],
+    "tasks": []
+   },
+   {
+    "key": "3.16.13",
+    "title": "AI goals",
+    "priority": "Future improvement",
+    "seq": 99,
+    "story": "As a gardener, I want the AI to adjust the plan for a goal so that I can optimise for harvest, work or water.",
+    "acceptance": [
+     "Goals: most harvest, least work, least water",
+     "AI explains trade-offs",
+     "Changes are proposals to confirm"
+    ],
+    "depends_on": [
+     "3.16.1",
+     "E00:AI layer core"
+    ],
+    "tasks": []
+   }
+  ]
+ },
+ {
+  "key": "E17",
+  "title": "AI assistant",
+  "summary": "A gardening assistant that knows the user's garden, answers with cited sources, and proposes actions the user confirms.",
+  "plan_ref": "PLAN.md §3.17",
+  "features": [
+   {
+    "key": "3.17.1",
+    "title": "Chat with garden context",
+    "priority": "MVP",
+    "seq": 11,
+    "story": "As a beginner, I want to ask an AI about my garden and get answers based on my data and trusted sources so that I always know what to do.",
+    "acceptance": [
+     "Chat screen with streamed answers in my language (PT/EN)",
+     "Answers use my plot, zones, crops, plantings, recent journal, weather and tasks",
+     "Answers cite knowledge base sources",
+     "Honesty and safety rules: says when unsure, never says wild plants are safe to eat, never names chemical products",
+     "Usage is limited per tier and logged with cost"
+    ],
+    "depends_on": [
+     "E00:AI layer core",
+     "E00:Embeddings and hybrid search",
+     "0.4",
+     "0.5"
+    ],
+    "tasks": [
+     {
+      "title": "Conversation and message data model",
+      "area": "backend",
+      "hours": 3,
+      "description": "Conversations, messages, token usage; migration."
+     },
+     {
+      "title": "Context builder: garden summary for the assistant",
+      "area": "backend",
+      "hours": 5,
+      "description": "Assemble plot, zones, plantings, recent journal, weather and tasks into a compact context."
+     },
+     {
+      "title": "Knowledge base retrieval for questions (hybrid search)",
+      "area": "backend",
+      "hours": 4,
+      "description": "Use embeddings + keyword search to fetch relevant content with source references."
+     },
+     {
+      "title": "Assistant system prompt with honesty and safety rules",
+      "area": "backend",
+      "hours": 4,
+      "description": "Write and test rules; done when red-team questions are handled correctly."
+     },
+     {
+      "title": "Streaming chat endpoint (server-sent events)",
+      "area": "backend",
+      "hours": 5,
+      "description": "Stream Claude responses through the AI layer with citations."
+     },
+     {
+      "title": "Model routing: cheap model for simple, strong for complex",
+      "area": "backend",
+      "hours": 3,
+      "description": "Classify questions and route; log the model used."
+     },
+     {
+      "title": "Prompt caching and conversation summarisation",
+      "area": "backend",
+      "hours": 4,
+      "description": "Cache stable context; summarise long conversations."
+     },
+     {
+      "title": "Usage limits and cost logging for chat",
+      "area": "backend",
+      "hours": 3,
+      "description": "Enforce per-tier quota and record cost per message."
+     },
+     {
+      "title": "iOS: chat screen with streaming messages",
+      "area": "ios",
+      "hours": 8,
+      "description": "Message list, input, streaming rendering, error states."
+     },
+     {
+      "title": "iOS: citation chips linking to guides",
+      "area": "ios",
+      "hours": 3,
+      "description": "Show sources and open the cited guide."
+     },
+     {
+      "title": "Assistant evaluation set (20 questions with expected answers)",
+      "area": "testing",
+      "hours": 4,
+      "description": "Build and run an eval of typical beginner questions in PT and EN."
+     },
+     {
+      "title": "Test assistant on iPhone with real garden questions",
+      "area": "testing",
+      "hours": 2,
+      "description": "Ask 10 real questions and review answers."
+     }
+    ]
+   },
+   {
+    "key": "3.17.2",
+    "title": "\"Ask about this\"",
+    "priority": "Good to have",
+    "seq": 37,
+    "story": "As a gardener, I want to ask the AI about the item I'm looking at so that I don't have to explain the context.",
+    "acceptance": [
+     "'Ask about this' button on beds, plantings, tasks, guide steps, alerts and diagnoses",
+     "The chat opens with that item pre-loaded as context",
+     "Works from all listed screens"
+    ],
+    "depends_on": [
+     "3.17.1"
+    ],
+    "tasks": [
+     {
+      "title": "API: start conversation with an attached item reference",
+      "area": "backend",
+      "hours": 3,
+      "description": "Accept item type and ID and add details to the context."
+     },
+     {
+      "title": "iOS: reusable 'Ask about this' button component",
+      "area": "ios",
+      "hours": 3,
+      "description": "Opens chat with the item attached."
+     },
+     {
+      "title": "iOS: add button to beds, plantings, tasks, guide steps, alerts",
+      "area": "ios",
+      "hours": 4,
+      "description": "Integrate on all screens."
+     },
+     {
+      "title": "Test 'Ask about this' from 5 screens",
+      "area": "testing",
+      "hours": 1,
+      "description": "Verify context is correct."
+     }
+    ]
+   },
+   {
+    "key": "3.17.3",
+    "title": "Voice and photo input",
+    "priority": "Good to have",
+    "seq": 37,
+    "story": "As a gardener in the field, I want to speak my question or send a photo so that I don't need to type.",
+    "acceptance": [
+     "Microphone button transcribes speech on the phone (PT/EN)",
+     "Photos can be attached in the chat",
+     "Photos are routed to identification or diagnosis automatically when relevant",
+     "Works with the existing media upload"
+    ],
+    "depends_on": [
+     "3.17.1",
+     "E00:Media/photo upload service",
+     "3.13.1",
+     "3.14.1"
+    ],
+    "tasks": [
+     {
+      "title": "iOS: on-device speech-to-text input",
+      "area": "ios",
+      "hours": 4,
+      "description": "Use Apple Speech framework with PT and EN."
+     },
+     {
+      "title": "iOS: attach photo in chat",
+      "area": "ios",
+      "hours": 3,
+      "description": "Camera and library picker with upload."
+     },
+     {
+      "title": "Backend: route chat photos to identify/diagnose tasks",
+      "area": "backend",
+      "hours": 4,
+      "description": "Detect intent and call the right AI task; return results in the chat."
+     },
+     {
+      "title": "Test voice and photo input on iPhone",
+      "area": "testing",
+      "hours": 2,
+      "description": "Ask by voice in PT and send a plant photo."
+     }
+    ]
+   },
+   {
+    "key": "3.17.4",
+    "title": "Hands-free voice mode",
+    "priority": "Future improvement",
+    "seq": 99,
+    "story": "As a gardener with dirty hands, I want spoken conversations so that I can use the assistant hands-free.",
+    "acceptance": [
+     "Speech in, spoken answers out",
+     "Uses the phone's built-in voice",
+     "Works in PT and EN"
+    ],
+    "depends_on": [
+     "3.17.3"
+    ],
+    "tasks": []
+   },
+   {
+    "key": "3.17.5",
+    "title": "Proposed actions",
+    "priority": "MVP",
+    "seq": 11,
+    "story": "As a gardener, I want the assistant to propose changes I can confirm so that it can help me act, safely.",
+    "acceptance": [
+     "Assistant can propose: create/reschedule tasks, add crops, edit the plan, adjust watering, log journal entries, add tools to get, open a guide",
+     "Each proposal is shown as a card with Confirm and Dismiss",
+     "Only confirmed proposals change data",
+     "All applied actions are logged and can be undone"
+    ],
+    "depends_on": [
+     "3.17.1",
+     "3.9.1",
+     "3.6.1",
+     "0.4"
+    ],
+    "tasks": [
+     {
+      "title": "Pending proposal data model and lifecycle",
+      "area": "backend",
+      "hours": 3,
+      "description": "Proposal with type, payload, status; migration."
+     },
+     {
+      "title": "Assistant tool definitions mapped to app commands",
+      "area": "backend",
+      "hours": 6,
+      "description": "Define tools for tasks, crops, plan, watering, journal, tools, guides that create proposals."
+     },
+     {
+      "title": "Apply proposal: run the command and log it",
+      "area": "backend",
+      "hours": 4,
+      "description": "Execute on confirm, write to activity log, return result."
+     },
+     {
+      "title": "Undo applied proposals",
+      "area": "backend",
+      "hours": 4,
+      "description": "Compensating commands for each action type; tests."
+     },
+     {
+      "title": "Proposal tests for each action type",
+      "area": "backend",
+      "hours": 3,
+      "description": "Integration tests for propose → confirm → undo."
+     },
+     {
+      "title": "iOS: proposal cards in chat with Confirm/Dismiss",
+      "area": "ios",
+      "hours": 5,
+      "description": "Render proposal details clearly."
+     },
+     {
+      "title": "iOS: pending proposals list and undo",
+      "area": "ios",
+      "hours": 3,
+      "description": "Show proposals from all sources and allow undo."
+     },
+     {
+      "title": "Test proposed actions on iPhone",
+      "area": "testing",
+      "hours": 2,
+      "description": "Ask the assistant to create and reschedule tasks, then undo."
+     }
+    ]
+   },
+   {
+    "key": "3.17.6",
+    "title": "Garden memory notes",
+    "priority": "Good to have",
+    "seq": 37,
+    "story": "As a gardener, I want to see and edit what the assistant remembers about my garden so that nothing is hidden.",
+    "acceptance": [
+     "Facts learned in conversation are saved as notes after confirmation",
+     "Notes screen lists all notes with edit and delete",
+     "Notes are used as context in future answers"
+    ],
+    "depends_on": [
+     "3.17.1",
+     "3.17.5"
+    ],
+    "tasks": [
+     {
+      "title": "Memory note model and API (list, edit, delete)",
+      "area": "backend",
+      "hours": 3,
+      "description": "Migration and CRUD endpoints."
+     },
+     {
+      "title": "Assistant tool: propose a memory note",
+      "area": "backend",
+      "hours": 3,
+      "description": "Assistant proposes facts to remember; saved on confirm."
+     },
+     {
+      "title": "Include memory notes in assistant context",
+      "area": "backend",
+      "hours": 2,
+      "description": "Add to context builder."
+     },
+     {
+      "title": "iOS: garden memory screen",
+      "area": "ios",
+      "hours": 4,
+      "description": "List, edit, delete notes."
+     },
+     {
+      "title": "Test memory notes end-to-end",
+      "area": "testing",
+      "hours": 1,
+      "description": "Teach a fact and verify it's used later."
+     }
+    ]
+   },
+   {
+    "key": "3.17.7",
+    "title": "Queued offline questions",
+    "priority": "Future improvement",
+    "seq": 99,
+    "story": "As a gardener with poor signal, I want to ask questions offline so that they're answered later.",
+    "acceptance": [
+     "Questions typed offline are queued",
+     "Answered when back online",
+     "Notification when the answer is ready"
+    ],
+    "depends_on": [
+     "3.17.1",
+     "0.3"
+    ],
+    "tasks": []
+   },
+   {
+    "key": "3.17.8",
+    "title": "History and search",
+    "priority": "Good to have",
+    "seq": 37,
+    "story": "As a gardener, I want to find past conversations so that I can reread advice.",
+    "acceptance": [
+     "List of past conversations with titles",
+     "Full-text search across messages",
+     "Open and continue an old conversation"
+    ],
+    "depends_on": [
+     "3.17.1"
+    ],
+    "tasks": [
+     {
+      "title": "Auto-title conversations",
+      "area": "backend",
+      "hours": 2,
+      "description": "Generate short titles after the first exchange."
+     },
+     {
+      "title": "API: list and search conversations",
+      "area": "backend",
+      "hours": 3,
+      "description": "Paginated list and keyword search."
+     },
+     {
+      "title": "iOS: conversation history and search screen",
+      "area": "ios",
+      "hours": 4,
+      "description": "List, search bar, open conversation."
+     },
+     {
+      "title": "Test history and search",
+      "area": "testing",
+      "hours": 1,
+      "description": "Search for a past topic."
+     }
+    ]
+   },
+   {
+    "key": "3.17.9",
+    "title": "Answer feedback",
+    "priority": "Good to have",
+    "seq": 37,
+    "story": "As a gardener, I want to rate answers so that the assistant improves.",
+    "acceptance": [
+     "Thumbs up/down on each answer, with optional comment",
+     "Feedback stored with the conversation",
+     "Thumbs-down answers can be exported to the eval set"
+    ],
+    "depends_on": [
+     "3.17.1"
+    ],
+    "tasks": [
+     {
+      "title": "Feedback model and API",
+      "area": "backend",
+      "hours": 2,
+      "description": "Store rating and comment per message."
+     },
+     {
+      "title": "Export thumbs-down answers to the eval set",
+      "area": "backend",
+      "hours": 2,
+      "description": "Script or endpoint to collect them for review."
+     },
+     {
+      "title": "iOS: thumbs up/down controls",
+      "area": "ios",
+      "hours": 2,
+      "description": "On each assistant message."
+     },
+     {
+      "title": "Test feedback flow",
+      "area": "testing",
+      "hours": 1,
+      "description": "Rate answers and verify storage."
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "key": "E18",
+  "title": "Improvement suggestions",
+  "summary": "Regular garden reports with statistics and AI suggestions backed by evidence, plus an end-of-season review that feeds next season's plan.",
+  "plan_ref": "PLAN.md §3.18",
+  "features": [
+   {
+    "key": "3.18.1",
+    "title": "Garden report",
+    "priority": "Good to have",
+    "seq": 38,
+    "story": "As a gardener, I want a weekly report of my garden so that I see progress and what's next.",
+    "acceptance": [
+     "Weekly report with tasks done, harvests, weather recap, problems, before/after photos and next week's preview",
+     "Statistics computed with fixed rules from the activity log",
+     "Delivered as notification plus report screen",
+     "Works without AI (statistics only)"
+    ],
+    "depends_on": [
+     "0.4",
+     "3.8.9",
+     "3.9.1",
+     "E00:Push notification infrastructure"
+    ],
+    "tasks": [
+     {
+      "title": "Statistics aggregation from the activity log",
+      "area": "backend",
+      "hours": 5,
+      "description": "Counts, totals and trends for the week."
+     },
+     {
+      "title": "Weekly report job and storage",
+      "area": "backend",
+      "hours": 3,
+      "description": "Scheduled job creating a report record per user."
+     },
+     {
+      "title": "Before/after photo selection for the report",
+      "area": "backend",
+      "hours": 2,
+      "description": "Pick photos from fixed spots or recent journal."
+     },
+     {
+      "title": "Report-ready push notification",
+      "area": "backend",
+      "hours": 1,
+      "description": "Notify when the report is generated."
+     },
+     {
+      "title": "iOS: garden report screen",
+      "area": "ios",
+      "hours": 6,
+      "description": "Sections for stats, weather, photos, next week."
+     },
+     {
+      "title": "Test weekly report with a week of real data",
+      "area": "testing",
+      "hours": 2,
+      "description": "Review the generated report."
+     }
+    ]
+   },
+   {
+    "key": "3.18.2",
+    "title": "AI suggestions with evidence",
+    "priority": "Good to have",
+    "seq": 38,
+    "story": "As a gardener, I want improvement ideas backed by my own data so that I trust them.",
+    "acceptance": [
+     "Report includes AI suggestions in categories (water, crops, pests, layout, infrastructure, workload)",
+     "Each suggestion has reason, linked evidence (journal entries, photos), impact and effort",
+     "One AI call per report using the computed statistics",
+     "Past dismissals are not repeated"
+    ],
+    "depends_on": [
+     "3.18.1",
+     "E00:AI layer core"
+    ],
+    "tasks": [
+     {
+      "title": "Review AI task: compact summary in, suggestions out",
+      "area": "backend",
+      "hours": 5,
+      "description": "Structured output with categories, reasons, evidence IDs, impact, effort."
+     },
+     {
+      "title": "Review prompt and evidence-linking rules",
+      "area": "backend",
+      "hours": 3,
+      "description": "Ensure every suggestion references real records."
+     },
+     {
+      "title": "Suggestion data model",
+      "area": "backend",
+      "hours": 2,
+      "description": "Store suggestions with status and evidence links."
+     },
+     {
+      "title": "iOS: suggestion cards with evidence links",
+      "area": "ios",
+      "hours": 4,
+      "description": "Open linked journal entries and photos."
+     },
+     {
+      "title": "Test AI suggestions on real data",
+      "area": "testing",
+      "hours": 2,
+      "description": "Review usefulness of suggestions."
+     }
+    ]
+   },
+   {
+    "key": "3.18.3",
+    "title": "Accept, dismiss, snooze",
+    "priority": "Good to have",
+    "seq": 38,
+    "story": "As a gardener, I want to accept, dismiss or snooze suggestions so that I stay in control.",
+    "acceptance": [
+     "Accept turns a suggestion into a proposal; confirming creates tasks or plan changes",
+     "Dismiss asks for a reason and the reason prevents repeats",
+     "Snooze hides it for a chosen time"
+    ],
+    "depends_on": [
+     "3.18.2",
+     "3.17.5"
+    ],
+    "tasks": [
+     {
+      "title": "API: accept (→ proposal), dismiss with reason, snooze",
+      "area": "backend",
+      "hours": 4,
+      "description": "Status transitions and proposal creation."
+     },
+     {
+      "title": "Feed dismissal reasons into the review prompt",
+      "area": "backend",
+      "hours": 2,
+      "description": "Avoid repeating dismissed ideas."
+     },
+     {
+      "title": "iOS: accept/dismiss/snooze actions",
+      "area": "ios",
+      "hours": 3,
+      "description": "Buttons and reason picker."
+     },
+     {
+      "title": "Test suggestion actions",
+      "area": "testing",
+      "hours": 1,
+      "description": "Accept one, dismiss one, snooze one."
+     }
+    ]
+   },
+   {
+    "key": "3.18.4",
+    "title": "Patterns over time",
+    "priority": "Future improvement",
+    "seq": 99,
+    "story": "As a gardener, I want insights across seasons so that I fix recurring problems.",
+    "acceptance": [
+     "Detects multi-week/season patterns",
+     "Shows evidence",
+     "Feeds suggestions"
+    ],
+    "depends_on": [
+     "3.18.2"
+    ],
+    "tasks": []
+   },
+   {
+    "key": "3.18.5",
+    "title": "End-of-season review",
+    "priority": "Good to have",
+    "seq": 38,
+    "story": "As a gardener, I want a season retrospective so that next season goes better.",
+    "acceptance": [
+     "At season end, a review compares yields to expectations and lists what worked and what didn't",
+     "Suggested changes can be sent to the season planner draft",
+     "Report saved for later reference"
+    ],
+    "depends_on": [
+     "3.18.1",
+     "3.18.2",
+     "3.16.11"
+    ],
+    "tasks": [
+     {
+      "title": "Season-end statistics: yields vs expected, task completion",
+      "area": "backend",
+      "hours": 4,
+      "description": "Aggregate per crop and bed."
+     },
+     {
+      "title": "Season review AI task",
+      "area": "backend",
+      "hours": 3,
+      "description": "Retrospective with recommendations."
+     },
+     {
+      "title": "Send recommendations to the season planner draft",
+      "area": "backend",
+      "hours": 3,
+      "description": "Create draft plan changes as proposals."
+     },
+     {
+      "title": "iOS: season review screen",
+      "area": "ios",
+      "hours": 4,
+      "description": "Retrospective sections and 'apply to next season'."
+     },
+     {
+      "title": "Test end-of-season review with sample season",
+      "area": "testing",
+      "hours": 2,
+      "description": "Simulate a season and review output."
+     }
+    ]
+   },
+   {
+    "key": "3.18.6",
+    "title": "Configurable frequency",
+    "priority": "Future improvement",
+    "seq": 99,
+    "story": "As a gardener, I want to choose how often I get reports so that they fit my rhythm.",
+    "acceptance": [
+     "Weekly, fortnightly or monthly",
+     "Set in settings",
+     "Job respects the setting"
+    ],
+    "depends_on": [
+     "3.18.1",
+     "3.19.3"
+    ],
+    "tasks": []
+   }
+  ]
+ },
+ {
+  "key": "E19",
+  "title": "App-wide",
+  "summary": "Cross-cutting features: the Today home screen, first-run setup, settings, privacy, crash reporting, accessibility and the MVP TestFlight release.",
+  "plan_ref": "PLAN.md §3.19",
+  "features": [
+   {
+    "key": "3.19.1",
+    "title": "\"Today\" home screen",
+    "priority": "MVP",
+    "seq": 4,
+    "story": "As a gardener, I want one screen showing what matters today so that I know what to do as soon as I open the app.",
+    "acceptance": [
+     "Shows next actions, today's tasks, active weather alerts, the forecast and pending proposals",
+     "Sections appear as their features are delivered",
+     "Pull to refresh; tapping an item opens it",
+     "Sync-conflict badge appears when relevant"
+    ],
+    "depends_on": [
+     "3.1.1"
+    ],
+    "tasks": [
+     {
+      "title": "API: aggregated Today endpoint",
+      "area": "backend",
+      "hours": 4,
+      "description": "One call returning next actions, tasks, alerts, forecast, proposals."
+     },
+     {
+      "title": "Design Today screen layout",
+      "area": "design",
+      "hours": 3,
+      "description": "Wireframe sections and empty states in PT/EN."
+     },
+     {
+      "title": "iOS: Today screen with next actions section",
+      "area": "ios",
+      "hours": 5,
+      "description": "First version with roadmap next actions."
+     },
+     {
+      "title": "iOS: add tasks, alerts, forecast and proposals sections",
+      "area": "ios",
+      "hours": 5,
+      "description": "Extend as features land; hide empty sections."
+     },
+     {
+      "title": "Test Today screen on iPhone",
+      "area": "testing",
+      "hours": 1,
+      "description": "Daily use check."
+     }
+    ]
+   },
+   {
+    "key": "3.19.2",
+    "title": "First-run setup",
+    "priority": "MVP",
+    "seq": 4,
+    "story": "As a new user, I want a guided setup so that the app knows my garden and builds my roadmap.",
+    "acceptance": [
+     "Guided flow: location → draw plot → what already exists → site assessment (optional) → choose crops → preferences",
+     "Progress can be saved and resumed",
+     "At the end, the roadmap is ready and Today is populated",
+     "Available in PT and EN"
+    ],
+    "depends_on": [
+     "3.3.1",
+     "3.1.4",
+     "3.6.1",
+     "3.1.1"
+    ],
+    "tasks": [
+     {
+      "title": "Design first-run flow screens",
+      "area": "design",
+      "hours": 4,
+      "description": "Wireframes for each step and transitions."
+     },
+     {
+      "title": "iOS: onboarding flow container with progress and resume",
+      "area": "ios",
+      "hours": 5,
+      "description": "Step navigation and saved progress."
+     },
+     {
+      "title": "iOS: location step with permission handling",
+      "area": "ios",
+      "hours": 3,
+      "description": "Request location or enter manually."
+     },
+     {
+      "title": "iOS: wire plot drawing, starting point and crop steps",
+      "area": "ios",
+      "hours": 5,
+      "description": "Reuse feature screens inside the flow."
+     },
+     {
+      "title": "Backend: onboarding status and roadmap kickoff",
+      "area": "backend",
+      "hours": 3,
+      "description": "Track completion and trigger the first roadmap calculation."
+     },
+     {
+      "title": "Test first-run setup from a fresh install",
+      "area": "testing",
+      "hours": 2,
+      "description": "Complete onboarding for the real plot."
+     }
+    ]
+   },
+   {
+    "key": "3.19.3",
+    "title": "Settings",
+    "priority": "MVP",
+    "seq": 4,
+    "story": "As a user, I want settings for language, units and notifications so that the app works the way I like.",
+    "acceptance": [
+     "Language (PT/EN), units (metric/imperial), notification preferences, quiet hours placeholder, 'always own' tools setting",
+     "Settings sync to the backend",
+     "Changes apply immediately"
+    ],
+    "depends_on": [
+     "0.1",
+     "0.2"
+    ],
+    "tasks": [
+     {
+      "title": "User preferences model and API",
+      "area": "backend",
+      "hours": 3,
+      "description": "Language, units, notification and feature preferences."
+     },
+     {
+      "title": "iOS: settings screen",
+      "area": "ios",
+      "hours": 4,
+      "description": "Grouped settings with immediate apply."
+     },
+     {
+      "title": "iOS: units conversion helpers",
+      "area": "ios",
+      "hours": 3,
+      "description": "Format lengths, areas, volumes per setting."
+     },
+     {
+      "title": "Test settings on iPhone",
+      "area": "testing",
+      "hours": 1,
+      "description": "Change language and units and verify screens."
+     }
+    ]
+   },
+   {
+    "key": "3.19.4",
+    "title": "AI usage meter",
+    "priority": "Good to have",
+    "seq": 21,
+    "story": "As a user, I want to see how much AI I've used so that I understand limits and cost.",
+    "acceptance": [
+     "Shows AI calls and estimated cost this month by feature",
+     "Shows remaining quota for the tier",
+     "Accessible from settings"
+    ],
+    "depends_on": [
+     "E00:AI layer core",
+     "3.19.3"
+    ],
+    "tasks": [
+     {
+      "title": "API: AI usage summary per user",
+      "area": "backend",
+      "hours": 3,
+      "description": "Aggregate logged AI requests by feature and month."
+     },
+     {
+      "title": "iOS: usage meter in settings",
+      "area": "ios",
+      "hours": 3,
+      "description": "Bars per feature and remaining quota."
+     },
+     {
+      "title": "Test usage meter",
+      "area": "testing",
+      "hours": 1,
+      "description": "Compare with logged requests."
+     }
+    ]
+   },
+   {
+    "key": "3.19.5",
+    "title": "Photo and location privacy",
+    "priority": "MVP",
+    "seq": 1,
+    "story": "As a user, I want my photos and plot location kept private so that my data is safe.",
+    "acceptance": [
+     "GPS metadata is stripped from photos before upload or sharing",
+     "The plot's exact location is never exposed in shared content or logs",
+     "Location precision in analytics is coarse"
+    ],
+    "depends_on": [
+     "E00:Media/photo upload service"
+    ],
+    "tasks": [
+     {
+      "title": "iOS: strip EXIF GPS before upload",
+      "area": "ios",
+      "hours": 3,
+      "description": "Remove location metadata from all uploaded photos."
+     },
+     {
+      "title": "Backend: verify and strip metadata server-side",
+      "area": "backend",
+      "hours": 2,
+      "description": "Defence in depth on upload processing."
+     },
+     {
+      "title": "Exclude exact coordinates from logs and telemetry",
+      "area": "backend",
+      "hours": 2,
+      "description": "Coarsen or redact coordinates."
+     },
+     {
+      "title": "Test photo metadata removal",
+      "area": "testing",
+      "hours": 1,
+      "description": "Upload a geotagged photo and inspect the stored file."
+     }
+    ]
+   },
+   {
+    "key": "3.19.6",
+    "title": "Crash reporting and usage stats",
+    "priority": "MVP",
+    "seq": 1,
+    "story": "As the developer, I want crash reports and anonymous usage statistics so that I can find and fix problems.",
+    "acceptance": [
+     "Backend errors and traces go to Application Insights with sampling",
+     "iOS crashes are visible (Xcode Organizer / MetricKit)",
+     "Basic anonymous usage events are recorded",
+     "No personal data in telemetry"
+    ],
+    "depends_on": [],
+    "tasks": [
+     {
+      "title": "Backend: Application Insights with sampling",
+      "area": "infra",
+      "hours": 3,
+      "description": "Configure telemetry and sampling to stay within free limits."
+     },
+     {
+      "title": "iOS: MetricKit crash and diagnostic collection",
+      "area": "ios",
+      "hours": 3,
+      "description": "Collect and forward diagnostics."
+     },
+     {
+      "title": "Anonymous usage events (screen views, key actions)",
+      "area": "ios",
+      "hours": 3,
+      "description": "Minimal event set without personal data."
+     },
+     {
+      "title": "Test crash reporting with a forced crash",
+      "area": "testing",
+      "hours": 1,
+      "description": "Confirm the crash appears."
+     }
+    ]
+   },
+   {
+    "key": "3.19.7",
+    "title": "Accessibility",
+    "priority": "Good to have",
+    "seq": 21,
+    "story": "As a user with different needs, I want the app to support larger text and VoiceOver so that I can use it comfortably.",
+    "acceptance": [
+     "All screens support Dynamic Type",
+     "VoiceOver labels on all controls",
+     "Colour choices work for colour-blind users",
+     "Accessibility audit passes in Xcode"
+    ],
+    "depends_on": [],
+    "tasks": [
+     {
+      "title": "Accessibility audit of all screens",
+      "area": "ios",
+      "hours": 4,
+      "description": "Run Xcode Accessibility Inspector and list issues."
+     },
+     {
+      "title": "Fix Dynamic Type layout issues",
+      "area": "ios",
+      "hours": 5,
+      "description": "Make layouts adapt to larger text."
+     },
+     {
+      "title": "Add VoiceOver labels and hints",
+      "area": "ios",
+      "hours": 4,
+      "description": "Label all controls and images."
+     },
+     {
+      "title": "Colour-blind-safe palette review",
+      "area": "design",
+      "hours": 2,
+      "description": "Adjust colours and add non-colour cues."
+     },
+     {
+      "title": "Test with VoiceOver and largest text size",
+      "area": "testing",
+      "hours": 2,
+      "description": "Walk through key flows."
+     }
+    ]
+   },
+   {
+    "key": "3.19.8",
+    "title": "Home screen widgets",
+    "priority": "Future improvement",
+    "seq": 99,
+    "story": "As a user, I want widgets so that I see today's tasks and alerts at a glance.",
+    "acceptance": [
+     "Today's tasks widget",
+     "Alerts widget",
+     "Tapping opens the app"
+    ],
+    "depends_on": [
+     "3.19.1"
+    ],
+    "tasks": []
+   },
+   {
+    "key": "3.19.9",
+    "title": "Apple Watch",
+    "priority": "Future improvement",
+    "seq": 99,
+    "story": "As a gardener, I want quick logging from my watch so that I don't need my phone.",
+    "acceptance": [
+     "Log common actions from the watch",
+     "Shows today's tasks",
+     "Syncs with the phone"
+    ],
+    "depends_on": [
+     "3.8.2"
+    ],
+    "tasks": []
+   },
+   {
+    "key": "3.19.10",
+    "title": "Siri shortcuts",
+    "priority": "Future improvement",
+    "seq": 99,
+    "story": "As a gardener, I want Siri shortcuts so that I can log by voice.",
+    "acceptance": [
+     "e.g. 'log watering zone A'",
+     "Uses App Intents",
+     "PT and EN"
+    ],
+    "depends_on": [
+     "3.8.1"
+    ],
+    "tasks": []
+   },
+   {
+    "key": "X.E19.1",
+    "title": "MVP release on TestFlight",
+    "priority": "MVP",
+    "seq": 12,
+    "story": "As the owner, I want the MVP on TestFlight so that I can use it on my phone in the garden.",
+    "acceptance": [
+     "App Store Connect app record with bundle ID, icons and PT/EN metadata",
+     "Privacy nutrition labels completed",
+     "TestFlight build distributed and installed",
+     "Release checklist documented",
+     "Full end-to-end test on the plot passes"
+    ],
+    "depends_on": [
+     "3.19.1",
+     "3.19.2",
+     "3.19.5",
+     "3.19.6"
+    ],
+    "tasks": [
+     {
+      "title": "Create App Store Connect app record and bundle ID",
+      "area": "infra",
+      "hours": 2,
+      "description": "Register app, certificates and provisioning."
+     },
+     {
+      "title": "App icon, launch screen and PT/EN metadata",
+      "area": "design",
+      "hours": 4,
+      "description": "Assets and store text."
+     },
+     {
+      "title": "Complete privacy nutrition labels",
+      "area": "infra",
+      "hours": 2,
+      "description": "Document data collected and purposes."
+     },
+     {
+      "title": "Automate TestFlight builds in CI",
+      "area": "infra",
+      "hours": 4,
+      "description": "Signed archive and upload from CI."
+     },
+     {
+      "title": "Write release checklist",
+      "area": "infra",
+      "hours": 2,
+      "description": "Versioning, migrations, smoke tests, rollback."
+     },
+     {
+      "title": "Production environment deploy and smoke test",
+      "area": "infra",
+      "hours": 3,
+      "description": "Deploy backend to Azure prod and verify."
+     },
+     {
+      "title": "Full end-to-end test on the plot",
+      "area": "testing",
+      "hours": 6,
+      "description": "Run first-run setup to harvest logging on the real plot; log bugs."
+     },
+     {
+      "title": "Fix critical bugs from the end-to-end test",
+      "area": "ios",
+      "hours": 8,
+      "description": "Buffer to fix blockers found."
+     }
+    ]
+   }
+  ]
+ }
+]
