@@ -1,0 +1,1290 @@
+[
+ {
+  "key": "E05",
+  "title": "Planting calendar",
+  "summary": "A climate-driven calendar that tells the user what to sow or plant out, and when, for their exact location. Windows come from crop temperature rules applied to local climate history, avoid both frost and excessive heat, and adjust to the forecast.",
+  "plan_ref": "PLAN.md §3.5",
+  "features": [
+   {
+    "key": "3.5.1",
+    "title": "Climate-based windows",
+    "priority": "MVP",
+    "seq": 3,
+    "story": "As a beginner gardener, I want sowing, plant-out and harvest windows calculated from my location's climate so that I know when to plant each crop without guessing.",
+    "acceptance": [
+     "Given a plot location, the app shows direct-sow, plant-out and harvest windows for each catalog crop",
+     "Windows come from crop temperature rules applied to 30 years of local climate history, not fixed months",
+     "Changing the plot location recalculates the windows",
+     "Calculation runs on the server with fixed rules (no AI) and results are cached per plot",
+     "Windows for Alentejo match a reference regional sowing calendar within about 2 weeks for 10 sample crops"
+    ],
+    "depends_on": [
+     "E00:Weather data service",
+     "E00:Knowledge base schema",
+     "3.6.1"
+    ],
+    "tasks": [
+     {
+      "title": "Define crop timing rule fields in the crop schema",
+      "area": "content",
+      "hours": 3,
+      "description": "Add fields for minimum soil temperature to germinate, minimum air temperature to plant out, frost tolerance, days to maturity and sowing method. Done when the schema validates in the content pipeline."
+     },
+     {
+      "title": "Author temperature and timing rules for crops 1–15",
+      "area": "content",
+      "hours": 4,
+      "description": "Fill the timing rule fields for the first 15 catalog crops with cited sources."
+     },
+     {
+      "title": "Author temperature and timing rules for crops 16–30",
+      "area": "content",
+      "hours": 4,
+      "description": "Fill the timing rule fields for crops 16–30 with cited sources."
+     },
+     {
+      "title": "Author temperature and timing rules for crops 31–45",
+      "area": "content",
+      "hours": 4,
+      "description": "Fill the timing rule fields for the remaining catalog crops with cited sources."
+     },
+     {
+      "title": "Compute climate normals per plot from climate history",
+      "area": "backend",
+      "hours": 5,
+      "description": "Use the weather data service to derive daily average min/max temperature and soil temperature estimates over 30 years for a plot. Cache the result per plot. Done when a unit test checks a known location."
+     },
+     {
+      "title": "Implement the sowing window calculation engine",
+      "area": "backend",
+      "hours": 6,
+      "description": "Fixed-rule engine turning crop rules plus climate normals into direct-sow, plant-out and harvest windows. Done when unit tests cover frost-tender and frost-hardy crops."
+     },
+     {
+      "title": "Expose calendar windows API endpoint",
+      "area": "backend",
+      "hours": 3,
+      "description": "GET endpoint returning windows per crop for a plot, with caching and recalculation when the location changes."
+     },
+     {
+      "title": "Unit tests comparing Alentejo windows with a reference calendar",
+      "area": "backend",
+      "hours": 3,
+      "description": "Golden tests for 10 crops against a regional sowing calendar, allowing about 2 weeks of tolerance."
+     },
+     {
+      "title": "Test climate-based windows on iPhone",
+      "area": "testing",
+      "hours": 2,
+      "description": "Check windows for your plot location look sensible for crops you know."
+     }
+    ]
+   },
+   {
+    "key": "3.5.2",
+    "title": "Too-hot windows",
+    "priority": "MVP",
+    "seq": 3,
+    "story": "As a gardener in a hot climate, I want the calendar to avoid periods that are too hot for a crop so that lettuce doesn't bolt and tomatoes still set fruit.",
+    "acceptance": [
+     "Crops with heat limits get windows that exclude periods above their limit",
+     "The calendar explains why a window is closed (too hot or frost risk)",
+     "In Alentejo, autumn and winter windows appear for brassicas, lettuce and broad beans",
+     "Heat limits are stored in the crop catalog with sources"
+    ],
+    "depends_on": [
+     "3.5.1"
+    ],
+    "tasks": [
+     {
+      "title": "Add heat tolerance fields to the crop schema",
+      "area": "content",
+      "hours": 2,
+      "description": "Add maximum temperature for good growth and for fruit set or bolting."
+     },
+     {
+      "title": "Author heat limits for all catalog crops",
+      "area": "content",
+      "hours": 4,
+      "description": "Fill heat tolerance fields with cited sources for every crop."
+     },
+     {
+      "title": "Extend the window engine with heat exclusion",
+      "area": "backend",
+      "hours": 4,
+      "description": "Close windows when climate normals exceed a crop's heat limit during critical stages. Unit tests for lettuce and tomato."
+     },
+     {
+      "title": "Return closure reasons in the calendar API",
+      "area": "backend",
+      "hours": 2,
+      "description": "Include 'too hot' or 'frost risk' reasons for gaps between windows."
+     },
+     {
+      "title": "Test too-hot windows on iPhone",
+      "area": "testing",
+      "hours": 1,
+      "description": "Check summer gaps for lettuce and spinach and the autumn season for brassicas at your plot."
+     }
+    ]
+   },
+   {
+    "key": "3.5.3",
+    "title": "Month view and \"This week\"",
+    "priority": "MVP",
+    "seq": 3,
+    "story": "As a gardener, I want a month calendar and a \"What to do this week\" list so that I can see at a glance what to sow or plant now.",
+    "acceptance": [
+     "A month view shows windows for my chosen crops, colour-coded by direct sow, plant out and harvest",
+     "A 'This week' list shows what can be sown, planted out or harvested this week",
+     "Tapping a crop shows its windows and reasons",
+     "Works in Portuguese and English",
+     "The view shows my chosen crops first with a 'Suggested for now' section"
+    ],
+    "depends_on": [
+     "3.5.1",
+     "3.6.1"
+    ],
+    "tasks": [
+     {
+      "title": "Design month and week calendar screens",
+      "area": "design",
+      "hours": 3,
+      "description": "Wireframes for month view, week list and crop detail, in both languages."
+     },
+     {
+      "title": "Build 'This week' API endpoint",
+      "area": "backend",
+      "hours": 2,
+      "description": "Return actions possible this week for the user's chosen crops plus suggestions."
+     },
+     {
+      "title": "Build month calendar view in SwiftUI",
+      "area": "ios",
+      "hours": 6,
+      "description": "Month grid with colour-coded windows for chosen crops."
+     },
+     {
+      "title": "Build 'This week' list in SwiftUI",
+      "area": "ios",
+      "hours": 4,
+      "description": "List of this week's actions with links to crop detail."
+     },
+     {
+      "title": "Build crop calendar detail screen",
+      "area": "ios",
+      "hours": 3,
+      "description": "Shows windows with closure reasons for one crop."
+     },
+     {
+      "title": "Add 'Suggested for now' section",
+      "area": "ios",
+      "hours": 2,
+      "description": "Show suitable crops not yet chosen, using ranked suggestions."
+     },
+     {
+      "title": "Localise calendar screens in PT and EN",
+      "area": "ios",
+      "hours": 2,
+      "description": "All strings in pt-PT and English string catalogs."
+     },
+     {
+      "title": "Test calendar views on iPhone",
+      "area": "testing",
+      "hours": 2,
+      "description": "Walk through month view, week list and detail with your crops."
+     }
+    ]
+   },
+   {
+    "key": "3.5.4",
+    "title": "Forecast adjustment",
+    "priority": "Good to have",
+    "seq": 25,
+    "story": "As a gardener, I want planting windows nudged by the weather forecast so that I don't plant out right before a cold snap.",
+    "acceptance": [
+     "A forecast cold snap or heatwave delays or flags affected plant-out windows",
+     "The adjustment is shown with its reason",
+     "A daily job updates adjustments",
+     "Adjusted windows return to normal once the forecast clears"
+    ],
+    "depends_on": [
+     "3.5.1",
+     "E00:Weather data service"
+    ],
+    "tasks": [
+     {
+      "title": "Daily job applying forecast to near-term windows",
+      "area": "backend",
+      "hours": 4,
+      "description": "Compare the 7-day forecast with crop limits and store temporary adjustments per plot."
+     },
+     {
+      "title": "Expose adjustments in calendar API",
+      "area": "backend",
+      "hours": 2,
+      "description": "Include adjusted dates and reason text."
+     },
+     {
+      "title": "Show forecast adjustments in calendar UI",
+      "area": "ios",
+      "hours": 3,
+      "description": "Badge and explanation on affected windows."
+     },
+     {
+      "title": "Unit tests for forecast adjustments",
+      "area": "backend",
+      "hours": 2,
+      "description": "Cold snap and heatwave scenarios."
+     },
+     {
+      "title": "Test forecast adjustment on iPhone",
+      "area": "testing",
+      "hours": 1,
+      "description": "Check behaviour with a real forecast."
+     }
+    ]
+   },
+   {
+    "key": "3.5.5",
+    "title": "Zone fit",
+    "priority": "Good to have",
+    "seq": 25,
+    "story": "As a gardener, I want to see what I can plant now in each zone so that I pick crops suited to its sun and shade.",
+    "acceptance": [
+     "For a selected zone, the app lists crops plantable now that suit the zone's sun exposure",
+     "Crops unsuitable for the zone's sun are hidden or marked",
+     "Works from the zone screen and the calendar"
+    ],
+    "depends_on": [
+     "3.5.1",
+     "3.3.3"
+    ],
+    "tasks": [
+     {
+      "title": "Add sun requirement field to crop catalog",
+      "area": "content",
+      "hours": 2,
+      "description": "Full sun / part shade / shade tolerance per crop."
+     },
+     {
+      "title": "Zone fit filter in the calendar API",
+      "area": "backend",
+      "hours": 3,
+      "description": "Filter windows by the zone's sun exposure."
+     },
+     {
+      "title": "Zone filter in calendar and zone screen",
+      "area": "ios",
+      "hours": 3,
+      "description": "'What can I plant here now' entry point."
+     },
+     {
+      "title": "Test zone fit on iPhone",
+      "area": "testing",
+      "hours": 1,
+      "description": "Check results for a sunny and a shaded zone."
+     }
+    ]
+   },
+   {
+    "key": "3.5.6",
+    "title": "Varieties",
+    "priority": "Future improvement",
+    "seq": 99,
+    "story": "As a gardener, I want to choose early or late varieties so that windows and harvest dates match what I actually plant.",
+    "acceptance": [
+     "Crops can have varieties with their own maturity times",
+     "A generic default is used when no variety is chosen",
+     "Windows and harvest estimates use the chosen variety"
+    ],
+    "depends_on": [
+     "3.5.1"
+    ],
+    "tasks": []
+   },
+   {
+    "key": "3.5.7",
+    "title": "Day length",
+    "priority": "MVP",
+    "seq": 3,
+    "story": "As a gardener, I want variety suggestions suited to my latitude so that day-length-sensitive crops like onions actually form bulbs.",
+    "acceptance": [
+     "Crops with day-length sensitivity have a flag and a latitude range",
+     "For my plot's latitude, the app recommends short-, intermediate- or long-day types",
+     "A warning appears if a chosen crop type doesn't suit my latitude"
+    ],
+    "depends_on": [
+     "3.5.1"
+    ],
+    "tasks": [
+     {
+      "title": "Add day-length sensitivity fields to crop catalog",
+      "area": "content",
+      "hours": 2,
+      "description": "Flag and latitude ranges for onions, garlic and other sensitive crops."
+     },
+     {
+      "title": "Author day-length data for sensitive crops",
+      "area": "content",
+      "hours": 2,
+      "description": "Cited sources for each sensitive crop."
+     },
+     {
+      "title": "Day-length recommendation logic",
+      "area": "backend",
+      "hours": 3,
+      "description": "Use plot latitude to recommend type and generate warnings. Unit tests at 38°N and 52°N."
+     },
+     {
+      "title": "Show day-length recommendation in crop detail",
+      "area": "ios",
+      "hours": 2,
+      "description": "Note and warning in crop and calendar detail."
+     },
+     {
+      "title": "Test day-length advice on iPhone",
+      "area": "testing",
+      "hours": 1,
+      "description": "Check onion advice for your plot."
+     }
+    ]
+   },
+   {
+    "key": "3.5.8",
+    "title": "Heat-based harvest estimates",
+    "priority": "Good to have",
+    "seq": 25,
+    "story": "As a gardener, I want harvest dates estimated from the heat my plants have actually received so that the estimate is more accurate than a fixed number of days.",
+    "acceptance": [
+     "Each planting accumulates growing degree days from actual weather since sowing",
+     "Estimated harvest date updates daily",
+     "The estimate falls back to days-to-maturity when data is missing"
+    ],
+    "depends_on": [
+     "3.5.1",
+     "E00:Weather data service",
+     "3.8.1"
+    ],
+    "tasks": [
+     {
+      "title": "Add base temperature and degree-day targets to crop catalog",
+      "area": "content",
+      "hours": 3,
+      "description": "Per crop base temperature and degree days to maturity, with sources."
+     },
+     {
+      "title": "Daily growing degree day accumulation job",
+      "area": "backend",
+      "hours": 4,
+      "description": "Accumulate degree days per active planting from observed weather."
+     },
+     {
+      "title": "Harvest estimate calculation and API",
+      "area": "backend",
+      "hours": 3,
+      "description": "Estimate date with fallback; expose on planting endpoints."
+     },
+     {
+      "title": "Show harvest estimate on planting screen",
+      "area": "ios",
+      "hours": 2,
+      "description": "Estimated date and progress."
+     },
+     {
+      "title": "Test harvest estimates on iPhone",
+      "area": "testing",
+      "hours": 1,
+      "description": "Check a planting's estimate over a few days."
+     }
+    ]
+   },
+   {
+    "key": "3.5.9",
+    "title": "Staggered sowing reminders",
+    "priority": "Good to have",
+    "seq": 25,
+    "story": "As a gardener, I want reminders to sow again every few weeks so that I get a continuous harvest instead of a glut.",
+    "acceptance": [
+     "Crops suited to succession sowing have a default interval",
+     "When I sow such a crop, the next sowing is suggested as a task",
+     "I can change or switch off the interval per crop"
+    ],
+    "depends_on": [
+     "3.5.1",
+     "3.9.1"
+    ],
+    "tasks": [
+     {
+      "title": "Add succession interval field to crop catalog",
+      "area": "content",
+      "hours": 1,
+      "description": "Default interval for crops like lettuce, radish and beans."
+     },
+     {
+      "title": "Generate next-sowing tasks after a sowing is logged",
+      "area": "backend",
+      "hours": 3,
+      "description": "Create a task within the window, respecting the user's setting."
+     },
+     {
+      "title": "Succession settings per chosen crop",
+      "area": "ios",
+      "hours": 2,
+      "description": "Toggle and interval picker."
+     },
+     {
+      "title": "Test staggered sowing on iPhone",
+      "area": "testing",
+      "hours": 1,
+      "description": "Log a lettuce sowing and check the follow-up task."
+     }
+    ]
+   },
+   {
+    "key": "3.5.10",
+    "title": "Export to phone calendar",
+    "priority": "Future improvement",
+    "seq": 99,
+    "story": "As a gardener, I want to add sowing and harvest dates to my phone's calendar so that I see them with my other plans.",
+    "acceptance": [
+     "Selected windows can be exported to the iOS calendar",
+     "Exported events update or are removed when windows change"
+    ],
+    "depends_on": [
+     "3.5.3"
+    ],
+    "tasks": []
+   }
+  ]
+ },
+ {
+  "key": "E06",
+  "title": "Choosing your crops",
+  "summary": "The user picks which crops to grow from a Mediterranean-first crop catalog, helped by suggestions ranked with fixed rules for their location, warnings for poor fits, and estimates of how much to plant. The chosen list drives the calendar, planners and roadmap.",
+  "plan_ref": "PLAN.md §3.6",
+  "features": [
+   {
+    "key": "3.6.1",
+    "title": "Pick crops",
+    "priority": "MVP",
+    "seq": 3,
+    "story": "As a beginner gardener, I want to browse the crop catalog and choose what I want to grow, with variety, priority and rough quantity, so that the whole app plans around my crops.",
+    "acceptance": [
+     "I can browse and search the crop catalog in PT and EN, with images",
+     "I can add a crop with optional variety, priority (must-have or nice-to-have) and rough quantity",
+     "I can edit or remove crops at any time",
+     "Every change is recorded in the activity log",
+     "The catalog contains at least 40 crops suited to Mediterranean climates, with cited sources"
+    ],
+    "depends_on": [
+     "E00:Knowledge base schema",
+     "0.4",
+     "0.5"
+    ],
+    "tasks": [
+     {
+      "title": "Define crop catalog content structure (PT/EN)",
+      "area": "content",
+      "hours": 3,
+      "description": "YAML structure for crop name, family, images, description and sources in both languages. Validated by the content pipeline."
+     },
+     {
+      "title": "Author crop catalog batch 1 (10 crops)",
+      "area": "content",
+      "hours": 5,
+      "description": "Common summer fruiting crops: tomato, pepper, aubergine, courgette, cucumber, melon, watermelon, pumpkin, green bean, sweetcorn. PT and EN with sources."
+     },
+     {
+      "title": "Author crop catalog batch 2 (10 crops)",
+      "area": "content",
+      "hours": 5,
+      "description": "Leafy and cool-season crops: lettuce, spinach, chard, kale, cabbage, broccoli, cauliflower, rocket, broad bean, pea."
+     },
+     {
+      "title": "Author crop catalog batch 3 (10 crops)",
+      "area": "content",
+      "hours": 5,
+      "description": "Roots and bulbs: carrot, beetroot, radish, turnip, onion, garlic, leek, potato, sweet potato, parsnip."
+     },
+     {
+      "title": "Author crop catalog batch 4 (10–15 crops)",
+      "area": "content",
+      "hours": 5,
+      "description": "Herbs and perennials: parsley, coriander, basil, mint, oregano, thyme, rosemary, strawberry, asparagus, artichoke, chickpea."
+     },
+     {
+      "title": "Create 'my crops' data model and migration",
+      "area": "backend",
+      "hours": 3,
+      "description": "Table for user crop choices with variety, priority, quantity; client-generated IDs and versions."
+     },
+     {
+      "title": "Build 'my crops' API endpoints",
+      "area": "backend",
+      "hours": 3,
+      "description": "Create, update, delete and list, writing activity log entries."
+     },
+     {
+      "title": "Crop catalog browse and search screen",
+      "area": "ios",
+      "hours": 5,
+      "description": "Searchable list with images and family grouping, PT and EN."
+     },
+     {
+      "title": "Crop detail and add-to-my-crops sheet",
+      "area": "ios",
+      "hours": 4,
+      "description": "Crop info plus variety, priority and quantity inputs."
+     },
+     {
+      "title": "'My crops' list screen with edit and remove",
+      "area": "ios",
+      "hours": 3,
+      "description": "Manage chosen crops."
+     },
+     {
+      "title": "Test picking crops on iPhone",
+      "area": "testing",
+      "hours": 2,
+      "description": "Choose your real crops for the plot end to end."
+     }
+    ]
+   },
+   {
+    "key": "3.6.2",
+    "title": "Ranked suggestions",
+    "priority": "MVP",
+    "seq": 3,
+    "story": "As a beginner gardener, I want crops ranked by how well they suit my location, with a reason, so that I choose crops likely to succeed.",
+    "acceptance": [
+     "Suggestions are ranked by a suitability score from climate, sun, water needs, difficulty and timing",
+     "Each suggestion shows a short reason in my language",
+     "The score is calculated with fixed rules, no AI",
+     "Where zone sun data is missing, a simple sun exposure entered per zone is used"
+    ],
+    "depends_on": [
+     "3.6.1",
+     "3.5.1"
+    ],
+    "tasks": [
+     {
+      "title": "Add difficulty and water-need fields to crop catalog",
+      "area": "content",
+      "hours": 3,
+      "description": "Beginner difficulty and water need for each crop, with sources."
+     },
+     {
+      "title": "Implement suitability scoring engine",
+      "area": "backend",
+      "hours": 6,
+      "description": "Weighted score from climate fit, zone sun, water need, difficulty and timing. Unit tests for Alentejo examples."
+     },
+     {
+      "title": "Generate localised reason text for suggestions",
+      "area": "backend",
+      "hours": 3,
+      "description": "Template-based PT and EN reasons from the score components."
+     },
+     {
+      "title": "Suggestions API endpoint",
+      "area": "backend",
+      "hours": 2,
+      "description": "Ranked list for the user's plot and zones."
+     },
+     {
+      "title": "Suggestions screen with reasons",
+      "area": "ios",
+      "hours": 4,
+      "description": "Ranked list with reason chips and add buttons."
+     },
+     {
+      "title": "Test ranked suggestions on iPhone",
+      "area": "testing",
+      "hours": 2,
+      "description": "Check that rankings make sense for your plot."
+     }
+    ]
+   },
+   {
+    "key": "3.6.3",
+    "title": "Poor-fit warnings",
+    "priority": "MVP",
+    "seq": 3,
+    "story": "As a gardener, I want a warning when I choose a crop or timing that's a poor fit so that I can adjust, without being blocked.",
+    "acceptance": [
+     "Choosing a poorly suited crop shows a warning with the reason",
+     "The warning suggests a better time or variety when possible",
+     "The choice is never blocked"
+    ],
+    "depends_on": [
+     "3.6.2"
+    ],
+    "tasks": [
+     {
+      "title": "Poor-fit rule checks",
+      "area": "backend",
+      "hours": 3,
+      "description": "Rules for low suitability score, heat or frost conflicts and timing, returning warnings."
+     },
+     {
+      "title": "Return warnings with crop choice responses",
+      "area": "backend",
+      "hours": 2,
+      "description": "Include warnings and alternatives in add/update responses."
+     },
+     {
+      "title": "Warning banner and alternatives UI",
+      "area": "ios",
+      "hours": 3,
+      "description": "Non-blocking warning with suggested alternatives."
+     },
+     {
+      "title": "Test poor-fit warnings on iPhone",
+      "area": "testing",
+      "hours": 1,
+      "description": "Add lettuce for July and check the warning."
+     }
+    ]
+   },
+   {
+    "key": "3.6.4",
+    "title": "How much to plant",
+    "priority": "Good to have",
+    "seq": 26,
+    "story": "As a gardener, I want an estimate of how many plants and how much space I need for the quantity I want so that I don't over- or under-plant.",
+    "acceptance": [
+     "Given a desired quantity, the app estimates number of plants and bed area",
+     "Estimates use typical yield and spacing from the catalog",
+     "The estimate updates when quantity changes"
+    ],
+    "depends_on": [
+     "3.6.1"
+    ],
+    "tasks": [
+     {
+      "title": "Add typical yield and spacing to crop catalog",
+      "area": "content",
+      "hours": 4,
+      "description": "Yield per plant and spacing for all crops, with sources."
+     },
+     {
+      "title": "Plant count and space calculation",
+      "area": "backend",
+      "hours": 3,
+      "description": "Calculation with unit tests."
+     },
+     {
+      "title": "Show plant count and space in crop sheet",
+      "area": "ios",
+      "hours": 2,
+      "description": "Live estimate next to quantity input."
+     },
+     {
+      "title": "Test how-much-to-plant on iPhone",
+      "area": "testing",
+      "hours": 1,
+      "description": "Check estimates for a few crops."
+     }
+    ]
+   },
+   {
+    "key": "3.6.5",
+    "title": "AI explanation",
+    "priority": "Future improvement",
+    "seq": 99,
+    "story": "As a gardener, I want a personalised AI explanation of the crop suggestions so that I understand the trade-offs for my situation.",
+    "acceptance": [
+     "The AI explains top suggestions using my plot and preferences",
+     "Explanations cite knowledge base sources"
+    ],
+    "depends_on": [
+     "3.6.2",
+     "E00:AI layer core"
+    ],
+    "tasks": []
+   }
+  ]
+ },
+ {
+  "key": "E07",
+  "title": "Guides",
+  "summary": "Step-by-step guides in Portuguese and English, with sources and review dates, for techniques and crops. Includes a standard step layout, doing mode with read-aloud, AI help and photo checks per step, feedback on unclear steps and reviewed AI illustrations.",
+  "plan_ref": "PLAN.md §3.7",
+  "features": [
+   {
+    "key": "3.7.1",
+    "title": "Step-by-step guides with sources",
+    "priority": "MVP",
+    "seq": 7,
+    "story": "As a beginner, I want step-by-step guides that cite their sources and show when they were last reviewed so that I can trust what I'm following.",
+    "acceptance": [
+     "Guides are stored in the content pipeline in PT and EN",
+     "Each guide lists its sources and a 'last reviewed' date",
+     "Guides open from roadmap actions, tasks and crop pages",
+     "A guide list with search is available"
+    ],
+    "depends_on": [
+     "0.5",
+     "E00:Knowledge base schema"
+    ],
+    "tasks": [
+     {
+      "title": "Define guide content format",
+      "area": "content",
+      "hours": 3,
+      "description": "Markdown with front matter for steps, sources, review date, tools and related crops, in both languages."
+     },
+     {
+      "title": "Add guide validation to the content pipeline",
+      "area": "backend",
+      "hours": 3,
+      "description": "Validate required fields, sources and both languages on publish."
+     },
+     {
+      "title": "Guides API: list, search and get",
+      "area": "backend",
+      "hours": 3,
+      "description": "Endpoints with language selection."
+     },
+     {
+      "title": "Guide list and search screen",
+      "area": "ios",
+      "hours": 3,
+      "description": "Browse and search guides."
+     },
+     {
+      "title": "Guide detail screen with sources and review date",
+      "area": "ios",
+      "hours": 4,
+      "description": "Render guide with sources and date."
+     },
+     {
+      "title": "Link guides from roadmap actions, tasks and crops",
+      "area": "ios",
+      "hours": 2,
+      "description": "Deep links to the relevant guide."
+     },
+     {
+      "title": "Test guide browsing on iPhone",
+      "area": "testing",
+      "hours": 1,
+      "description": "Open guides from several entry points."
+     }
+    ]
+   },
+   {
+    "key": "3.7.2",
+    "title": "Standard step layout",
+    "priority": "MVP",
+    "seq": 7,
+    "story": "As a beginner, I want every guide step laid out the same way so that I always know what to do, what I need and how to check it's right.",
+    "acceptance": [
+     "Each step shows what to do, an illustration, tools needed, consumables (info only), time, safety notes, common mistakes and a 'done right' check",
+     "Missing optional parts are hidden cleanly",
+     "Tools in a step link to the tool catalog"
+    ],
+    "depends_on": [
+     "3.7.1"
+    ],
+    "tasks": [
+     {
+      "title": "Design the standard step component",
+      "area": "design",
+      "hours": 3,
+      "description": "Layout for all step sections, both languages."
+     },
+     {
+      "title": "Step schema fields in guide format",
+      "area": "content",
+      "hours": 2,
+      "description": "Fields for each standard section."
+     },
+     {
+      "title": "Build step view component in SwiftUI",
+      "area": "ios",
+      "hours": 5,
+      "description": "Renders all sections, hides empty ones, links tools."
+     },
+     {
+      "title": "Test step layout on iPhone",
+      "area": "testing",
+      "hours": 1,
+      "description": "Check several guides render correctly."
+     }
+    ]
+   },
+   {
+    "key": "3.7.3",
+    "title": "Technique guides",
+    "priority": "MVP",
+    "seq": 7,
+    "story": "As a beginner, I want guides for the core gardening techniques so that I can do each job on my land correctly.",
+    "acceptance": [
+     "Guides exist for land clearing, bed building, compost, drip irrigation install, mulching, sowing, planting out, staking and pruning",
+     "All guides follow the standard step layout in PT and EN with sources",
+     "Each guide is linked from the matching roadmap actions"
+    ],
+    "depends_on": [
+     "3.7.2"
+    ],
+    "tasks": [
+     {
+      "title": "Write guide: Land clearing (hand, brush cutter, tractor) (PT and EN)",
+      "area": "content",
+      "hours": 5,
+      "description": "Author the 'Land clearing (hand, brush cutter, tractor)' guide in the standard step layout with sources, illustrations placeholders and tools list, in pt-PT and English. Done when it passes content validation and you've read it through."
+     },
+     {
+      "title": "Write guide: Removing problem plants (brambles, Bermuda grass, cane) (PT and EN)",
+      "area": "content",
+      "hours": 4,
+      "description": "Author the 'Removing problem plants (brambles, Bermuda grass, cane)' guide in the standard step layout with sources, illustrations placeholders and tools list, in pt-PT and English. Done when it passes content validation and you've read it through."
+     },
+     {
+      "title": "Write guide: Building beds (in-ground and raised) (PT and EN)",
+      "area": "content",
+      "hours": 5,
+      "description": "Author the 'Building beds (in-ground and raised)' guide in the standard step layout with sources, illustrations placeholders and tools list, in pt-PT and English. Done when it passes content validation and you've read it through."
+     },
+     {
+      "title": "Write guide: Making compost (PT and EN)",
+      "area": "content",
+      "hours": 4,
+      "description": "Author the 'Making compost' guide in the standard step layout with sources, illustrations placeholders and tools list, in pt-PT and English. Done when it passes content validation and you've read it through."
+     },
+     {
+      "title": "Write guide: Installing drip irrigation (PT and EN)",
+      "area": "content",
+      "hours": 5,
+      "description": "Author the 'Installing drip irrigation' guide in the standard step layout with sources, illustrations placeholders and tools list, in pt-PT and English. Done when it passes content validation and you've read it through."
+     },
+     {
+      "title": "Write guide: Mulching (PT and EN)",
+      "area": "content",
+      "hours": 4,
+      "description": "Author the 'Mulching' guide in the standard step layout with sources, illustrations placeholders and tools list, in pt-PT and English. Done when it passes content validation and you've read it through."
+     },
+     {
+      "title": "Write guide: Direct sowing (PT and EN)",
+      "area": "content",
+      "hours": 4,
+      "description": "Author the 'Direct sowing' guide in the standard step layout with sources, illustrations placeholders and tools list, in pt-PT and English. Done when it passes content validation and you've read it through."
+     },
+     {
+      "title": "Write guide: Planting out nursery seedlings (PT and EN)",
+      "area": "content",
+      "hours": 4,
+      "description": "Author the 'Planting out nursery seedlings' guide in the standard step layout with sources, illustrations placeholders and tools list, in pt-PT and English. Done when it passes content validation and you've read it through."
+     },
+     {
+      "title": "Write guide: Staking and supporting plants (PT and EN)",
+      "area": "content",
+      "hours": 3,
+      "description": "Author the 'Staking and supporting plants' guide in the standard step layout with sources, illustrations placeholders and tools list, in pt-PT and English. Done when it passes content validation and you've read it through."
+     },
+     {
+      "title": "Write guide: Pruning tomatoes and other fruiting crops (PT and EN)",
+      "area": "content",
+      "hours": 3,
+      "description": "Author the 'Pruning tomatoes and other fruiting crops' guide in the standard step layout with sources, illustrations placeholders and tools list, in pt-PT and English. Done when it passes content validation and you've read it through."
+     },
+     {
+      "title": "Write guide: Watering by hand (PT and EN)",
+      "area": "content",
+      "hours": 3,
+      "description": "Author the 'Watering by hand' guide in the standard step layout with sources, illustrations placeholders and tools list, in pt-PT and English. Done when it passes content validation and you've read it through."
+     },
+     {
+      "title": "Link technique guides to roadmap actions",
+      "area": "content",
+      "hours": 2,
+      "description": "Map each guide to roadmap action types."
+     },
+     {
+      "title": "Read-through test of technique guides",
+      "area": "testing",
+      "hours": 3,
+      "description": "Read every technique guide on iPhone and note unclear steps."
+     }
+    ]
+   },
+   {
+    "key": "3.7.4",
+    "title": "Crop guides",
+    "priority": "MVP",
+    "seq": 7,
+    "story": "As a beginner, I want a guide for each crop from sowing to harvest so that I know how to grow what I chose.",
+    "acceptance": [
+     "Each catalog crop has a guide covering sowing or planting, care, common problems and harvest",
+     "Crop guides are in PT and EN with sources",
+     "Crop detail screens link to the crop guide"
+    ],
+    "depends_on": [
+     "3.7.2",
+     "3.6.1"
+    ],
+    "tasks": [
+     {
+      "title": "Crop guide template",
+      "area": "content",
+      "hours": 2,
+      "description": "Standard sections for crop guides."
+     },
+     {
+      "title": "Write crop guides batch 1 (summer fruiting crops)",
+      "area": "content",
+      "hours": 6,
+      "description": "10 crops, PT and EN, with sources."
+     },
+     {
+      "title": "Write crop guides batch 2 (leafy and cool-season crops)",
+      "area": "content",
+      "hours": 6,
+      "description": "10 crops, PT and EN, with sources."
+     },
+     {
+      "title": "Write crop guides batch 3 (roots and bulbs)",
+      "area": "content",
+      "hours": 6,
+      "description": "10 crops, PT and EN, with sources."
+     },
+     {
+      "title": "Write crop guides batch 4 (herbs and perennials)",
+      "area": "content",
+      "hours": 6,
+      "description": "Remaining catalog crops, PT and EN, with sources."
+     },
+     {
+      "title": "Link crop guides from crop detail",
+      "area": "ios",
+      "hours": 1,
+      "description": "Button to open the crop guide."
+     },
+     {
+      "title": "Read-through test of crop guides",
+      "area": "testing",
+      "hours": 3,
+      "description": "Read your chosen crops' guides on iPhone."
+     }
+    ]
+   },
+   {
+    "key": "3.7.5",
+    "title": "Problem guides",
+    "priority": "Future improvement",
+    "seq": 99,
+    "story": "As a gardener, I want guides for common pests and diseases so that I can treat problems, organic methods first.",
+    "acceptance": [
+     "Guides for common pests and diseases, organic first",
+     "Linked from diagnosis results"
+    ],
+    "depends_on": [
+     "3.7.2"
+    ],
+    "tasks": []
+   },
+   {
+    "key": "3.7.6",
+    "title": "Quantities from your numbers",
+    "priority": "Future improvement",
+    "seq": 99,
+    "story": "As a gardener, I want guides to calculate quantities for my beds so that I know exactly what I need.",
+    "acceptance": [
+     "Guide steps can use the user's bed dimensions",
+     "Quantities are recalculated per bed"
+    ],
+    "depends_on": [
+     "3.7.2",
+     "3.3.3"
+    ],
+    "tasks": []
+   },
+   {
+    "key": "3.7.7",
+    "title": "Doing mode with read-aloud",
+    "priority": "Good to have",
+    "seq": 27,
+    "story": "As a gardener working with dirty hands, I want a step-by-step doing mode that reads steps aloud so that I can follow a guide in the field.",
+    "acceptance": [
+     "Doing mode shows one step at a time in large text",
+     "Steps can be read aloud with the phone's built-in voice, offline, in PT or EN",
+     "Ticking a step records it in the activity log",
+     "The screen stays awake during doing mode"
+    ],
+    "depends_on": [
+     "3.7.2",
+     "0.4"
+    ],
+    "tasks": [
+     {
+      "title": "Design doing mode screens",
+      "area": "design",
+      "hours": 2,
+      "description": "Large-text one-step layout and controls."
+     },
+     {
+      "title": "Build doing mode in SwiftUI",
+      "area": "ios",
+      "hours": 5,
+      "description": "Step navigation, large text, keep screen awake."
+     },
+     {
+      "title": "Read-aloud with AVSpeechSynthesizer",
+      "area": "ios",
+      "hours": 3,
+      "description": "PT and EN voices, play/pause per step."
+     },
+     {
+      "title": "Record step completion in the activity log",
+      "area": "backend",
+      "hours": 2,
+      "description": "Endpoint or event for guide step completion."
+     },
+     {
+      "title": "Send step completion events from doing mode",
+      "area": "ios",
+      "hours": 2,
+      "description": "Call the endpoint when a step is ticked."
+     },
+     {
+      "title": "Test doing mode in the garden",
+      "area": "testing",
+      "hours": 2,
+      "description": "Follow a real guide in the field with read-aloud."
+     }
+    ]
+   },
+   {
+    "key": "3.7.8",
+    "title": "Ask AI about a step",
+    "priority": "Good to have",
+    "seq": 27,
+    "story": "As a beginner, I want to ask the AI about the step I'm on so that I can get unstuck when something doesn't match the guide.",
+    "acceptance": [
+     "An 'Ask AI' button on each step opens a question with the step as context",
+     "Answers use the guide, my garden and the knowledge base, and cite sources",
+     "Usage counts towards my AI limit"
+    ],
+    "depends_on": [
+     "3.7.2",
+     "E00:AI layer core"
+    ],
+    "tasks": [
+     {
+      "title": "Step-context question endpoint in the AI layer",
+      "area": "backend",
+      "hours": 4,
+      "description": "Build context from guide step plus garden data and call Claude."
+     },
+     {
+      "title": "Ask AI sheet on guide steps",
+      "area": "ios",
+      "hours": 3,
+      "description": "Question input and streamed answer."
+     },
+     {
+      "title": "Test asking about a step on iPhone",
+      "area": "testing",
+      "hours": 1,
+      "description": "Ask a few real questions on a guide."
+     }
+    ]
+   },
+   {
+    "key": "3.7.9",
+    "title": "Photo check of your work",
+    "priority": "Good to have",
+    "seq": 27,
+    "story": "As a beginner, I want the AI to check a photo of my finished step so that I know I did it right.",
+    "acceptance": [
+     "A step can request a photo check",
+     "The AI compares the photo with the step's 'done right' criteria and reports issues with confidence",
+     "The result is saved in the journal"
+    ],
+    "depends_on": [
+     "3.7.2",
+     "E00:AI layer core",
+     "E00:Media service"
+    ],
+    "tasks": [
+     {
+      "title": "Photo check task in the AI layer",
+      "area": "backend",
+      "hours": 4,
+      "description": "Prompt with step criteria plus photo, returning structured verdict and issues."
+     },
+     {
+      "title": "Photo check capture and result UI",
+      "area": "ios",
+      "hours": 3,
+      "description": "Take photo on a step, show the verdict."
+     },
+     {
+      "title": "Save photo check results to the journal",
+      "area": "backend",
+      "hours": 2,
+      "description": "Activity log entry with photo and verdict."
+     },
+     {
+      "title": "Test photo check in the garden",
+      "area": "testing",
+      "hours": 2,
+      "description": "Check a drip line and a planted seedling."
+     }
+    ]
+   },
+   {
+    "key": "3.7.10",
+    "title": "Unclear-step feedback",
+    "priority": "Good to have",
+    "seq": 27,
+    "story": "As a gardener, I want to flag a step as unclear so that the guide gets improved.",
+    "acceptance": [
+     "Each step has an 'unclear' button with optional comment",
+     "Feedback is stored and listed for content review"
+    ],
+    "depends_on": [
+     "3.7.2"
+    ],
+    "tasks": [
+     {
+      "title": "Step feedback data model and endpoint",
+      "area": "backend",
+      "hours": 2,
+      "description": "Store feedback with guide, step, language and comment."
+     },
+     {
+      "title": "Unclear-step button and comment sheet",
+      "area": "ios",
+      "hours": 2,
+      "description": "Submit feedback from a step."
+     },
+     {
+      "title": "Feedback report for content review",
+      "area": "backend",
+      "hours": 2,
+      "description": "Simple list or export of feedback for review."
+     },
+     {
+      "title": "Test unclear-step feedback",
+      "area": "testing",
+      "hours": 1,
+      "description": "Submit and find feedback in the report."
+     }
+    ]
+   },
+   {
+    "key": "3.7.11",
+    "title": "Offline download",
+    "priority": "Future improvement",
+    "seq": 99,
+    "story": "As a gardener with poor signal, I want guides downloaded to my phone so that I can read them offline.",
+    "acceptance": [
+     "Guide text and images are available offline",
+     "Updates download automatically when online"
+    ],
+    "depends_on": [
+     "3.7.1"
+    ],
+    "tasks": []
+   },
+   {
+    "key": "3.7.12",
+    "title": "Selected videos",
+    "priority": "Future improvement",
+    "seq": 99,
+    "story": "As a beginner, I want links to good videos for a technique so that I can see it done.",
+    "acceptance": [
+     "Guides can include selected video links",
+     "A job checks for broken links"
+    ],
+    "depends_on": [
+     "3.7.1"
+    ],
+    "tasks": []
+   },
+   {
+    "key": "3.7.13",
+    "title": "AI illustrations",
+    "priority": "Good to have",
+    "seq": 27,
+    "story": "As a beginner, I want clear illustrations for guide steps so that I can see what each step looks like.",
+    "acceptance": [
+     "Illustrations are generated with gpt-image in a consistent style and reviewed by the owner before publishing",
+     "Simple diagrams are used where an illustration would be inaccurate",
+     "Images are generated once when content is authored, not per user"
+    ],
+    "depends_on": [
+     "3.7.2",
+     "E00:Azure infrastructure"
+    ],
+    "tasks": [
+     {
+      "title": "Deploy gpt-image on Azure OpenAI",
+      "area": "infra",
+      "hours": 2,
+      "description": "Model deployment and key in Key Vault."
+     },
+     {
+      "title": "Define illustration style guide and prompt template",
+      "area": "design",
+      "hours": 3,
+      "description": "Consistent style, colours and framing for all guide images."
+     },
+     {
+      "title": "Illustration generation script for the content pipeline",
+      "area": "backend",
+      "hours": 4,
+      "description": "Generate images from step prompts into a review folder."
+     },
+     {
+      "title": "Review and approval flow for generated images",
+      "area": "backend",
+      "hours": 2,
+      "description": "Only approved images are published with the guide."
+     },
+     {
+      "title": "Generate and review illustrations for technique guides",
+      "area": "content",
+      "hours": 5,
+      "description": "Run generation and review each image."
+     },
+     {
+      "title": "Generate and review illustrations for crop guides",
+      "area": "content",
+      "hours": 5,
+      "description": "Run generation and review each image."
+     },
+     {
+      "title": "Draw diagrams for irrigation and bed layout steps",
+      "area": "content",
+      "hours": 4,
+      "description": "Simple vector diagrams where accuracy matters."
+     },
+     {
+      "title": "Test illustrations on iPhone",
+      "area": "testing",
+      "hours": 1,
+      "description": "Check images display well in light and dark mode."
+     }
+    ]
+   },
+   {
+    "key": "3.7.14",
+    "title": "AI-generated video or animations",
+    "priority": "Future improvement",
+    "seq": 99,
+    "story": "As a beginner, I want short animations of key techniques so that I can understand movements that are hard to show in still images.",
+    "acceptance": [
+     "Animations are generated once per guide and reviewed",
+     "Available for key techniques only"
+    ],
+    "depends_on": [
+     "3.7.13"
+    ],
+    "tasks": []
+   }
+  ]
+ }
+]
