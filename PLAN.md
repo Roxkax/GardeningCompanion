@@ -1,127 +1,195 @@
 # Gardening Companion — Execution Plan
 
-**Goal:** A personal/learning project. A web + mobile app for tracking plants, identifying them and getting AI advice, and planning when to plant.
+## 1. Vision
 
-**Guiding principles**
-- Ship a thin, usable slice early, then add to it. Each milestone ends with something you actually use in your garden.
-- Use one codebase where it's cheap and only split it when there's a real reason.
-- Use managed services for anything that isn't the interesting part (auth, storage, hosting), so the effort goes into the features.
+A mobile app that guides a complete beginner from **unused land to a productive, well-maintained vegetable garden**. It covers the whole process: assessing the land, designing the layout, preparing the soil, setting up irrigation, sowing and planting, maintenance and harvest. An AI assistant makes the guidance interactive, and it gets better over time as it learns the user's garden.
 
----
-
-## 1. Recommended stack
-
-| Layer | Choice | Why |
-|---|---|---|
-| Client (web + iOS + Android) | **Expo (React Native) + Expo Router**, TypeScript | One universal codebase runs on all three platforms. The camera and photo library work natively. |
-| UI | Tamagui or NativeWind | Cross-platform styling that also looks right on the web. |
-| Backend | **Supabase**: Postgres, Auth, Storage, Edge Functions | Auth, a database, image storage and server functions with almost no ops work. Row-Level Security keeps each user's data private. |
-| AI | **Claude API** (vision + chat), called only from Edge Functions | Identifies plants and diagnoses problems from photos, plus a chat assistant that knows your garden. The API key never reaches the client. |
-| Climate data | **Open-Meteo** (free, global) | Historical temperatures, used to estimate last and first frost dates for any location. |
-| Plant/crop data | A curated `crops.json` seed (about 40–60 common plants) | Sowing rules relative to frost dates. You control the data, and it avoids flaky third-party plant APIs. |
-| Data fetching | TanStack Query + generated Supabase types | Typed queries, caching and optimistic updates. |
-| Validation | Zod (shared schemas) | One source of truth for client and server. |
-| Tooling | pnpm, ESLint, Prettier, Vitest, GitHub Actions | Standard and fast. |
-| Releases | EAS Build/Update (mobile), Vercel or Netlify (web export) | |
-
-**Alternative if you'd rather learn Next.js:** use a Turborepo monorepo with `apps/web` (Next.js), `apps/mobile` (Expo) and `packages/shared` (types, Zod, API client). You get a better web experience, but roughly twice the UI work. Expo-universal is the better fit for a personal project.
+- **First user:** the author, with a plot in Alentejo, Portugal (hot, dry summers, so irrigation is critical).
+- **Target:** commercial potential. The app must adapt to **any user's location and climate**.
 
 ---
 
-## 2. Data model (first draft)
+## 2. Confirmed decisions
 
-```
-profiles        id (= auth.uid), display_name, location_lat, location_lon,
-                last_frost_date, first_frost_date, units
-gardens         id, user_id, name, notes
-beds            id, garden_id, name, type (raised/in-ground/container), sun (full/part/shade)
-plants          id, user_id, bed_id?, common_name, species?, crop_id?, variety,
-                planted_on, status (planned/sown/growing/harvested/removed), notes
-plant_photos    id, plant_id, storage_path, taken_at
-journal_entries id, plant_id, kind (water/fertilize/prune/pest/harvest/note), body, created_at
-ai_queries      id, user_id, plant_id?, kind (identify/diagnose/chat), input, result_json, created_at
-crops           (seeded, read-only) id, name, sow_indoors_weeks_before_frost,
-                direct_sow_weeks_after_frost, transplant_weeks_after_frost,
-                days_to_maturity, spacing_cm, sun, notes
-```
-Every user table gets an RLS policy of `user_id = auth.uid()` (directly or through its parent).
-
----
-
-## 3. Milestones
-
-Estimates assume part-time work, about 8–10 hours a week. Adjust them freely.
-
-### M0 — Foundations (week 1)
-- [ ] Initialize the Expo app (TypeScript, Expo Router) and confirm it runs on web, iOS and Android
-- [ ] Set up ESLint, Prettier, Vitest, and a GitHub Actions CI job (lint, typecheck, test)
-- [ ] Create the Supabase project and the local dev setup (`supabase start`, migrations in git)
-- [ ] Auth: email magic link (add Apple/Google later), plus a `profiles` row created on signup
-- [ ] Generate typed Supabase client types from the schema
-
-**Done when:** you can sign in on the phone and in the browser and see an empty "My Garden" screen. CI is green.
-
-### M1 — Plant tracker (weeks 2–4)
-- [ ] Create, read, update and delete gardens, beds and plants
-- [ ] Photo upload (camera and library) to Supabase Storage, with client-side resizing
-- [ ] Plant detail screen: a photo timeline and journal entries
-- [ ] Quick actions: "watered", "fertilized" and "harvested" log entries in one tap
-- [ ] RLS policies, plus tests that one user can't read another user's data
-
-**Done when:** you've added your real garden and are logging activity in it.
-
-### M2 — Planting calendar (weeks 5–6)
-- [ ] Location: device GPS or manual entry, saved to the profile
-- [ ] Edge Function: Open-Meteo historical data → estimated last and first frost dates, cached on the profile and overridable by the user
-- [ ] Seed `crops.json` with the plants you actually grow first
-- [ ] Calendar view: "This month: start indoors / direct sow / transplant", computed from frost dates and the crop rules
-- [ ] "Plan it": add a crop from the calendar as a `planned` plant
-
-**Done when:** the app tells you correctly what to sow this month where you live.
-
-### M3 — AI: identify, diagnose, ask (weeks 7–9)
-- [ ] Edge Function `identify`: photo → species candidates with confidence, as structured JSON output
-- [ ] Edge Function `diagnose`: photo plus plant context (species, age, recent journal) → likely issues, causes and next steps
-- [ ] Chat assistant that has the context of your garden, plants and location/season
-- [ ] Save results to `ai_queries`. One tap applies an identification to a plant.
-- [ ] Guardrails: per-user daily rate limit, image size cap, and a reminder that AI advice can be wrong
-- [ ] A small eval set: 20–30 of your own photos with known answers, re-run whenever a prompt changes
-
-**Done when:** you photograph a plant and get a useful identification or diagnosis, and you can ask "what should I do this week?"
-
-### M4 — Polish and stretch goals (week 10+)
-- [ ] Care reminders with push notifications (Expo Notifications plus a scheduled Edge Function)
-- [ ] Offline-friendly logging: queue writes and sync when back online
-- [ ] Weather-aware tips, such as a frost warning or "skip watering, rain expected"
-- [ ] Bed layout or spacing visualizer
-- [ ] Data export (CSV/JSON)
-
----
-
-## 4. Key risks and how to handle them
-
-| Risk | Mitigation |
+| Topic | Decision |
 |---|---|
-| React Native Web quirks | Test on the web every milestone, not only at the end. Keep platform-specific code in `*.web.tsx` files. |
-| AI misidentifies a plant or gives bad advice | Show confidence and alternatives, keep a human confirmation step, and maintain the eval set. |
-| AI cost creeps up | Resize images before upload, cache results, rate-limit, and use a smaller model for chat and a stronger one for hard diagnoses. |
-| Frost-date estimates are wrong | Let the user override them, and show the source and method. |
-| Scope creep | Every new idea goes into the M4 backlog. Finish the current milestone first. |
+| Platforms | **Mobile only**, native: **iOS (Swift/SwiftUI)** and **Android (Kotlin/Jetpack Compose)** |
+| Location | Adapts to each user's location. Alentejo is the first test case. |
+| Languages | **Portuguese (pt-PT) and English** from the first version |
+| Offline | Journal, tasks, materials, plot map, calendar and downloaded guides work offline. AI photo analysis is queued until the device is online. |
+| AI actions | The assistant **proposes changes, which are applied only after the user confirms** |
+| Satellite | The user **draws the plot and zones on a satellite map**. The app adds area, sun, slope and soil information. Automatic detection comes later. |
+| Guides | **Text and illustrations, plus selected videos.** AI-generated animations come later. |
+| AI provider | **Claude via Microsoft Foundry** (Azure billing), behind a provider-agnostic layer |
+| Database | **PostgreSQL** with PostGIS (geospatial) and pgvector (AI search) |
+| Backend | **.NET (ASP.NET Core)**. A Python service is added only if we later need our own raster or ML processing. |
+| Cloud | **Azure**, with the lowest possible cost during the individual phase |
+| Business model | **Freemium**: free core features, with the AI features in a premium subscription |
 
 ---
 
-## 5. How to work
+## 3. Features
 
-- **Branches and PRs:** one feature branch per checklist item or small group of items, merged after CI passes.
-- **Issues:** turn each checklist item into a GitHub issue, with a milestone per M0–M4.
-- **Migrations:** every schema change goes in a SQL migration in `supabase/migrations/`. Never edit the database by hand.
-- **Weekly check-in:** what shipped, what's blocking you, and what's next. Re-plan the next milestone, not the whole project.
+The **project roadmap** is the backbone of the app. It runs through these phases: Assess → Design → Prepare soil → Irrigation → Plant → Maintain → Harvest → Plan next season. Each phase has checklists and tasks that the AI adjusts as the user makes progress.
+
+| Feature | Approach | Tier |
+|---|---|---|
+| Plot mapping | Draw the plot and zones on a satellite base map (MapKit on iOS, Google Maps SDK on Android). The server calculates area and sun exposure, and adds slope from elevation data and estimated soil type from SoilGrids. | Free |
+| Site assessment by camera | Claude analyzes photos for weeds, stones, slope, shade and how the soil looks. Guided DIY soil tests (jar test, squeeze test), and a recommendation for a lab test. | Premium |
+| When to plant what | A climate-driven calendar: crop rules based on temperature thresholds and frost risk, rather than fixed months, so it works anywhere | Free |
+| Harvest readiness | A photo, plus days since sowing and the variety's maturity, gives a verdict with a confidence level | Premium |
+| Future planting planner | Rules (season windows, crop rotation by family, spacing, companion plants, succession planting) generate the plan. The AI explains and adjusts it. | Free (rules) / Premium (AI) |
+| Plant identification | Claude vision first. A specialist plant-ID service is optional later. | Premium |
+| Pest and disease diagnosis | The same photo-analysis pipeline as identification | Premium |
+| Materials tracking | Inventory and a shopping list, generated automatically from plans (for example, an irrigation plan produces metres of drip line and fittings) | Free |
+| Irrigation planner | Water needs from evapotranspiration (ET₀) × a crop coefficient (Kc) × area − rain, giving a drip layout, run times and a materials list | Free |
+| Weather alerts | Frost, heatwave and wind warnings, and a notice to skip watering when rain is expected | Free |
+| Improvement suggestions | A weekly AI review of the journal, photos, weather and plan | Premium |
+| AI assistant | Knows the user's garden, answers from the knowledge base and proposes actions to confirm | Premium (with free quota) |
+| Journal and timeline | Photos and actions for each bed, plus a harvest and yield log. This is what lets the AI get better over time. | Free |
+| Guides | Step-by-step guides in PT and EN, with illustrations and selected videos, downloadable for offline use | Free |
 
 ---
 
-## 6. Open decisions
+## 4. Backend architecture
 
-- [ ] Expo-universal (recommended) or Next.js + Expo monorepo?
-- [ ] UI library: Tamagui or NativeWind?
-- [ ] Your location and climate. This decides which crops to seed first.
-- [ ] Self-hosted Supabase or the hosted free tier? Hosted is recommended to start.
+```
+ iOS (SwiftUI + SwiftData)        Android (Compose + Room)
+          │   generated OpenAPI clients   │
+          └──────────────┬───────────────┘
+                         ▼
+        ASP.NET Core API  (Azure Container Apps, scale-to-zero)
+   ┌───────────┬──────────┬──────────┬───────────┬────────────┐
+   │ Core API  │ Sync API │ Media    │ AI layer  │ Knowledge  │
+   │ (domain)  │ (offline)│ (SAS URLs)│ (Foundry) │ base / i18n│
+   └─────┬─────┴────┬─────┴────┬─────┴─────┬─────┴─────┬──────┘
+         ▼          ▼          ▼           ▼           ▼
+   PostgreSQL + PostGIS + pgvector     Blob Storage    Claude (Foundry)
+         ▲                                  ▲
+         └──── Worker (Container Apps Jobs / queue) ─────┐
+               thumbnails · AI jobs · weather alerts ·   │
+               weekly reviews · reminders  ──► Notification Hubs (APNs/FCM)
+   External data: Open-Meteo (weather, climate, ET₀, elevation) · SoilGrids (soil)
+   Identity: Entra External ID (email, Sign in with Apple, Google)
+```
+
+### Components
+1. **Identity:** Entra External ID, signed in with MSAL on both apps. Multi-user from day one, with every record scoped to a user.
+2. **Core API:** plots, zones and beds (PostGIS geometry), plantings, tasks, journal, materials, plans, roadmap progress. Built with ASP.NET Core and EF Core, using NetTopologySuite for geometry.
+3. **Sync API:** offline-first sync.
+   - Clients generate the record IDs (UUIDs).
+   - Every record carries a server version number.
+   - Deleted records are marked as deleted (soft deletes) rather than removed.
+   - Endpoints are `POST /sync/push` and `GET /sync/pull?since=<token>`.
+   - Conflicts are resolved by last-write-wins per record, and every resolution is logged.
+4. **Media:** the API issues short-lived SAS upload URLs, the phone uploads directly to Blob Storage, and a queue triggers thumbnail creation and any AI analysis.
+5. **AI layer:** one `IAiService` handles every task: site assessment, identification, diagnosis, harvest readiness, assistant chat (tool use that creates **pending proposals**), plan explanation and the weekly review.
+   - It assembles the context for each call: garden, history, weather, and relevant knowledge-base content.
+   - Usage is limited per user according to their plan tier.
+   - Every request is logged with its cost.
+   - The model can be swapped.
+6. **Knowledge base:** crops (temperature thresholds, frost tolerance, days to maturity, rotation family, spacing, Kc), techniques and guides.
+   - The **source of truth lives in git** under `content/` as YAML and Markdown, in both PT and EN.
+   - A pipeline publishes it to the database and Blob Storage, and builds offline packages.
+   - The AI uses it as grounding: PostgreSQL full-text search first, then pgvector embeddings.
+7. **External data adapters:** Open-Meteo (forecast, historical climate, ET₀, elevation) and SoilGrids (soil). The results are cached for each plot.
+8. **Worker:** queue processing and scheduled jobs (weather alerts, reminders, weekly reviews).
+9. **Notifications:** Azure Notification Hubs (free tier), sending to APNs and FCM.
+10. **Later:** App Store and Play subscription receipt validation, IoT and sensor ingestion, a content admin interface, and a Python service for raster or ML work.
+
+### Estimated monthly cost during the individual phase
+To be verified against current Azure pricing.
+
+| Service | Estimate |
+|---|---|
+| Container Apps (API and jobs, consumption plan) | ~€0, within the monthly free grant |
+| PostgreSQL Flexible Server (Burstable B1ms) | Free for 12 months on a new Azure account, then ~€12–15. It can be stopped when idle. |
+| Blob Storage | < €1 |
+| Entra External ID | Free at low user counts |
+| Notification Hubs | Free tier |
+| Key Vault, Application Insights | ~€0–2 (with sampling) |
+| Claude via Foundry | Pay per use, a few € at personal usage |
+| **Total** | **~€5 during the first year, ~€20 after** |
+
+Local development runs in Docker (PostgreSQL + PostGIS, Azurite for storage) at no cost.
+
+---
+
+## 5. Repository layout
+
+```
+backend/   .NET solution: Api, Domain, Infrastructure, Worker, tests
+ios/       SwiftUI app (SwiftData, MSAL, MapKit)
+android/   Kotlin/Compose app (Room, MSAL, Google Maps SDK)
+content/   crops and guides (YAML/Markdown, pt-PT + en)
+infra/     Bicep templates for Azure
+docs/      architecture decisions (ADRs), API notes
+```
+
+---
+
+## 6. Milestones
+
+Each milestone ships backend and app work together and ends with something usable on the real plot in Alentejo.
+
+### M0 — Foundations
+- [ ] Repo structure, .NET solution, Docker Compose (PostgreSQL + PostGIS + Azurite)
+- [ ] CI: build, test, lint for the backend and both apps, plus OpenAPI client generation
+- [ ] Entra External ID set up, with sign-in working on iOS and Android
+- [ ] Bicep templates for Container Apps, PostgreSQL, Blob Storage, Key Vault and Notification Hubs
+- [ ] i18n scaffolding (pt-PT and en) in the backend and both apps
+- [ ] Account deletion and data export endpoints, which the app stores require
+
+### M1 — Plot and roadmap
+- [ ] Draw the plot and zones on a satellite map, stored in PostGIS
+- [ ] Enrichment: area, sun exposure, slope (elevation data) and soil estimate (SoilGrids)
+- [ ] Project roadmap with phases and checklists (static content first)
+
+### M2 — Journal, tasks, materials and offline sync
+- [ ] Local databases (SwiftData and Room), plus the sync push/pull protocol
+- [ ] Journal with photos (SAS upload and thumbnails), tasks with reminders, materials inventory and shopping list
+
+### M3 — Knowledge base, calendar and guides
+- [ ] `content/` pipeline publishing to the database and Blob Storage, with offline packages
+- [ ] Crop catalog (30–50 crops relevant to Mediterranean climates first), PT and EN
+- [ ] Climate-driven sowing and planting calendar
+- [ ] First guides: soil preparation, compost, drip irrigation, sowing, transplanting
+
+### M4 — AI photo features
+- [ ] AI layer on Foundry, with quotas by plan tier and cost logging
+- [ ] Site assessment, plant identification, pest and disease diagnosis, harvest readiness
+- [ ] Offline photo queue, with push notifications when results are ready
+- [ ] An evaluation set of real photos from the plot, re-run whenever a prompt or model changes
+
+### M5 — AI assistant and smart alerts
+- [ ] An assistant with garden context that answers from the knowledge base
+- [ ] Tool use that creates pending proposals, a confirmation interface and an audit log
+- [ ] Weather alerts and the weekly improvement review
+
+### M6 — Planning
+- [ ] Planner for rotation, succession and companion planting
+- [ ] Irrigation planner (ET₀ × Kc) that generates a materials list
+- [ ] Next-season planning from the harvest and yield history
+
+### M7 — Commercial readiness
+- [ ] Freemium tiers with App Store and Play subscriptions (server-side receipt validation)
+- [ ] Commercial licences for data sources (Open-Meteo paid plan or an alternative, and the plant-ID service if used)
+- [ ] Privacy policy, GDPR review, AI disclaimers (especially around pesticides and chemicals), store listings
+
+---
+
+## 7. Licensing to verify before going commercial
+
+- Satellite map tiles (Apple, Google) may be displayed, but not analyzed by AI or stored.
+- Open-Meteo's free API is non-commercial only. It needs a paid plan or an alternative.
+- SoilGrids is CC-BY, so it needs attribution. Check the API's rate limits.
+- Specialist plant-ID APIs (Pl@ntNet, Kindwise): their free tiers are non-commercial.
+- Check the availability and pricing of Claude models in Microsoft Foundry.
+
+---
+
+## 8. Open decisions
+
+- [ ] **Which platform first?** A solo developer building two native apps should finish the vertical slice on one platform, then port it.
+- [ ] Embedding model for pgvector search. Claude doesn't produce embeddings, so this needs a separate model, for example one on Foundry.
+- [ ] The exact sync conflict policy for each entity (last-write-wins per record or per field).
