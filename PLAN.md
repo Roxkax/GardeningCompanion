@@ -426,7 +426,7 @@ A regular review of how the garden is going, with concrete ideas to improve it.
    - Deleted records are marked as deleted (soft deletes) rather than removed.
    - Endpoints are `POST /sync/push` and `GET /sync/pull?since=<token>`.
    - Activity log entries are only ever added, never edited, so they sync without conflicts.
-   - For records that can be edited, conflicts are resolved by last-write-wins per record, and every resolution is logged.
+   - **Conflicts on editable records are resolved by the user.** When a push carries an outdated version, the server keeps its current version and returns both. The app records a pending conflict and shows both versions side by side. The user keeps one or combines them field by field. Conflicts don't block other work: they appear as a badge on the "Today" screen. Every resolution is logged.
 5. **Media:** the API issues short-lived SAS upload URLs, the phone uploads directly to Blob Storage, and a queue triggers thumbnail creation and any AI analysis.
 6. **AI layer:** one `IAiService` handles every task: site assessment, identification, diagnosis, harvest readiness, assistant chat (tool use that creates **pending proposals**), plan explanation and the weekly review.
    - It assembles the context for each call: garden, history, weather, and relevant knowledge-base content.
@@ -572,4 +572,3 @@ Each milestone ships backend and app work together and ends with something usabl
 
 - [ ] Embedding model for pgvector search. Claude doesn't produce embeddings, so this needs a separate model, for example one on Foundry.
 - [ ] Image generation model for guide illustrations (Claude can't generate images), plus its commercial licence terms.
-- [ ] The exact sync conflict policy for each editable entity (last-write-wins per record or per field). Activity log entries are only ever added, so they don't need one.
