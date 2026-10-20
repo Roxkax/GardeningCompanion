@@ -16,7 +16,7 @@ A mobile app that guides a complete beginner from **unused land to a productive,
 | Platforms | **Mobile only**, native: **iOS (Swift/SwiftUI)** and **Android (Kotlin/Jetpack Compose)**. **iOS is built first**, and each milestone is ported to Android once it's stable. |
 | Location | Adapts to each user's location. Alentejo is the first test case. |
 | Languages | **Portuguese (pt-PT) and English** from the first version |
-| Offline | Journal, tasks, materials, plot map, calendar and downloaded guides work offline. AI photo analysis is queued until the device is online. |
+| Offline | Journal, tasks, tools, plot map, calendar and downloaded guides work offline. AI photo analysis is queued until the device is online. |
 | AI actions | The assistant **proposes changes, which are applied only after the user confirms** |
 | Satellite | The user **draws the plot and zones on a satellite map**. The app adds area, sun, slope and soil information. Automatic detection comes later. |
 | Guides | **Text and illustrations, plus selected videos.** AI-generated animations come later. |
@@ -41,7 +41,7 @@ The roadmap guides the user from bare land to a working garden. It is **not a fi
 - **Season-aware:** actions have ideal time windows for the local climate (for example, preparing soil in autumn before the rains in Alentejo), and are scheduled around them.
 - **Time and cost estimates** for each action, to help plan weekends and a budget.
 - **Deviations:** the user can mark an action as done differently, skipped, not possible, or as having a problem. The next actions adapt to that.
-- Each action links to its guide, its tasks and the materials it needs.
+- Each action links to its guide, its tasks and the tools it needs. Consumables such as compost or seeds are mentioned for information only.
 - **Choosing crops** is a step in the **Design** phase, after mapping and site assessment (see §3.6). Next actions follow the user's chosen crops.
 - **How next actions are produced:** a rules layer (agronomy logic and safety limits) suggests the possible actions and their time windows. An AI layer ranks them, adapts them to deviations, explains why, and estimates time and cost. See §4, component 3.
 - **Potential tier (commercial):** rules-based next actions free, AI adaptation premium.
@@ -60,8 +60,8 @@ All features are in scope for development. The last column only notes what could
 | Future planting planner | Rules (season windows, crop rotation by family, spacing, companion plants, succession planting) generate the plan. The AI explains and adjusts it. | Free (rules) / Premium (AI) |
 | Plant identification | Claude vision first. A specialist plant-ID service is optional later. | Premium |
 | Pest and disease diagnosis | The same photo-analysis pipeline as identification | Premium |
-| Materials tracking | Inventory and a shopping list, generated automatically from plans (for example, an irrigation plan produces metres of drip line and fittings) | Free |
-| Irrigation planner | Water needs from evapotranspiration (ET₀) × a crop coefficient (Kc) × area − rain, giving a drip layout, run times and a materials list. Includes a well water quality check (salinity and pH meter), which was moved here from site assessment. | Free |
+| Tools | See §3.10 | Free |
+| Irrigation planner | Water needs from evapotranspiration (ET₀) × a crop coefficient (Kc) × area − rain, giving a drip layout, run times and a parts list (for information only, not tracked). Includes a well water quality check (salinity and pH meter), which was moved here from site assessment. | Free |
 | Weather alerts | Frost, heatwave and wind warnings, and a notice to skip watering when rain is expected | Free |
 | Improvement suggestions | A weekly AI review of the journal, photos, weather and plan | Premium |
 | AI assistant | Knows the user's garden, answers from the knowledge base and proposes actions to confirm | Premium (with free quota) |
@@ -79,7 +79,7 @@ All features are in scope for development. The last column only notes what could
 - **Shade:** estimated from marked trees and buildings (height plus the sun's path over the day and year), and combined with shade the user has observed and marked (e.g. "afternoon shade").
 - **Prevailing wind** from weather data, used to suggest windbreaks.
 - **Layout designer:** beds with real dimensions, path widths and row direction (north–south suggested for even sun).
-- **Measuring tool:** distances on the map (e.g. from the well to zone A), which feed the materials list (metres of pipe).
+- **Measuring tool:** distances on the map (e.g. from the well to zone A), which feed the irrigation parts list (metres of pipe).
 - **Layout history:** each season's layout is kept as a version, which the crop rotation planner needs.
 - **Offline:** shapes and points can be edited offline, but the satellite images may not load, because Apple and Google limit offline caching.
 - **Later (not in MVP):** several plots per user. The data model includes the plot as its own entity from the start, so adding this later is cheap.
@@ -99,7 +99,7 @@ For each zone, the app works out what's there now, what needs clearing or fixing
   - Wildlife pressure: rabbits, wild boar, birds and moles, which decide whether fencing or netting is needed.
 - **Guided photos with fixed photo spots** on the map, for before-and-after comparisons.
 - **Walk-around video:** the app picks the best frames for the AI.
-- **Equipment advice:** rent or buy, based on the work needed and the plot size.
+- **Equipment advice:** buy, rent or borrow, based on the work needed and the plot size. Follows the "always own" setting in §3.10.
 - **Re-assessments** at any time, to track progress.
 - **Backend:** a stored assessment for each zone, with photos, AI findings (each with a confidence level) and estimates. Every assessment is recorded in the activity log, so the roadmap updates.
 
@@ -119,7 +119,7 @@ Shows what to sow or plant, and when, for the user's exact location, kept up to 
 - **Harvest estimates** from the heat each planting has actually received since sowing (growing degree days), not a fixed number of days.
 - **Staggered sowing reminders** (e.g. lettuce every 2–3 weeks) for a continuous harvest.
 - **Export** to the phone's calendar.
-- Adding a crop from the calendar creates a planned planting, which updates the roadmap, tasks and materials.
+- Adding a crop from the calendar creates a planned planting, which updates the roadmap and tasks.
 - **Backend:** crop rules in the knowledge base, local climate history fetched once per plot and cached, a fixed calculation of windows (no AI), and a daily job for harvest estimates and forecast adjustments. The result is cached on the phone for offline use.
 
 ### 3.6 Choosing your crops
@@ -141,7 +141,7 @@ The user chooses which crops to grow, helped by suggestions ranked by suitabilit
   - Calendar: the user's crops first.
   - Layout designer and season planner: assign crops to beds.
   - Irrigation planner: water needs.
-  - Materials: seeds and nursery seedlings on the shopping list.
+  - Guides and tasks: the seed and seedling quantities needed, for information only.
   - AI assistant: proposes additions or swaps, which the user confirms.
 - **Backend:**
   - A "my crops" list for each user (crop, variety, priority, quantity).
@@ -154,7 +154,7 @@ The user chooses which crops to grow, helped by suggestions ranked by suitabilit
 The "how to" behind every roadmap action. Each roadmap action opens its guide.
 
 - **Step-by-step guides in PT and EN**, with illustrations, diagrams and selected videos. Each guide cites its sources and shows a "last reviewed" date.
-- **Standard layout for every step:** what to do, an illustration, tools and materials, time needed, safety notes, common mistakes, and "how to tell it's done right".
+- **Standard layout for every step:** what to do, an illustration, tools needed, consumables needed (for information only), time needed, safety notes, common mistakes, and "how to tell it's done right".
 - **Three kinds of guide:**
   - Techniques: clearing, building beds, drip irrigation, mulching, composting, sowing, planting out, staking, pruning.
   - Crop guides: each crop from sowing to harvest.
@@ -191,7 +191,7 @@ The record of everything that happens in the garden, and what the AI and roadmap
 The garden to-do list: what to do and when, with reminders. It works offline.
 
 - **Where tasks come from:** accepted roadmap next actions, the calendar, regular care (watering from the irrigation plan, feeding), weather alerts, confirmed AI proposals, and tasks the user adds.
-- **Each task has:** its zone, bed or planting; a **date range** rather than a fixed day; estimated time; priority; a link to the guide; and the **materials needed, checked against the inventory**, with a warning if something is missing.
+- **Each task has:** its zone, bed or planting; a **date range** rather than a fixed day; estimated time; priority; a link to the guide; the **tools needed, checked against the user's tools**, with a warning if one is missing; and any consumables needed, for information only.
 - **Completing tasks:** done, skipped, or couldn't do (with a reason). Each outcome goes into the activity log, so the roadmap adapts.
 - **Views:** Today, This week, and by zone.
 - **Weekend planner:** the user enters the hours available, and the app picks the most important tasks that fit, using the time estimates.
@@ -201,6 +201,20 @@ The garden to-do list: what to do and when, with reminders. It works offline.
 - **Reminders:** scheduled on the phone (works offline), push notifications from the server for weather-driven alerts, a daily morning summary instead of many notifications, and quiet hours.
 - **Later (not in MVP):** sharing tasks with family or helpers.
 - **Backend:** tasks are editable records (covered by the sync conflict policy) that remember where they came from. A scheduled job handles the morning summaries, weather rescheduling and push notifications.
+
+### 3.10 Tools
+
+Which tools the user has, which they'll need, and when. **No consumable or stock tracking:** compost, seeds, drip line and similar are only mentioned in guides and tasks as information (e.g. "about 3 bags of compost for this bed"). There's no inventory or cost tracking.
+
+- **My tools:** a simple list of owned tools (no quantities), optionally with a photo and where it's kept.
+- **Tools needed for each action:** roadmap actions, tasks and guides list their tools. The app compares them with the user's list and flags missing tools before they're needed.
+- **"Tools to get" list:** missing tools, ordered by when they're needed, each marked buy, rent or borrow.
+- **"Always own" setting (opt-in):** when on, every missing tool defaults to **buy**, and rent or borrow suggestions are hidden. The buy/rent/borrow information is still kept. **The owner uses this setting.**
+- **Starter toolkit:** a recommended set for the plot size and planned work, split into essential and nice to have.
+- **Buy vs rent vs borrow advice** for big equipment (e.g. a rototiller), unless "always own" is on.
+- **Tool maintenance reminders** (sharpening, cleaning, storing irrigation parts before frost), which become tasks.
+- **Later (post-MVP, commercial):** shop links or affiliate partnerships.
+- **Backend:** a tool catalog in the knowledge base (purpose, typical price range, usually rented or bought), the user's tool list, tools required by each action and guide, the missing-tools calculation, and the user's preference setting. Works offline.
 
 ---
 
@@ -228,11 +242,11 @@ The garden to-do list: what to do and when, with reminders. It works offline.
 
 ### Components
 1. **Identity:** Entra External ID, signed in with MSAL on both apps. Multi-user from day one, with every record scoped to a user.
-2. **Core API:** plots, zones and beds (PostGIS geometry), plantings, tasks, journal, materials, plans. Built with ASP.NET Core and EF Core, using NetTopologySuite for geometry.
+2. **Core API:** plots, zones and beds (PostGIS geometry), plantings, tasks, journal, tools, plans. Built with ASP.NET Core and EF Core, using NetTopologySuite for geometry.
 3. **Activity log and roadmap engine:**
    - **Activity log:** an entry is saved for everything that happens (actions done, skipped or done differently, journal notes, photo results, changes of state). Entries are timestamped and never overwritten.
    - **Zone state:** a current-state view of each zone, built from the log. The zone's phase is worked out from it.
-   - **Next actions:** a rules layer (agronomy logic and safety limits that are never broken) produces the possible actions and their time windows. An AI layer ranks them, adapts them to deviations, explains why, and estimates time and cost. The result is a short list of next actions for each zone, each with a reason, a time window, a guide link and the materials needed.
+   - **Next actions:** a rules layer (agronomy logic and safety limits that are never broken) produces the possible actions and their time windows. An AI layer ranks them, adapts them to deviations, explains why, and estimates time and cost. The result is a short list of next actions for each zone, each with a reason, a time window, a guide link and the tools needed.
    - **When it recalculates:** on relevant events (an action recorded, a photo analyzed, a significant forecast change) and once a day. The rules run every time, the AI only when the change matters, to keep costs down. The latest result is cached on the phone for offline use.
    - **Traceability:** each recommendation records the knowledge-base version and AI model that produced it.
 4. **Sync API:** offline-first sync.
@@ -311,14 +325,14 @@ Each milestone ships backend and app work together and ends with something usabl
 - [ ] Setup questions about what already exists
 - [ ] Roadmap engine, rules layer: next actions for each zone, with time windows and deviation handling
 
-### M2 — Journal, tasks, materials and offline sync
+### M2 — Journal, tasks, tools and offline sync
 - [ ] Local databases (SwiftData and Room), plus the sync push/pull protocol
 - [ ] Journal on top of the activity log: quick and bulk logging, voice notes, automatic entries, weather on each day, changing the date
 - [ ] Photos (SAS upload and thumbnails), timeline views, photo time-lapse
 - [ ] Harvest log with comparison to expected yield and optional value; search, filters, CSV/PDF export
-- [ ] Tasks: sources, date ranges, materials check, outcomes recorded in the activity log, Today/Week/zone views, repeating tasks
+- [ ] Tasks: sources, date ranges, tools check, outcomes recorded in the activity log, Today/Week/zone views, repeating tasks
 - [ ] Reminders: on-phone reminders, morning summary, quiet hours; weekend planner
-- [ ] Materials inventory and shopping list
+- [ ] Tools: my tools, tools needed per action, "tools to get" list, starter toolkit, "always own" setting, maintenance reminders
 
 ### M3 — Knowledge base, calendar and guides
 - [ ] `content/` pipeline publishing to the database and Blob Storage, with offline packages
@@ -344,7 +358,7 @@ Each milestone ships backend and app work together and ends with something usabl
 
 ### M6 — Planning
 - [ ] Planner for rotation, succession and companion planting
-- [ ] Irrigation planner (ET₀ × Kc) that generates a materials list
+- [ ] Irrigation planner (ET₀ × Kc) with a parts list (for information only)
 - [ ] Next-season planning from the harvest and yield history
 
 ### M7 — Commercial readiness
