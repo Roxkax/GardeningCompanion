@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>A6 What's there already</title>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="frame.css">
+<style>
+  .top { padding: 2px 16px 0; display: flex; flex-direction: column; gap: 12px; }
+  .row { display: flex; align-items: center; gap: 12px; }
+  .step { font-size: 14px; font-weight: 700; color: var(--muted); }
+  .content { flex: 1; padding: 16px 20px 0; display: flex; flex-direction: column; gap: 14px; overflow: hidden; }
+  h1 { margin: 0; font-size: 28px; font-weight: 800; line-height: 1.15; }
+  .sub { margin: -6px 0 0; font-size: 15.5px; color: var(--muted); line-height: 1.45; }
+  .tabs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+  .ztab { display: flex; align-items: center; justify-content: center; gap: 7px; height: 44px; border-radius: 12px; background: #EEF0EA; font-size: 15px; font-weight: 700; color: var(--muted); }
+  .ztab.on { background: #fff; color: var(--text); box-shadow: inset 0 0 0 2px var(--green); }
+  .ztab .done { width: 18px; height: 18px; border-radius: 999px; background: var(--green); display: flex; align-items: center; justify-content: center; }
+  .dot { width: 12px; height: 12px; border-radius: 4px; flex: none; }
+  .card { background: #fff; border: 1px solid var(--line); border-radius: 16px; }
+  .q { padding: 12px 14px; border-bottom: 1px solid #EEF0EA; display: flex; flex-direction: column; gap: 9px; }
+  .q:last-child { border-bottom: none; }
+  .q b { font-size: 16px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 7px; }
+  .chip { height: 36px; padding: 0 13px; border-radius: 999px; border: 1.5px solid #C9CFC2; display: flex; align-items: center; font-size: 14px; font-weight: 600; color: var(--text); background: #fff; }
+  .chip.on { background: var(--green); border-color: var(--green); color: #fff; font-weight: 700; }
+  .foot { padding: 12px 20px 34px; display: flex; gap: 10px; background: linear-gradient(rgba(245,246,240,0), var(--bg) 22%); position: relative; z-index: 5; margin-top: -20px; }
+</style>
+</head>
+<body>
+<div class="stage"><div class="phone"><div class="screen">
+  <div class="island"></div>
+  <div class="status">
+    <span>9:41</span>
+    <span class="icons">
+      <svg width="18" height="12" viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1" fill="#1F2A20"/><rect x="5" y="5.5" width="3" height="6.5" rx="1" fill="#1F2A20"/><rect x="10" y="3" width="3" height="9" rx="1" fill="#1F2A20"/><rect x="15" y="0" width="3" height="12" rx="1" fill="#1F2A20"/></svg>
+      <svg width="16" height="12" viewBox="0 0 16 12"><path d="M8 11.5l2.2-2.6a3.2 3.2 0 0 0-4.4 0z" fill="#1F2A20"/><path d="M3.6 6.9a6.3 6.3 0 0 1 8.8 0l-1.4 1.6a4.2 4.2 0 0 0-6 0z" fill="#1F2A20"/><path d="M1.2 4.2a9.7 9.7 0 0 1 13.6 0l-1.4 1.6a7.6 7.6 0 0 0-10.8 0z" fill="#1F2A20"/></svg>
+      <svg width="27" height="13" viewBox="0 0 27 13"><rect x="0.5" y="0.5" width="23" height="12" rx="3.5" fill="none" stroke="#1F2A20" opacity=".4"/><rect x="2" y="2" width="18" height="9" rx="2" fill="#1F2A20"/><path d="M25 4.5v4a2 2 0 0 0 0-4z" fill="#1F2A20" opacity=".4"/></svg>
+    </span>
+  </div>
+
+  <div class="top">
+    <div class="row">
+      <div class="circle-btn"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1F2A20" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></div>
+      <div style="flex: 1; display: flex; flex-direction: column; gap: 6px">
+        <span class="step">Set up your garden · Step 5 of 7</span>
+        <div class="progress"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+    <h1>What’s there already?</h1>
+    <p class="sub">This sets where your plan starts, so you don’t repeat work that’s already done.</p>
+
+    <div class="tabs">
+      <div class="ztab on"><i class="dot" style="background:#2D6A3A"></i>Zone A</div>
+      <div class="ztab"><i class="dot" style="background:#2F6FB0"></i>Zone B</div>
+      <div class="ztab"><i class="dot" style="background:#7A4F1E"></i>Zone C</div>
+    </div>
+
+    <div class="card">
+      <div class="q"><b>Is the ground cleared?</b>
+        <div class="chips"><span class="chip">Overgrown</span><span class="chip on">Partly</span><span class="chip">Cleared</span></div></div>
+      <div class="q"><b>Are there beds already?</b>
+        <div class="chips"><span class="chip on">No</span><span class="chip">Some</span><span class="chip">Yes, ready</span></div></div>
+      <div class="q"><b>Any irrigation?</b>
+        <div class="chips"><span class="chip">None</span><span class="chip on">Hose only</span><span class="chip">Drip system</span></div></div>
+      <div class="q"><b>Anything planted?</b>
+        <div class="chips"><span class="chip on">Nothing</span><span class="chip">A few plants</span><span class="chip">Growing well</span></div></div>
+      <div class="q"><b>Is it fenced?</b>
+        <div class="chips"><span class="chip">No</span><span class="chip on">Partly</span><span class="chip">Fully</span></div></div>
+    </div>
+  </div>
+
+  <div class="foot">
+    <div class="btn secondary" style="width: 110px; flex: none">Not sure</div>
+    <div class="btn primary" style="flex: 1">Next: Zone B</div>
+  </div>
+  <div class="home"></div>
+</div></div></div>
+</body>
+</html>
