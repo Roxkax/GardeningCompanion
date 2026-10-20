@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>A7 Choose your crops</title>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="frame.css">
+<style>
+  .top { padding: 2px 16px 0; display: flex; flex-direction: column; gap: 12px; }
+  .row { display: flex; align-items: center; gap: 12px; }
+  .step { font-size: 14px; font-weight: 700; color: var(--muted); }
+  .content { flex: 1; padding: 14px 20px 0; display: flex; flex-direction: column; gap: 12px; overflow: hidden; }
+  h1 { margin: 0; font-size: 28px; font-weight: 800; line-height: 1.15; }
+  .sub { margin: -6px 0 0; font-size: 15px; color: var(--muted); line-height: 1.4; }
+  .search { height: 46px; border-radius: 13px; background: #fff; border: 1px solid var(--line); display: flex; align-items: center; gap: 10px; padding: 0 14px; font-size: 16px; color: #6B7468; flex: none; }
+  .filters { display: flex; gap: 8px; flex: none; }
+  .f { height: 34px; padding: 0 13px; border-radius: 999px; background: #EEF0EA; font-size: 14px; font-weight: 700; color: var(--muted); display: flex; align-items: center; }
+  .f.on { background: var(--text); color: #fff; }
+  .list { background: #fff; border: 1px solid var(--line); border-radius: 16px; }
+  .crop { display: flex; gap: 12px; padding: 10px 14px; border-bottom: 1px solid #EEF0EA; align-items: center; }
+  .crop:last-child { border-bottom: none; }
+  .tile { width: 42px; height: 42px; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex: none; }
+  .info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+  .info b { font-size: 16px; }
+  .tags { display: flex; gap: 5px; flex-wrap: wrap; }
+  .tag { font-size: 12px; font-weight: 700; padding: 2px 7px; border-radius: 6px; background: var(--green-soft); color: var(--green-ink); }
+  .tag.b { background: var(--blue-soft); color: var(--blue-ink); }
+  .tag.g { background: #ECEDE8; color: var(--muted); }
+  .check { width: 28px; height: 28px; border-radius: 999px; flex: none; display: flex; align-items: center; justify-content: center; border: 2px solid #C9CFC2; }
+  .check.on { background: var(--green); border-color: var(--green); }
+  .warn { margin-top: 4px; display: flex; gap: 6px; background: var(--orange-soft); color: #7A3A08; border-radius: 8px; padding: 6px 8px; font-size: 12.5px; font-weight: 600; line-height: 1.35; }
+  .foot { padding: 12px 20px 34px; position: relative; z-index: 5; margin-top: -24px; background: linear-gradient(rgba(245,246,240,0), var(--bg) 26%); }
+</style>
+</head>
+<body>
+<div class="stage"><div class="phone"><div class="screen">
+  <div class="island"></div>
+  <div class="status">
+    <span>9:41</span>
+    <span class="icons">
+      <svg width="18" height="12" viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1" fill="#1F2A20"/><rect x="5" y="5.5" width="3" height="6.5" rx="1" fill="#1F2A20"/><rect x="10" y="3" width="3" height="9" rx="1" fill="#1F2A20"/><rect x="15" y="0" width="3" height="12" rx="1" fill="#1F2A20"/></svg>
+      <svg width="16" height="12" viewBox="0 0 16 12"><path d="M8 11.5l2.2-2.6a3.2 3.2 0 0 0-4.4 0z" fill="#1F2A20"/><path d="M3.6 6.9a6.3 6.3 0 0 1 8.8 0l-1.4 1.6a4.2 4.2 0 0 0-6 0z" fill="#1F2A20"/><path d="M1.2 4.2a9.7 9.7 0 0 1 13.6 0l-1.4 1.6a7.6 7.6 0 0 0-10.8 0z" fill="#1F2A20"/></svg>
+      <svg width="27" height="13" viewBox="0 0 27 13"><rect x="0.5" y="0.5" width="23" height="12" rx="3.5" fill="none" stroke="#1F2A20" opacity=".4"/><rect x="2" y="2" width="18" height="9" rx="2" fill="#1F2A20"/><path d="M25 4.5v4a2 2 0 0 0 0-4z" fill="#1F2A20" opacity=".4"/></svg>
+    </span>
+  </div>
+
+  <div class="top">
+    <div class="row">
+      <div class="circle-btn"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1F2A20" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></div>
+      <div style="flex: 1; display: flex; flex-direction: column; gap: 6px">
+        <span class="step">Set up your garden · Step 6 of 7</span>
+        <div class="progress"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+    <h1>What do you want to grow?</h1>
+    <p class="sub">Ranked for your climate and the season. Pick as many as you like; you can change them any time.</p>
+    <div class="search">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4E5A4C" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg>
+      Search crops
+    </div>
+    <div class="filters"><span class="f on">Best for you</span><span class="f">Sow now</span><span class="f">All crops</span></div>
+
+    <div class="list">
+      <div class="crop">
+        <span class="tile" style="background:#E3F0E1"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2D6A3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18c0-7 5-12 12-12 0 7-5 12-12 12z"/><path d="M6 18l6-6"/></svg></span>
+        <div class="info"><b>Broad beans</b><div class="tags"><span class="tag">Sow now</span><span class="tag">Easy</span><span class="tag b">Low water</span></div></div>
+        <span class="check on"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"/></svg></span>
+      </div>
+      <div class="crop">
+        <span class="tile" style="background:#F1EEE6"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7A5A36" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4c-3 4-6 6-6 10a6 6 0 0 0 12 0c0-4-3-6-6-10z"/><path d="M12 4v4"/></svg></span>
+        <div class="info"><b>Garlic</b><div class="tags"><span class="tag">Plant now</span><span class="tag">Easy</span><span class="tag b">Low water</span></div></div>
+        <span class="check on"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"/></svg></span>
+      </div>
+      <div class="crop">
+        <span class="tile" style="background:#F3E9F1"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7A3D6C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="14" r="6"/><path d="M12 8V3"/></svg></span>
+        <div class="info"><b>Short-day onions</b><div class="tags"><span class="tag">Sow now</span><span class="tag g">Suits your latitude</span></div></div>
+        <span class="check on"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"/></svg></span>
+      </div>
+      <div class="crop">
+        <span class="tile" style="background:#E3F0E1"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2D6A3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14c4-1 8-5 9-10 3 4 3 11-3 14-2 1-4 0-6-4z"/></svg></span>
+        <div class="info" style="gap: 3px"><b>Lettuce</b><div class="tags"><span class="tag">Sow now</span><span class="tag">Easy</span></div>
+          <div class="warn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9A4A0C" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:1px"><path d="M12 3l9.5 17h-19z"/><path d="M12 10v4"/></svg>Avoid sowing June–August here: the heat makes it bolt.</div></div>
+        <span class="check on"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4 4 10-10"/></svg></span>
+      </div>
+      <div class="crop">
+        <span class="tile" style="background:#FBE5E3"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#B23A2E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="14" r="6.5"/><path d="M9 6l3 2 3-2"/></svg></span>
+        <div class="info"><b>Tomatoes</b><div class="tags"><span class="tag g">Plant out in April</span><span class="tag b">Regular water</span></div></div>
+        <span class="check"></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot">
+    <div class="btn primary">Next: preferences · 4 crops</div>
+  </div>
+  <div class="home"></div>
+</div></div></div>
+</body>
+</html>

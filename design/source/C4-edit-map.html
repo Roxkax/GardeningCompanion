@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>C4 Edit map</title>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="frame.css">
+<style>
+  .map { position: absolute; inset: 0; }
+  .topfade { position: absolute; top: 0; left: 0; right: 0; height: 150px; background: linear-gradient(rgba(245,246,240,.97) 0%, rgba(245,246,240,.9) 60%, rgba(245,246,240,0) 100%); z-index: 5; }
+  .navbar { position: relative; z-index: 20; height: 48px; padding: 0 16px; display: flex; align-items: center; justify-content: space-between; }
+  .navbar .title { font-size: 17px; font-weight: 700; }
+  .navbar .cancel { font-size: 17px; font-weight: 600; color: var(--green); min-height: 44px; display: flex; align-items: center; }
+  .done { height: 38px; padding: 0 16px; border-radius: 999px; background: var(--green); color: #fff; font-size: 16px; font-weight: 700; display: flex; align-items: center; }
+  .toolbar { position: absolute; left: 16px; right: 16px; top: 112px; z-index: 20; background: rgba(255,255,255,.97); border-radius: 16px; box-shadow: 0 2px 10px rgba(0,0,0,.16); display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); padding: 4px; }
+  .toolbar span { height: 52px; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; font-size: 12px; font-weight: 700; color: var(--muted); }
+  .toolbar span.on { background: var(--green-soft); color: var(--green-ink); }
+  .dim { position: absolute; z-index: 12; background: var(--text); color: #fff; font-size: 12.5px; font-weight: 700; padding: 3px 7px; border-radius: 7px; transform: translate(-50%, -50%); }
+  .sheet { position: absolute; left: 0; right: 0; bottom: 0; z-index: 30; background: #fff; border-radius: 26px 26px 0 0; box-shadow: 0 -6px 24px rgba(0,0,0,.12); padding: 10px 20px 34px; display: flex; flex-direction: column; gap: 14px; }
+  .grab { width: 40px; height: 5px; border-radius: 3px; background: #D3D7CE; align-self: center; }
+  .shead { display: flex; align-items: center; justify-content: space-between; }
+  .shead h1 { margin: 0; font-size: 22px; font-weight: 800; }
+  .shead span { font-size: 14px; color: var(--muted); font-weight: 600; }
+  .fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  label.f { display: flex; flex-direction: column; gap: 6px; font-size: 13.5px; font-weight: 700; color: var(--muted); }
+  .input { height: 50px; border-radius: 12px; border: 1.5px solid #C9CFC2; background: #fff; display: flex; align-items: center; justify-content: space-between; padding: 0 14px; font-size: 18px; font-weight: 700; color: var(--text); }
+  .input.focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(45,106,58,.18); }
+  .input em { font-style: normal; font-size: 15px; color: var(--muted); font-weight: 600; }
+  .row2 { display: flex; gap: 10px; }
+  .mini { flex: 1; height: 44px; border-radius: 12px; background: #EEF0EA; display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 14.5px; font-weight: 700; }
+  .mini.danger { color: #9A2B1E; }
+</style>
+</head>
+<body>
+<div class="stage"><div class="phone"><div class="screen">
+  <div class="island"></div>
+
+  <svg class="map" width="393" height="852" viewBox="0 0 393 852" aria-hidden="true">
+    <defs>
+      <pattern id="dry" width="9" height="9" patternUnits="userSpaceOnUse"><rect width="9" height="9" fill="#CDB383"/><circle cx="2.5" cy="3" r="1.2" fill="#B89C69"/><circle cx="7" cy="6.5" r="1" fill="#DCC797"/></pattern>
+    </defs>
+    <rect width="393" height="852" fill="url(#dry)"/>
+    <rect width="393" height="852" fill="rgba(45,106,58,.26)"/>
+    <!-- zone A edge -->
+    <path d="M10 160 L383 150" stroke="#2D6A3A" stroke-width="3" fill="none"/>
+    <path d="M370 150 L364 560" stroke="#7A4F1E" stroke-width="3" fill="none"/>
+    <!-- grid hint -->
+    <g stroke="rgba(255,255,255,.35)" stroke-width="1">
+      <path d="M0 230 H393M0 290 H393M0 350 H393M0 410 H393M0 470 H393"/>
+      <path d="M60 150 V560M120 150 V560M180 150 V560M240 150 V560M300 150 V560"/>
+    </g>
+    <!-- beds -->
+    <g fill="#7A5A36" stroke="#fff" stroke-width="2">
+      <rect x="40" y="236" width="40" height="200" rx="4"/>
+      <rect x="160" y="236" width="40" height="200" rx="4"/>
+      <rect x="220" y="236" width="40" height="200" rx="4"/>
+    </g>
+    <g fill="#3E8A47"><circle cx="120" cy="260" r="5"/><circle cx="120" cy="290" r="5"/><circle cx="120" cy="320" r="5"/><circle cx="120" cy="350" r="5"/><circle cx="120" cy="380" r="5"/><circle cx="120" cy="410" r="5"/></g>
+    <!-- selected bed A2 -->
+    <rect x="100" y="236" width="40" height="200" rx="4" fill="rgba(122,90,54,.85)" stroke="#2D6A3A" stroke-width="3"/>
+    <rect x="94" y="230" width="52" height="212" rx="7" fill="none" stroke="#fff" stroke-width="2" stroke-dasharray="6 5"/>
+    <g fill="#fff" stroke="#2D6A3A" stroke-width="3">
+      <circle cx="100" cy="236" r="8"/><circle cx="140" cy="236" r="8"/><circle cx="140" cy="436" r="8"/><circle cx="100" cy="436" r="8"/>
+      <circle cx="120" cy="236" r="6"/><circle cx="140" cy="336" r="6"/><circle cx="120" cy="436" r="6"/><circle cx="100" cy="336" r="6"/>
+    </g>
+    <!-- rotate handle -->
+    <path d="M120 228 V206" stroke="#fff" stroke-width="2"/>
+    <circle cx="120" cy="198" r="10" fill="#fff" stroke="#2D6A3A" stroke-width="3"/>
+    <path d="M115 198 a5 5 0 1 1 5 5" stroke="#2D6A3A" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <!-- well -->
+    <circle cx="320" cy="480" r="15" fill="#fff"/>
+    <path d="M320 470s6 7 6 11a6 6 0 0 1-12 0c0-4 6-11 6-11z" fill="none" stroke="#1E4E7A" stroke-width="2.4"/>
+    <!-- labels on other beds -->
+    <g font-family="Figtree, sans-serif" font-size="13" font-weight="800" fill="#fff" text-anchor="middle"><text x="60" y="340">A1</text><text x="180" y="340">A3</text><text x="240" y="340">A4</text></g>
+  </svg>
+  <div class="topfade"></div>
+
+  <span class="dim" style="left: 120px; top: 456px">1.2 m</span>
+  <span class="dim" style="left: 168px; top: 302px">6.0 m</span>
+
+  <div class="status">
+    <span>9:41</span>
+    <span class="icons">
+      <svg width="18" height="12" viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1" fill="#1F2A20"/><rect x="5" y="5.5" width="3" height="6.5" rx="1" fill="#1F2A20"/><rect x="10" y="3" width="3" height="9" rx="1" fill="#1F2A20"/><rect x="15" y="0" width="3" height="12" rx="1" fill="#1F2A20"/></svg>
+      <svg width="16" height="12" viewBox="0 0 16 12"><path d="M8 11.5l2.2-2.6a3.2 3.2 0 0 0-4.4 0z" fill="#1F2A20"/><path d="M3.6 6.9a6.3 6.3 0 0 1 8.8 0l-1.4 1.6a4.2 4.2 0 0 0-6 0z" fill="#1F2A20"/><path d="M1.2 4.2a9.7 9.7 0 0 1 13.6 0l-1.4 1.6a7.6 7.6 0 0 0-10.8 0z" fill="#1F2A20"/></svg>
+      <svg width="27" height="13" viewBox="0 0 27 13"><rect x="0.5" y="0.5" width="23" height="12" rx="3.5" fill="none" stroke="#1F2A20" opacity=".4"/><rect x="2" y="2" width="18" height="9" rx="2" fill="#1F2A20"/><path d="M25 4.5v4a2 2 0 0 0 0-4z" fill="#1F2A20" opacity=".4"/></svg>
+    </span>
+  </div>
+
+  <div class="navbar">
+    <span class="cancel">Cancel</span>
+    <span class="title">Edit map</span>
+    <span class="done">Done</span>
+  </div>
+
+  <div class="toolbar" role="toolbar" aria-label="Editing tools">
+    <span class="on"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M3 12h18M12 3l-3 3M12 3l3 3M12 21l-3-3M12 21l3-3M3 12l3-3M3 12l3 3M21 12l-3-3M21 12l-3 3"/></svg>Move</span>
+    <span><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6l7-2 9 4-2 11-12 1z"/></svg>Zone</span>
+    <span><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="3" width="8" height="18" rx="1.5"/></svg>Bed</span>
+    <span><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-7.2-7-12a7 7 0 0 1 14 0c0 4.8-7 12-7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>Point</span>
+  </div>
+
+  <div class="sheet">
+    <div class="grab"></div>
+    <div class="shead"><h1>Bed A2</h1><span>Zone A · 7.2 m²</span></div>
+    <div class="fields">
+      <label class="f">Length<div class="input focus">6.0<em>m</em></div></label>
+      <label class="f">Width<div class="input">1.2<em>m</em></div></label>
+    </div>
+    <div class="row2">
+      <span class="mini"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1F2A20" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.3-5.7"/><path d="M20 4v4h-4"/></svg>Rotate</span>
+      <span class="mini"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1F2A20" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/></svg>Duplicate</span>
+      <span class="mini danger"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9A2B1E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/></svg>Delete</span>
+    </div>
+  </div>
+  <div class="home"></div>
+</div></div></div>
+</body>
+</html>
