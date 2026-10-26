@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>B4 Plan your week</title>
+<link href="fonts-figtree/figtree.css" rel="stylesheet">
+<link rel="stylesheet" href="frame.css">
+<style>
+  .content { position: absolute; top: 54px; left: 0; right: 0; bottom: 0; padding: 4px 18px 0; display: flex; flex-direction: column; gap: 14px; overflow: hidden; }
+  .navb { display: flex; align-items: center; justify-content: space-between; height: 48px; }
+  .backl { width: 80px; display: flex; align-items: center; gap: 2px; font-size: 17px; font-weight: 600; color: var(--green); }
+  .ntit { text-align: center; font-size: 17px; font-weight: 800; line-height: 1.15; }
+  .ntit small { display: block; font-size: 12.5px; font-weight: 600; color: var(--muted); }
+  .card { background: #fff; border: 1px solid var(--line); border-radius: 16px; }
+  .hrs { padding: 12px 14px 6px; }
+  .hhead { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+  .hhead b { font-size: 16px; }
+  .copy { display: flex; align-items: center; gap: 6px; height: 34px; padding: 0 12px; border-radius: 10px; background: var(--green-soft); color: var(--green-ink); font-size: 13.5px; font-weight: 700; }
+  .day { display: flex; align-items: center; height: 40px; border-top: 1px solid #EEF0EA; }
+  .day:first-of-type { border-top: none; }
+  .day .dn { flex: 1; font-size: 15px; font-weight: 600; }
+  .day .dn small { font-weight: 500; color: var(--muted); margin-left: 6px; font-size: 13px; }
+  .step { display: flex; align-items: center; gap: 6px; }
+  .step span.b { width: 32px; height: 30px; border-radius: 9px; background: #EEF0EA; display: flex; align-items: center; justify-content: center; font-size: 17px; font-weight: 700; }
+  .step span.v { width: 52px; text-align: center; font-size: 15px; font-weight: 800; }
+  .step span.v.zero { color: #9AA294; font-weight: 600; }
+  .sec { display: flex; justify-content: space-between; align-items: baseline; }
+  h2 { margin: 0; font-size: 20px; font-weight: 800; }
+  .tot { font-size: 14.5px; font-weight: 800; color: var(--green); }
+  .dl { font-size: 12.5px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); padding: 2px 2px 0; }
+  .item { display: flex; gap: 12px; padding: 11px 14px; border-top: 1px solid #EEF0EA; align-items: flex-start; }
+  .item:first-child { border-top: none; }
+  .ck { width: 22px; height: 22px; border-radius: 7px; background: var(--green); display: flex; align-items: center; justify-content: center; flex: none; margin-top: 1px; }
+  .it b { display: block; font-size: 15.5px; }
+  .it .m { display: flex; gap: 6px; align-items: center; font-size: 13.5px; color: var(--muted); margin-top: 3px; }
+  .it .why { display: block; font-size: 13px; color: var(--muted); margin-top: 3px; line-height: 1.35; }
+  .zc { font-size: 12.5px; font-weight: 700; padding: 2px 7px; border-radius: 6px; }
+  .za { background: var(--green-soft); color: var(--green-ink); }
+  .zb { background: var(--blue-soft); color: var(--blue-ink); }
+  .cal { display: flex; align-items: center; gap: 12px; padding: 12px 14px; }
+  .cal .t { flex: 1; }
+  .cal .t b { display: block; font-size: 15.5px; }
+  .cal .t span { font-size: 13px; color: var(--muted); line-height: 1.35; display: block; margin-top: 2px; }
+  .tog { width: 50px; height: 30px; border-radius: 999px; background: var(--green); position: relative; flex: none; }
+  .tog::after { content: ""; position: absolute; right: 3px; top: 3px; width: 24px; height: 24px; border-radius: 999px; background: #fff; }
+  .foot { position: absolute; left: 0; right: 0; bottom: 0; z-index: 20; background: var(--bg); border-top: 1px solid var(--line); padding: 12px 18px 34px; }
+</style>
+<style>.stage{height:1520px}.phone{height:1460px}.screen{height:1420px}</style>
+</head>
+<body>
+<div class="stage"><div class="phone"><div class="screen">
+  <div class="island"></div>
+  <div class="status">
+    <span>9:41</span>
+    <span class="icons">
+      <svg width="18" height="12" viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1" fill="#1F2A20"/><rect x="5" y="5.5" width="3" height="6.5" rx="1" fill="#1F2A20"/><rect x="10" y="3" width="3" height="9" rx="1" fill="#1F2A20"/><rect x="15" y="0" width="3" height="12" rx="1" fill="#1F2A20"/></svg>
+      <svg width="16" height="12" viewBox="0 0 16 12"><path d="M8 11.5l2.2-2.6a3.2 3.2 0 0 0-4.4 0z" fill="#1F2A20"/><path d="M3.6 6.9a6.3 6.3 0 0 1 8.8 0l-1.4 1.6a4.2 4.2 0 0 0-6 0z" fill="#1F2A20"/><path d="M1.2 4.2a9.7 9.7 0 0 1 13.6 0l-1.4 1.6a7.6 7.6 0 0 0-10.8 0z" fill="#1F2A20"/></svg>
+      <svg width="27" height="13" viewBox="0 0 27 13"><rect x="0.5" y="0.5" width="23" height="12" rx="3.5" fill="none" stroke="#1F2A20" opacity=".4"/><rect x="2" y="2" width="18" height="9" rx="2" fill="#1F2A20"/><path d="M25 4.5v4a2 2 0 0 0 0-4z" fill="#1F2A20" opacity=".4"/></svg>
+    </span>
+  </div>
+
+  <div class="content">
+    <div class="navb">
+      <div class="backl"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2D6A3A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>Tasks</div>
+      <div class="ntit">Plan your week<small>Next week · 26 Oct – 1 Nov</small></div>
+      <div style="width: 80px"></div>
+    </div>
+
+    <div class="card hrs">
+      <div class="hhead"><b>Your time each day</b>
+        <span class="copy"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1F5A2C" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M4 16V6a2 2 0 0 1 2-2h10"/></svg>Same as last week</span></div>
+      <div class="day"><span class="dn">Mon<small>26</small></span><span class="step"><span class="b">−</span><span class="v">1 h</span><span class="b">+</span></span></div>
+      <div class="day"><span class="dn">Tue<small>27</small></span><span class="step"><span class="b">−</span><span class="v">30 min</span><span class="b">+</span></span></div>
+      <div class="day"><span class="dn">Wed<small>28</small></span><span class="step"><span class="b">−</span><span class="v">1 h</span><span class="b">+</span></span></div>
+      <div class="day"><span class="dn">Thu<small>29</small></span><span class="step"><span class="b">−</span><span class="v">30 min</span><span class="b">+</span></span></div>
+      <div class="day"><span class="dn">Fri<small>30</small></span><span class="step"><span class="b">−</span><span class="v zero">—</span><span class="b">+</span></span></div>
+      <div class="day"><span class="dn">Sat<small>31</small></span><span class="step"><span class="b">−</span><span class="v">3 h</span><span class="b">+</span></span></div>
+      <div class="day"><span class="dn">Sun<small>1</small></span><span class="step"><span class="b">−</span><span class="v">3 h</span><span class="b">+</span></span></div>
+    </div>
+
+    <div class="sec"><h2>Suggested plan</h2><span class="tot">6 h 35 of 9 h</span></div>
+
+    <div class="dl">Monday 26</div>
+    <div class="card">
+      <div class="item"><span class="ck"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg></span><div class="it"><b>Sow lettuce in bed A3</b><span class="m"><span class="zc za">Zone A</span>30 min</span><span class="why">Moved here after Thursday’s frost.</span></div></div>
+      <div class="item"><span class="ck"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg></span><div class="it"><b>Check the cabbages for caterpillars</b><span class="m"><span class="zc za">Zone A</span>10 min · weekly check</span></div></div>
+    </div>
+    <div class="dl">Wednesday 28</div>
+    <div class="card">
+      <div class="item"><span class="ck"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg></span><div class="it"><b>Sow peas in bed A1</b><span class="m"><span class="zc za">Zone A</span>45 min</span><span class="why">Short job, fits a weekday evening.</span></div></div>
+    </div>
+    <div class="dl">Saturday 31</div>
+    <div class="card">
+      <div class="item"><span class="ck"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg></span><div class="it"><b>Dig out the bramble roots</b><span class="m"><span class="zc zb">Zone B</span>3 h</span><span class="why">Big job on your longest day; the soil is still soft after this weekend’s rain.</span></div></div>
+    </div>
+    <div class="dl">Sunday 1</div>
+    <div class="card">
+      <div class="item"><span class="ck"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg></span><div class="it"><b>Lay mulch on the paths</b><span class="m"><span class="zc za">Zone A</span>1 h 30</span></div></div>
+      <div class="item"><span class="ck"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg></span><div class="it"><b>Plant onion seedlings in bed A4</b><span class="m"><span class="zc za">Zone A</span>40 min</span></div></div>
+    </div>
+
+    <div class="card cal">
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#2D6A3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/><path d="M9 15l2 2 4-4"/></svg>
+      <div class="t"><b>Add to my Calendar</b><span>Tasks go into a “Garden” calendar and update when you move or finish them.</span></div>
+      <div class="tog"></div>
+    </div>
+    <div style="height: 120px; flex: none"></div>
+  </div>
+
+  <div class="foot"><div class="btn primary">Add to my week</div></div>
+  <div class="home"></div>
+</div></div></div>
+</body>
+</html>
