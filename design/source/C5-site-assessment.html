@@ -8,11 +8,11 @@
 <style>
   .nav { display: flex; align-items: center; gap: 8px; padding: 0 12px; height: 48px; flex: none; }
   .nav .back { width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; }
-  .nav .title { flex: 1; text-align: center; font-size: 17px; font-weight: 700; margin-right: 44px; }
+  .nav .title { flex: 1; text-align: center; font-size: 17px; font-weight: 700; margin-right: 96px; }
   .content { flex: 1; overflow: hidden; padding: 0 18px 0; display: flex; flex-direction: column; gap: 12px; }
   .head { display: flex; align-items: center; gap: 10px; }
   .dot { width: 14px; height: 14px; border-radius: 4px; background: #2F6FB0; flex: none; }
-  h1 { margin: 0; font-size: 26px; font-weight: 800; line-height: 1.15; }
+  h1 { margin: 0; font-size: 23px; font-weight: 800; line-height: 1.15; }
   .meta { font-size: 14px; color: var(--muted); font-weight: 600; }
   .thumbs { display: flex; gap: 8px; }
   .thumbs svg { border-radius: 12px; flex: none; }
@@ -54,7 +54,7 @@
   </div>
 
   <div class="nav">
-    <div class="back"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1F2A20" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></div>
+    <div class="back" style="width: 96px; justify-content: flex-start; gap: 2px; color: var(--green); font-size: 17px; font-weight: 600"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2D6A3A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>Zone B</div>
     <div class="title">Site assessment</div>
   </div>
 
@@ -77,34 +77,35 @@
       <div class="find">
         <span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2D6A3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21V9"/><path d="M12 13c-4 0-6-3-6-6 3 0 6 2 6 6zM12 11c0-4 3-6 6-6 0 3-2 6-6 6z"/></svg></span>
         <div><b>Brambles along the fence</b><span class="d">Dense, about 40 m. Dig out the roots.</span></div>
-        <span class="conf hi">High</span>
+        <span class="conf hi">Sure</span>
       </div>
       <div class="find">
         <span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2D6A3A" stroke-width="2" stroke-linecap="round"><circle cx="8" cy="15" r="4"/><circle cx="16" cy="10" r="3"/><circle cx="17" cy="18" r="2"/></svg></span>
         <div><b>Stones on the surface</b><span class="d">Scattered, mostly fist-sized.</span></div>
-        <span class="conf md">Medium</span>
+        <span class="conf md">Likely</span>
       </div>
       <div class="find">
         <span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2D6A3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18L21 8"/><path d="M3 18h18"/></svg></span>
         <div><b>Slight slope to the south</b><span class="d">Gentle. Run beds across the slope.</span></div>
-        <span class="conf md">Medium</span>
+        <span class="conf md">Likely</span>
       </div>
       <div class="find">
         <span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2D6A3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="5"/><path d="M9 9L7 3M15 9l2-6"/></svg></span>
         <div><b>Possible rabbit signs</b><span class="d">Small holes near the hedge.</span></div>
-        <span class="conf lo">Low</span>
+        <span class="conf lo">Not sure</span>
       </div>
     </div>
 
+    <div class="meta" style="font-size: 13.5px; margin-top: -4px">Something wrong or missing? Tap a finding to correct it, or add one.</div>
     <div class="sec">Suggested clearing</div>
     <div class="card plan">
       <b>Cut, then dig out the bramble roots</b>
       <p>Brush cutter for the canes, then a mattock for the roots.</p>
       <div class="stats">
-        <div><strong>2 weekends</strong><span>About 12 h</span></div>
-        <div><strong>€180–260</strong><span>If you buy tools</span></div>
+        <div><strong>About 12 h</strong><span>Spread over 2–3 weeks</span></div>
+        <div><strong>€180–260</strong><span>For the 2 tools to buy</span></div>
       </div>
-      <div class="tools"><span class="tool miss">Brush cutter · to get</span><span class="tool">Gloves</span><span class="tool">Rake</span><span class="tool">Wheelbarrow</span></div>
+      <div class="tools"><span class="tool miss">Brush cutter · to get</span><span class="tool miss">Mattock · to get</span><span class="tool">Gloves</span><span class="tool">Wheelbarrow</span></div>
     </div>
   </div>
 
