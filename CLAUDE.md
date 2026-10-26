@@ -7,7 +7,7 @@ A native mobile app that guides a complete beginner from unused land to a produc
 - **This file** holds the working agreements and the decision log. Record every decision the owner confirms here.
 
 ## Current phase: APP DESIGN REVIEW
-- The GitHub backlog is being **deleted** (owner's decision, 2026-10-20): design changes may change features and therefore the plan. It will be rebuilt from `planning/backlog/*.json` once the design is signed off. Deletion runs through the **Reset backlog** workflow (`.github/workflows/reset-backlog.yml`), which needs the owner's temporary `BACKLOG_ADMIN_TOKEN` secret.
+- The GitHub backlog was **deleted** on 2026-10-26 (all issues and sprint milestones; labels kept), because design changes may change features and therefore the plan. It will be rebuilt from `planning/backlog/*.json` once the design is signed off. The **Reset backlog** workflow (`.github/workflows/reset-backlog.yml`) did the deletion using the owner's temporary `BACKLOG_ADMIN_TOKEN` secret.
 - Screens are signed off **one at a time** (the owner found reviewing them all at once confusing).
 - The backlog source of truth is `planning/backlog/*.json`. To change it, edit the fragments, run `python3 planning/backlog/build.py`, and re-run the **Import backlog** workflow, which only creates missing issues. Edits to existing issues must be made on GitHub or with the GitHub tools.
 - Don't start application code until the owner says to start a sprint.
