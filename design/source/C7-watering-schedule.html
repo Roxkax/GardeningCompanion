@@ -36,11 +36,13 @@
   nav.tabs a.on { color: var(--green); font-weight: 800; }
   .cam { width: 58px; height: 58px; border-radius: 999px; background: var(--green); display: flex; align-items: center; justify-content: center; margin-top: -24px; border: 4px solid var(--bg); }
   .week { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px; }
-  .day { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 8px 0; border-radius: 12px; font-size: 12.5px; font-weight: 700; color: var(--muted); }
+  .day { display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 8px 0; min-height: 84px; justify-content: flex-start; border-radius: 12px; font-size: 12.5px; font-weight: 700; color: var(--muted); }
   .day b { font-size: 15px; color: var(--text); }
   .day.today { background: var(--green-soft); }
   .drop { width: 10px; height: 10px; border-radius: 50%; }
   .d1 { background: #1E6FB8; } .d2 { background: #8E44AD; }
+  .day em { font-style: normal; font-size: 10.5px; font-weight: 800; color: var(--muted); white-space: nowrap; min-height: 14px; }
+  .day svg { height: 16px; }
   .skip { font-size: 11px; font-weight: 800; color: #1E4E7A; }
   .sector { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid #EEF0EA; }
   .sector:last-child { border-bottom: none; padding-bottom: 0; }
@@ -69,8 +71,8 @@
   </div>
 
   <div class="nav">
-    <div class="back"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1F2A20" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></div>
-    <div class="title" style="margin-left: 40px">Irrigation · Zone A</div>
+    <div class="back" style="width: 84px; justify-content: flex-start; gap: 2px; color: var(--green); font-size: 17px; font-weight: 600"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2D6A3A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>Zone A</div>
+    <div class="title">Irrigation</div>
     <div class="act">Parts list</div>
   </div>
 
@@ -79,33 +81,36 @@
 
     <div class="note">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1E4E7A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex: none"><path d="M7 15a4 4 0 1 1 1-7.9A5 5 0 0 1 17.6 9 3.5 3.5 0 0 1 17 16H7z"/><path d="M9 19l-1 2M13 19l-1 2M17 19l-1 2"/></svg>
-      <span><b>Skipping Saturday:</b> rain expected (about 8 mm). Watering resumes Sunday.</span>
+      <span><b>No watering Saturday or Sunday:</b> rain expected Saturday (about 8 mm).</span>
     </div>
 
     <div class="card">
-      <div class="rowx" style="justify-content: space-between"><h2>This week</h2><span style="font-size: 14px; font-weight: 700; color: var(--muted)">Starts 06:30</span></div>
-      <div class="week">
-        <div class="day today">Tue<b>20</b><i class="drop d1"></i></div>
-        <div class="day">Wed<b>21</b><i class="drop d2"></i></div>
-        <div class="day">Thu<b>22</b><i class="drop d1"></i></div>
-        <div class="day">Fri<b>23</b><i class="drop d2"></i></div>
-        <div class="day">Sat<b>24</b><span class="skip">Rain</span></div>
-        <div class="day">Sun<b>25</b><i class="drop d1"></i></div>
-        <div class="day">Mon<b>26</b><i class="drop d2"></i></div>
-      </div>
+      <div class="rowx" style="justify-content: space-between"><h2>This week</h2><span class="pill" style="background: #ECEDE8; color: #4E5A4C">By hand until the drip is in</span></div>
+      <div class="week"><div class="day today">Tue<b>20</b><svg width="16" height="16" viewBox="0 0 24 24" fill="#1E6FB8"><path d="M12 3s7 7.6 7 12a7 7 0 0 1-14 0c0-4.4 7-12 7-12z"/></svg><em>A2 A4</em></div><div class="day">Wed<b>21</b><em>–</em></div><div class="day">Thu<b>22</b><svg width="16" height="16" viewBox="0 0 24 24" fill="#1E6FB8"><path d="M12 3s7 7.6 7 12a7 7 0 0 1-14 0c0-4.4 7-12 7-12z"/></svg><em>A4</em></div><div class="day">Fri<b>23</b><em>–</em></div><div class="day">Sat<b>24</b><span class="skip">Rain</span></div><div class="day">Sun<b>25</b><span class="skip">Wet</span></div><div class="day">Mon<b>26</b><svg width="16" height="16" viewBox="0 0 24 24" fill="#1E6FB8"><path d="M12 3s7 7.6 7 12a7 7 0 0 1-14 0c0-4.4 7-12 7-12z"/></svg><em>A3 A4</em></div></div>
     </div>
 
     <div class="card">
-      <h2>Run times</h2>
+      <h2>By bed</h2>
       <div>
-        <div class="sector"><i class="bar" style="background:#1E6FB8"></i><div class="t"><b>Sector 1 · A1, A2</b><span>Broad beans, lettuce · every 2 days</span></div><div class="r"><b>30 min</b><span>06:30–07:00</span></div></div>
-        <div class="sector"><i class="bar" style="background:#8E44AD"></i><div class="t"><b>Sector 2 · A3, A4</b><span>Cabbage, garlic · every 2 days</span></div><div class="r"><b>25 min</b><span>06:30–06:55</span></div></div>
+        <div class="sector"><div class="t"><b>A4 · Lettuce seedlings</b><span>Every 2 days · 1 watering can (10 L). Thursday: water in the morning, moist soil holds heat for the frost.</span></div><div class="r"><b>Today</b></div></div>
+        <div class="sector"><div class="t"><b>A2 · Broad beans</b><span>Every 3–4 days while they come up · 1 watering can</span></div><div class="r"><b>Today</b></div></div>
+        <div class="sector"><div class="t"><b>A3 · Lettuce, sown Mon 26</b><span>A light sprinkle every day until the seeds come up</span></div><div class="r"><b>Mon</b></div></div>
+        <div class="sector"><div class="t"><b>A1 · Empty</b><span>Nothing to water yet</span></div><div class="r"><b style="color: var(--muted)">–</b></div></div>
       </div>
-      <p style="margin: 0; font-size: 13.5px; color: var(--muted); line-height: 1.4">Based on guidance for these crops in autumn. Water early to lose less to evaporation. Adjust if leaves wilt or the soil stays soggy.</p>
+      <p style="margin: 0; font-size: 13.5px; color: var(--muted); line-height: 1.4">Water early, at the base of the plants. Not sure? Push a finger 3 cm into the soil: if it’s dry, water. Mulch keeps the soil moist for longer.</p>
     </div>
 
     <div class="card">
-      <div class="rowx"><div style="flex: 1"><b style="font-size: 16px">Create watering tasks</b><div style="font-size: 13.5px; color: var(--muted)">Add each run to Today and remind me</div></div><span class="toggle" role="switch" aria-checked="true"></span></div>
+      <div class="rowx" style="justify-content: space-between"><h2>Once the drip is in</h2><span style="font-size: 13.5px; font-weight: 700; color: var(--muted)">Every 2 days</span></div>
+      <div>
+        <div class="sector"><i class="bar" style="background:#1E6FB8"></i><div class="t"><b>Sector 1 · A1, A2</b><span>Runs first</span></div><div class="r"><b>30 min</b><span>06:30–07:00</span></div></div>
+        <div class="sector"><i class="bar" style="background:#8E44AD"></i><div class="t"><b>Sector 2 · A3, A4</b><span>Starts when sector 1 ends</span></div><div class="r"><b>25 min</b><span>07:00–07:25</span></div></div>
+      </div>
+      <p style="margin: 0; font-size: 13.5px; color: var(--muted); line-height: 1.4">From guidance for these crops in autumn, skipped or shortened when rain is forecast.</p>
+    </div>
+
+    <div class="card">
+      <div class="rowx"><div style="flex: 1"><b style="font-size: 16px">Create watering tasks</b><div style="font-size: 13.5px; color: var(--muted)">Add each watering to Today and remind me</div></div><span class="toggle" role="switch" aria-checked="true"></span></div>
     </div>
   </div>
 
