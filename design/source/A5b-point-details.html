@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>A5b New point: tree</title>
+<link href="fonts-figtree/figtree.css" rel="stylesheet">
+<link rel="stylesheet" href="frame.css">
+<style>
+  .map { position: absolute; inset: 0; }
+  .dim { position: absolute; inset: 0; background: rgba(20,28,20,.28); z-index: 6; }
+  .pin { position: absolute; z-index: 8; left: 300px; top: 196px; transform: translate(-50%,-100%); display:flex; flex-direction:column; align-items:center; }
+  .pin .lbl { background:#1F2A20; color:#fff; font-size:13px; font-weight:700; padding:5px 10px; border-radius:9px; margin-bottom:5px; }
+  .sheet { position: absolute; left: 0; right: 0; bottom: 0; z-index: 30; background: #fff; border-radius: 26px 26px 0 0; box-shadow: 0 -6px 24px rgba(0,0,0,.14); padding: 8px 20px 32px; display: flex; flex-direction: column; gap: 11px; }
+  .grab { width: 40px; height: 5px; border-radius: 3px; background: #D3D7CE; align-self: center; }
+  .head { display:flex; align-items:center; gap:10px; }
+  .head h1 { margin:0; font-size:22px; font-weight:800; flex:1; }
+  .x { width:36px; height:36px; border-radius:999px; background:#EEF0EA; display:flex; align-items:center; justify-content:center; }
+  .q { font-size:15px; font-weight:800; display:flex; justify-content:space-between; align-items:baseline; }
+  .q small { font-size:13px; font-weight:600; color:var(--muted); }
+  .grid { display:grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap:8px; }
+  .tc { position:relative; border:1.5px solid var(--line); border-radius:14px; height:76px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; font-size:13px; font-weight:700; background:#fff; }
+  .tc.on { border:2px solid var(--green); background:var(--green-soft); color:var(--green-ink); }
+  .tc.other { background:#F5F6F0; color:var(--muted); }
+  .ck { position:absolute; top:6px; right:6px; width:18px; height:18px; border-radius:999px; background:var(--green); display:flex; align-items:center; justify-content:center; }
+  .photo { display:flex; align-items:center; gap:12px; border:1.5px dashed #9DB894; border-radius:14px; padding:8px 14px; font-size:14.5px; font-weight:700; color:var(--green-ink); background:#F6FAF4; }
+  .photo small { display:block; font-size:12.5px; font-weight:600; color:var(--muted); }
+  .slider { position:relative; height:28px; }
+  .track { position:absolute; left:0; right:0; top:12px; height:5px; border-radius:3px; background:#E3E6DE; }
+  .fill { position:absolute; left:0; width:28.6%; top:12px; height:5px; border-radius:3px; background:var(--green); }
+  .knob { position:absolute; left:28.6%; top:2px; width:26px; height:26px; margin-left:-13px; border-radius:999px; background:#fff; box-shadow:0 1px 5px rgba(0,0,0,.3); }
+  .scale { position:relative; height:16px; font-size:12px; color:var(--muted); font-weight:600; margin-top:2px; }
+  .scale span { position:absolute; transform:translateX(-50%); white-space:nowrap; }
+  .scale span:first-child { transform:none; } .scale span:last-child { transform:translateX(-100%); }
+  .seg { display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); background:#EEF0EA; border-radius:11px; padding:3px; }
+  .seg span { height:36px; display:flex; align-items:center; justify-content:center; border-radius:9px; font-size:14px; font-weight:600; color:var(--muted); }
+  .seg span.on { background:#fff; color:var(--text); font-weight:800; box-shadow:0 1px 3px rgba(0,0,0,.12); }
+</style>
+</head>
+<body>
+<div class="stage"><div class="phone"><div class="screen">
+  <div class="island"></div>
+  <svg class="map" width="393" height="852" viewBox="0 0 393 852" aria-hidden="true">
+    <defs>
+      <pattern id="dry" width="9" height="9" patternUnits="userSpaceOnUse"><rect width="9" height="9" fill="#CDB383"/><circle cx="2.5" cy="3" r="1.2" fill="#B89C69"/><circle cx="7" cy="6.5" r="1" fill="#DCC797"/></pattern>
+      <pattern id="olives" width="30" height="30" patternUnits="userSpaceOnUse"><rect width="30" height="30" fill="#B39968"/><circle cx="15" cy="15" r="8" fill="#5E6B3C"/></pattern>
+      <pattern id="crop" width="12" height="12" patternUnits="userSpaceOnUse" patternTransform="rotate(-8)"><rect width="12" height="12" fill="#A3B26C"/><rect width="5" height="12" fill="#8C9B57"/></pattern>
+    </defs>
+    <rect width="393" height="852" fill="url(#dry)"/>
+    <polygon points="0,0 393,0 393,120 0,140" fill="url(#olives)"/>
+    <polygon points="360,120 393,120 393,852 350,852" fill="url(#crop)"/>
+    <path d="M354 120 C 352 300, 348 500, 346 852" stroke="#E4D8BE" stroke-width="12" fill="none"/>
+    <g fill="#6E7A3E" opacity=".85"><ellipse cx="120" cy="186" rx="30" ry="10"/><ellipse cx="260" cy="182" rx="36" ry="11"/></g>
+    <g fill="#4F5E32"><circle cx="230" cy="240" r="10"/><circle cx="295" cy="238" r="10"/><circle cx="300" cy="295" r="11"/><circle cx="225" cy="300" r="9"/></g>
+    <g transform="rotate(-4 120 350)"><rect x="80" y="335" width="60" height="34" fill="#E8E1D2"/><rect x="80" y="335" width="60" height="17" fill="#B85C3C"/></g>
+    <polygon points="60,162 330,150 328,206 58,217" fill="rgba(47,111,176,.18)" stroke="#2F6FB0" stroke-width="2" stroke-linejoin="round"/>
+    <polygon points="58,217 195,211 193,326 56,331" fill="rgba(45,106,58,.2)" stroke="#2D6A3A" stroke-width="2" stroke-linejoin="round"/>
+    <polygon points="195,211 328,206 326,321 193,326" fill="rgba(122,79,30,.18)" stroke="#7A4F1E" stroke-width="2" stroke-linejoin="round"/>
+    <polygon points="60,162 330,150 326,321 56,331" fill="none" stroke="#fff" stroke-width="3" stroke-linejoin="round" opacity=".9"/>
+    <path d="M330 280 L356 280" stroke="#fff" stroke-width="4" stroke-dasharray="4 4"/>
+  </svg>
+  <div class="dim"></div>
+  <div class="pin"><span class="lbl">New tree</span><svg width="34" height="42" viewBox="0 0 44 54"><path d="M22 52 C 22 52, 4 32, 4 20 a18 18 0 0 1 36 0 c0 12-18 32-18 32z" fill="#2D6A3A" stroke="#fff" stroke-width="3"/><circle cx="22" cy="20" r="7" fill="#fff"/></svg></div>
+  <div class="status">
+    <span>9:41</span>
+    <span class="icons">
+      <svg width="18" height="12" viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1" fill="#1F2A20"/><rect x="5" y="5.5" width="3" height="6.5" rx="1" fill="#1F2A20"/><rect x="10" y="3" width="3" height="9" rx="1" fill="#1F2A20"/><rect x="15" y="0" width="3" height="12" rx="1" fill="#1F2A20"/></svg>
+      <svg width="16" height="12" viewBox="0 0 16 12"><path d="M8 11.5l2.2-2.6a3.2 3.2 0 0 0-4.4 0z" fill="#1F2A20"/><path d="M3.6 6.9a6.3 6.3 0 0 1 8.8 0l-1.4 1.6a4.2 4.2 0 0 0-6 0z" fill="#1F2A20"/><path d="M1.2 4.2a9.7 9.7 0 0 1 13.6 0l-1.4 1.6a7.6 7.6 0 0 0-10.8 0z" fill="#1F2A20"/></svg>
+      <svg width="27" height="13" viewBox="0 0 27 13"><rect x="0.5" y="0.5" width="23" height="12" rx="3.5" fill="none" stroke="#1F2A20" opacity=".4"/><rect x="2" y="2" width="18" height="9" rx="2" fill="#1F2A20"/><path d="M25 4.5v4a2 2 0 0 0 0-4z" fill="#1F2A20" opacity=".4"/></svg>
+    </span>
+  </div>
+  <div class="sheet">
+    <div class="grab"></div>
+    <div class="head">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#2D6A3A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="6"/><path d="M12 15v6"/></svg>
+      <h1>New point: tree</h1>
+      <span class="x"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1F2A20" stroke-width="2.6" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></span>
+    </div>
+    <div class="q">What kind of tree?<small>Common near Évora</small></div>
+    <div class="grid"><div class="tc on"><span class="ck"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg></span><svg width="40" height="37" viewBox="0 0 48 44"><ellipse cx="24" cy="18" rx="15" ry="10" fill="#8FA275"/><ellipse cx="14" cy="22" rx="8" ry="6" fill="#8FA275"/><ellipse cx="34" cy="22" rx="8" ry="6" fill="#8FA275"/><path d="M24 26v14M24 32l-5-4M24 30l5-3" stroke="#6E5A3E" stroke-width="3" stroke-linecap="round"/></svg><span>Olive</span></div><div class="tc"><svg width="40" height="37" viewBox="0 0 48 44"><ellipse cx="24" cy="17" rx="17" ry="12" fill="#5E7A3A"/><path d="M24 26v14" stroke="#8A5A36" stroke-width="5" stroke-linecap="round"/></svg><span>Cork oak</span></div><div class="tc"><svg width="40" height="37" viewBox="0 0 48 44"><circle cx="24" cy="18" r="13" fill="#4F6A35"/><path d="M24 28v12" stroke="#6E5A3E" stroke-width="4" stroke-linecap="round"/></svg><span>Holm oak</span></div><div class="tc"><svg width="40" height="37" viewBox="0 0 48 44"><path d="M10 22c0-9 6-14 14-14s14 5 14 14c-5 4-23 4-28 0z" fill="#6E9A45"/><path d="M24 24v16M24 30l-7-5" stroke="#7A6A55" stroke-width="3.5" stroke-linecap="round"/></svg><span>Fig</span></div><div class="tc"><svg width="40" height="37" viewBox="0 0 48 44"><circle cx="24" cy="18" r="13" fill="#3F7A3A"/><circle cx="18" cy="15" r="2.6" fill="#F2A33A"/><circle cx="29" cy="20" r="2.6" fill="#F2A33A"/><circle cx="23" cy="24" r="2.4" fill="#F2A33A"/><path d="M24 30v10" stroke="#6E5A3E" stroke-width="4" stroke-linecap="round"/></svg><span>Orange</span></div><div class="tc"><svg width="40" height="37" viewBox="0 0 48 44"><ellipse cx="24" cy="17" rx="14" ry="11" fill="#B9CB8E"/><g fill="#F6D6E0"><circle cx="17" cy="14" r="2.2"/><circle cx="28" cy="12" r="2.2"/><circle cx="31" cy="20" r="2.2"/><circle cx="20" cy="21" r="2.2"/></g><path d="M24 26v14" stroke="#6E5A3E" stroke-width="3.5" stroke-linecap="round"/></svg><span>Almond</span></div><div class="tc"><svg width="40" height="37" viewBox="0 0 48 44"><ellipse cx="24" cy="12" rx="18" ry="8" fill="#3E6B3A"/><path d="M24 18v22" stroke="#7A5A36" stroke-width="3.5" stroke-linecap="round"/></svg><span>Stone pine</span></div><div class="tc other"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#4E5A4C" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg><span>Other</span></div></div>
+    <div class="photo"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#2D6A3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg><div>Not sure? Identify it with a photo<small>Point the camera at its leaves</small></div></div>
+    <div class="q">Roughly how tall?<small style="color:#1F2A20;font-weight:800">about 5 m</small></div>
+    <div><div class="slider"><div class="track"></div><div class="fill"></div><div class="knob"></div></div><div class="scale"><span style="left:0">1 m</span><span style="left:28.6%">5 m</span><span style="left:64.3%">10 m</span><span style="left:100%">15 m+</span></div></div>
+    <div class="q">Keep this tree?</div>
+    <div class="seg"><span class="on">Keep it</span><span>Remove later</span></div>
+    <div class="btn primary">Save point</div>
+  </div>
+  <div class="home"></div>
+</div></div></div>
+</body>
+</html>
