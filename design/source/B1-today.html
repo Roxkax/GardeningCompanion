@@ -27,6 +27,16 @@
   .action .sub { font-size: 14px; color: var(--muted); line-height: 1.45; }
   .btns { display: flex; gap: 10px; }
   .btns .btn { height: 44px; font-size: 15px; border-radius: 11px; }
+  .trow { display: flex; align-items: center; gap: 14px; padding: 12px 16px; border-bottom: 1px solid #EEF0EA; }
+  .cb { width: 24px; height: 24px; border-radius: 7px; border: 2px solid #B9C0B2; flex: none; box-sizing: border-box; display: flex; align-items: center; justify-content: center; }
+  .cb.on { background: var(--green); border-color: var(--green); }
+  .tt { display: block; font-size: 16px; font-weight: 600; }
+  .tt.done { text-decoration: line-through; color: #6B7468; }
+  .tm { display: block; font-size: 13.5px; color: var(--muted); margin-top: 2px; }
+  .all { padding: 14px 16px; font-size: 15px; font-weight: 700; color: var(--green); }
+  .wait { background: #EEF3EC; border: 1px solid #CFE0CB; border-radius: 16px; padding: 14px 16px 4px; display: flex; flex-direction: column; gap: 6px; }
+  .wl { font-size: 12.5px; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; color: var(--green); }
+  .wt { font-size: 16px; font-weight: 600; line-height: 1.4; }
   .tab { position: absolute; left: 0; right: 0; bottom: 0; z-index: 40; background: rgba(255,255,255,.97); border-top: 1px solid var(--line); padding: 8px 6px 30px; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); align-items: end; }
   .tab a { color: var(--muted); display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 11.5px; font-weight: 600; }
   .tab a.on { color: var(--green); font-weight: 800; }
@@ -82,6 +92,13 @@
     </div>
 
     <div class="sec"><h2>Today’s tasks</h2><span class="meta" style="font-size: 15px">1 of 4 done</span></div>
+    <div class="card" style="padding: 0"><div class="trow"><span class="cb on"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg></span><div><span class="tt done">Water Zone A beds</span><span class="tm">Drip, sector 1 · 30 min · early morning</span></div></div><div class="trow"><span class="cb"></span><div><span class="tt">Sow broad beans in bed A2</span><span class="tm">Zone A · 45 min · guide available</span></div></div><div class="trow"><span class="cb"></span><div><span class="tt">Check the cabbages for caterpillars</span><span class="tm">Zone A · 10 min · seasonal check</span></div></div><div class="trow"><span class="cb"></span><div><span class="tt">Buy a brush cutter</span><span class="tm">Needed Saturday for Zone B</span></div></div><div class="all">All tasks this week</div></div>
+    <div class="wait">
+      <span class="wl">Waiting for you</span>
+      <span class="wt">The assistant suggests moving lettuce sowing to next week because of the frost.</span>
+      <span class="link" style="height: 44px; display: flex; align-items: center">Review the change</span>
+    </div>
+    <div style="height: 110px; flex: none"></div>
   </div>
 
   <nav class="tab">

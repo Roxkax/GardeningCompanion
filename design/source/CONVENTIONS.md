@@ -32,3 +32,6 @@ Every screen is a standalone HTML file rendered to a PNG of an iPhone (393×852 
 - Tools: "always own" is on; missing: brush cutter. Owned: spade, rake, hoe, wheelbarrow, hose, gloves.
 - AI suggestions are proposals the user confirms. Never name chemical products; never say a wild plant is safe to eat.
 - English UI copy, plain and short.
+
+## Scrolling screens
+For screens taller than one phone screen, also render a full-length version (`<CODE>-<slug>-full.html/.png`): same file with `.stage`, `.phone` and `.screen` heights increased so the whole scroll is visible, rendered with a matching viewport height (e.g. `node shot.js X-full.html X-full.png 520 1460`). Send the full version for review.
