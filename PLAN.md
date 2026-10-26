@@ -316,6 +316,8 @@ Decides which crop goes in which bed, when, and how many, for the coming season 
 
 - **Inputs:** chosen crops (priority and quantity), beds (size and sun), each bed's history (crop families, disease flags) and calendar windows.
 - **Output:** for each bed, the crops, sowing or planting dates, number of plants, and a visual layout inside the bed (rows or grid with spacing).
+- **Scan a bed with the camera:** the user takes 2–3 photos along a bed and the AI proposes its layout: rows, row direction, roughly how many plants per row, and the crop when the plants are big enough (with a confidence level). Rows are fitted to the bed's known size, so spacing is approximate. The result is a draft layout that the user confirms or corrects before it's saved. It also compares the planting with the plan (e.g. "planned 36, counted about 30"). It works only once plants are visible (seedlings or planted-out plants), not right after sowing. Offered from "Edit layout" on the bed screen, in the layout editor and as "Scan a bed" in Snap & Ask. One AI vision call per scan (potential premium).
+- **AR walk (later):** walking along the bed with the iPhone camera and tapping each row or plant, using Apple's AR to measure real positions. Accurate, no AI cost, works offline; Android needs its own version.
 - **Year view of each bed:** a Gantt-style timeline of what occupies each bed, with empty periods highlighted.
 - **Follow-on crops** in the same bed (e.g. early potatoes, then autumn cabbages).
 - **Cover crops** for beds that would otherwise sit empty, such as broad beans or clover. This is soil care, not soil analysis.
@@ -333,6 +335,7 @@ Decides which crop goes in which bed, when, and how many, for the coming season 
   - Plan versions (draft and active).
   - Rotation groups and companion pairings with evidence levels in the knowledge base.
   - Each bed's history, built from the activity log.
+  - Bed scan: photos go through the AI layer with the bed's size, planned crops and season as context, and come back as a structured draft layout (rows, positions, counts, crop and confidence); nothing is saved until the user confirms.
 
 ### 3.17 AI assistant
 
