@@ -18,8 +18,8 @@
   .why { font-size: 15px; line-height: 1.45; }
   .win { position: relative; height: 24px; margin-top: 0; }
   .win .bar { position: absolute; top: 9px; left: 0; right: 0; height: 8px; border-radius: 4px; background: #E6E9E0; }
-  .win .ok { position: absolute; top: 9px; left: 8%; width: 52%; height: 8px; border-radius: 4px; background: var(--green); }
-  .win .today { position: absolute; top: 2px; left: 12%; width: 3px; height: 22px; border-radius: 2px; background: var(--text); }
+  .win .ok { position: absolute; top: 9px; left: 2%; width: 48%; height: 8px; border-radius: 4px; background: var(--green); }
+  .win .today { position: absolute; top: 2px; left: 21%; width: 3px; height: 22px; border-radius: 2px; background: var(--text); }
   .months { display: flex; justify-content: space-between; font-size: 12px; font-weight: 600; color: var(--muted); }
   .winnote { font-size: 14px; color: var(--muted); }
   .winnote b { color: var(--text); }
@@ -54,16 +54,17 @@
 
   <div class="nav">
     <span class="back"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2D6A3A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>Roadmap</span>
+    <span style="position: absolute; left: 50%; transform: translateX(-50%); font-size: 17px; font-weight: 700">Next action</span>
     <span class="iconbtn" aria-label="Ask about this"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2D6A3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4z"/><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .8-1 1.5"/><path d="M12 15.2v.01"/></svg></span>
   </div>
 
   <div class="content">
-    <span class="chip">Zone A · Prepare soil · Next action 1</span>
+    <div style="display: flex; gap: 10px; align-items: center"><span class="chip">Zone A · Prepare soil</span><span style="font-size: 14.5px; color: var(--muted); font-weight: 600">1 of 2 on your roadmap</span></div>
     <h1>Spread compost on beds <span style="white-space: nowrap">A1–A3</span></h1>
 
     <div class="card">
       <span class="label">Why now</span>
-      <div class="why">Spread before the autumn rains, compost soaks in over winter and beds are rich and loose by spring.</div>
+      <div class="why">Spread it before the autumn rains: the compost soaks in over winter, and the beds are rich and loose by spring.</div>
     </div>
 
     <div class="card">
@@ -74,9 +75,9 @@
     </div>
 
     <div class="facts">
+      <div class="fact"><b>Sat 24 Oct</b><span>Planned day</span></div>
       <div class="fact"><b>About 2 h</b><span>Time</span></div>
-      <div class="fact"><b>€20–35</b><span>Rough cost</span></div>
-      <div class="fact"><b>6 bags</b><span>Compost</span></div>
+      <div class="fact"><b>€20–35</b><span>6 bags of compost</span></div>
     </div>
 
     <div class="tools">
