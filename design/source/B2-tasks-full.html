@@ -27,6 +27,10 @@
   .action .sub { font-size: 14px; color: var(--muted); line-height: 1.45; }
   .btns { display: flex; gap: 10px; }
   .btns .btn { height: 44px; font-size: 15px; border-radius: 11px; }
+  .navb { display: flex; align-items: center; justify-content: space-between; height: 48px; margin-bottom: -2px; }
+  .backl { width: 80px; display: flex; align-items: center; gap: 2px; font-size: 17px; font-weight: 600; color: var(--green); height: 44px; }
+  .ntit { text-align: center; font-size: 17px; font-weight: 800; line-height: 1.15; }
+  .ntit small { display: block; font-size: 12.5px; font-weight: 600; color: var(--muted); }
   .tab { position: absolute; left: 0; right: 0; bottom: 0; z-index: 40; background: rgba(255,255,255,.97); border-top: 1px solid var(--line); padding: 8px 6px 30px; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); align-items: end; }
   .tab a { color: var(--muted); display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 11.5px; font-weight: 600; }
   .tab a.on { color: var(--green); font-weight: 800; }
@@ -60,7 +64,7 @@
   .kv span { font-size: 12.5px; color: var(--muted); font-weight: 600; }
   .bottom { position: absolute; left: 0; right: 0; bottom: 0; z-index: 30; background: rgba(245,246,240,.97); border-top: 1px solid var(--line); padding: 12px 18px 34px; display: flex; flex-direction: column; gap: 10px; }
 </style>
-<style>.stage{height:1340px}.phone{height:1280px}.screen{height:1240px}</style>
+<style>.stage{height:1300px}.phone{height:1240px}.screen{height:1200px}</style>
 </head>
 <body>
 <div class="stage"><div class="phone"><div class="screen">
@@ -76,9 +80,10 @@
 
 
   <div class="content" style="gap: 14px">
-    <div class="head">
-      <div><div class="date">20 – 26 October</div><h1>Tasks</h1></div>
-      <div class="avatar">D</div>
+    <div class="navb">
+      <div class="backl"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2D6A3A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>Today</div>
+      <div class="ntit">Tasks<small>20 – 26 October</small></div>
+      <div style="width: 80px"></div>
     </div>
     <div class="seg"><span>Today</span><span class="on">This week</span><span>By zone</span></div>
     <div class="card" style="display: flex; align-items: center; gap: 12px; padding: 12px 14px">

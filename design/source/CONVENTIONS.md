@@ -19,7 +19,7 @@ Every screen is a standalone HTML file rendered to a PNG of an iPhone (393×852 
 ## Screen types
 - **Setup screens (A2–A8):** back circle button + "Set up your garden · Step N of 7" + 7-segment `.progress`. Map screens use a full-bleed drawn satellite SVG with a bottom sheet (see A3/A4).
 - **Tab root screens (B1, C1, E1, F1 …):** large title, avatar button "D" (green circle, 44px) top right that opens G1 Me, and the **tab bar** at the bottom: Today · Garden · centre camera button (Snap & Ask, 58px green circle raised) · Plan · Journal, with the active tab in green. Copy the tab bar from `B1-today.html` once it exists, else from the canvas Today mockup.
-- **Detail screens:** nav bar with back chevron (44px), centred or left title 17px/700, optional right action. No tab bar on full-screen flows (camera, editors, guide doing mode); keep it on drill-downs inside a tab.
+- **Detail screens:** nav bar with back chevron (44px) **labelled with the screen it returns to** (e.g. "‹ Today"), centred title 17px/700–800 with an optional small subtitle, optional right action. **No large title and no avatar** on drill-downs; those belong only to the five tab roots. No tab bar on full-screen flows (camera, editors, guide doing mode); keep it on drill-downs inside a tab.
 - Scrolling screens may continue below the fold: show the top of the screen, content can be cut by the tab bar like a real scroll.
 
 ## Shared sample data (keep consistent)
