@@ -221,7 +221,7 @@ Which tools the user has, which they'll need, and when. **No consumable or stock
 
 Designs the watering system and says when, and roughly how long, to water. **No water needs calculation (ET₀ × Kc), no water budget, and no water quality check.**
 
-- **Water sources** from the map's points of interest (well, mains tap, tank), with a **bucket test** to measure flow rate (time to fill 10 L).
+- **Water sources** from the map's points of interest (well, mains tap, tank), with a **bucket test** to measure flow rate (time to fill 10 L). The test opens from three places: "Measure flow" in the water point's details, "Measure again" in the irrigation flow check, and a roadmap task ("Measure your well's flow", about 5 min) created the first time irrigation is planned. Until it's done, the flow check shows "Flow not measured yet".
 - **Recommended method for each bed:** drip line, individual drippers, soaker hose or micro-sprinklers. Drip is the default for dry climates such as Alentejo.
 - **System layout on the map:** main pipe from the source (lengths from the measuring tool), branch lines, and drip lines along each bed's rows, with dripper spacing for each crop.
 - **Flow check:** if the source can't supply everything at once, the system is split into sectors that run one after another. Includes a filter (vital with well water), a pressure regulator and a backflow preventer.
