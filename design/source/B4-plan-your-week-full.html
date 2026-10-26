@@ -24,6 +24,10 @@
   .step span.b { width: 32px; height: 30px; border-radius: 9px; background: #EEF0EA; display: flex; align-items: center; justify-content: center; font-size: 17px; font-weight: 700; }
   .step span.v { width: 52px; text-align: center; font-size: 15px; font-weight: 800; }
   .step span.v.zero { color: #9AA294; font-weight: 600; }
+  .offc { display: flex; align-items: center; gap: 4px; height: 30px; padding: 0 10px; border-radius: 999px; border: 1.5px solid var(--line); font-size: 13px; font-weight: 700; color: var(--muted); margin-right: 10px; background: #fff; }
+  .offc.on { background: #4E5A4C; border-color: #4E5A4C; color: #fff; }
+  .off-day .dn { color: #8A9386; }
+  .step.dim { opacity: .35; }
   .sec { display: flex; justify-content: space-between; align-items: baseline; }
   h2 { margin: 0; font-size: 20px; font-weight: 800; }
   .tot { font-size: 14.5px; font-weight: 800; color: var(--green); }
@@ -69,13 +73,13 @@
     <div class="card hrs">
       <div class="hhead"><b>Your time each day</b>
         <span class="copy"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#1F5A2C" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M4 16V6a2 2 0 0 1 2-2h10"/></svg>Same as last week</span></div>
-      <div class="day"><span class="dn">Mon<small>26</small></span><span class="step"><span class="b">−</span><span class="v">1 h</span><span class="b">+</span></span></div>
-      <div class="day"><span class="dn">Tue<small>27</small></span><span class="step"><span class="b">−</span><span class="v">30 min</span><span class="b">+</span></span></div>
-      <div class="day"><span class="dn">Wed<small>28</small></span><span class="step"><span class="b">−</span><span class="v">1 h</span><span class="b">+</span></span></div>
-      <div class="day"><span class="dn">Thu<small>29</small></span><span class="step"><span class="b">−</span><span class="v">30 min</span><span class="b">+</span></span></div>
-      <div class="day"><span class="dn">Fri<small>30</small></span><span class="step"><span class="b">−</span><span class="v zero">—</span><span class="b">+</span></span></div>
-      <div class="day"><span class="dn">Sat<small>31</small></span><span class="step"><span class="b">−</span><span class="v">3 h</span><span class="b">+</span></span></div>
-      <div class="day"><span class="dn">Sun<small>1</small></span><span class="step"><span class="b">−</span><span class="v">3 h</span><span class="b">+</span></span></div>
+      <div class="day"><span class="dn">Mon<small>26</small></span><span class="offc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>Off</span><span class="step"><span class="b">−</span><span class="v">1 h</span><span class="b">+</span></span></div>
+      <div class="day"><span class="dn">Tue<small>27</small></span><span class="offc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>Off</span><span class="step"><span class="b">−</span><span class="v">30 min</span><span class="b">+</span></span></div>
+      <div class="day"><span class="dn">Wed<small>28</small></span><span class="offc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>Off</span><span class="step"><span class="b">−</span><span class="v">1 h</span><span class="b">+</span></span></div>
+      <div class="day"><span class="dn">Thu<small>29</small></span><span class="offc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>Off</span><span class="step"><span class="b">−</span><span class="v">30 min</span><span class="b">+</span></span></div>
+      <div class="day off-day"><span class="dn">Fri<small>30</small></span><span class="offc on"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>Day off</span><span class="step dim"><span class="b">−</span><span class="v zero">—</span><span class="b">+</span></span></div>
+      <div class="day"><span class="dn">Sat<small>31</small></span><span class="offc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>Off</span><span class="step"><span class="b">−</span><span class="v">3 h</span><span class="b">+</span></span></div>
+      <div class="day"><span class="dn">Sun<small>1</small></span><span class="offc"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>Off</span><span class="step"><span class="b">−</span><span class="v">3 h</span><span class="b">+</span></span></div>
     </div>
 
     <div class="sec"><h2>Suggested plan</h2><span class="tot">6 h 35 of 9 h</span></div>
