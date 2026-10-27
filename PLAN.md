@@ -449,6 +449,22 @@ A regular review of how the garden is going, with concrete ideas to improve it.
 10. **Notifications:** Azure Notification Hubs (free tier), sending to APNs and FCM.
 11. **Later:** App Store and Play subscription receipt validation, IoT and sensor ingestion, a content admin interface, and a Python service for raster or ML work.
 
+### Continuous integration and delivery
+The API deploys automatically; the mobile apps are released by hand (TestFlight, later Google Play).
+
+- **Branches:** `main` is protected. Every change, planning documents included, goes through a pull request, and **the owner merges every pull request**. No approvals are required while working solo (GitHub doesn't allow approving your own pull request); collaborators' pull requests will need the owner's approval.
+- **Required checks on every pull request** (a pull request can't merge if any fails):
+  1. **Build:** API build, format check, and a check that the OpenAPI description matches the code (the Swift client is generated from it).
+  2. **API unit tests.**
+  3. **API integration tests:** against PostgreSQL with PostGIS and pgvector, and Azurite, started as containers in the pipeline. AI calls use a fake provider with canned answers.
+  4. **iOS unit tests** and 5. **iOS UI tests** (XCUITest on a simulator, against a fake API). These run **only when the pull request changes the iOS app or the OpenAPI description**; otherwise they report "not needed" and pass, to stay within GitHub's free Mac minutes.
+  6. **QA deploy and smoke test.**
+  Android checks are added with the Android app (Linux runner, only when `android/` changes).
+- **QA: one version per pull request.** Each pull request gets its own Container Apps revision with its own URL (label `pr-<n>`), its own database `qa_pr_<n>` with the schema and sample data, and its own storage folder; the AI uses the fake provider unless switched on. The pipeline comments the URL on the pull request. When the pull request is merged or closed, the revision, database and files are removed. Test builds of the app have a hidden setting to point at a QA URL.
+- **Prod: deploys when `main` changes** (merging a pull request updates `main`): build the image, run the database migrations, start the new revision, check its health, then move traffic to it. If the health check fails, traffic stays on the old revision.
+- **Databases:** prod and QA databases live on the **same PostgreSQL server**, with separate databases and logins, so QA adds no cost.
+- **Tests are part of every feature:** each feature's tasks include API unit tests, API integration tests, iOS unit tests and iOS UI tests (Android tests in each Android port), on top of the manual "Test on iPhone" check.
+
 ### Estimated monthly cost during the individual phase
 To be verified against current Azure pricing.
 

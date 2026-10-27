@@ -72,6 +72,24 @@
       "description": "Open the bucket test from point details, the flow check and the task; show \"Flow not measured yet\" until measured. Done when all three open it on device."
      },
      {
+      "title": "API integration tests for Water sources and bucket test",
+      "area": "backend",
+      "hours": 1,
+      "description": "Endpoint tests against the database containers, including user scoping. Done when they run in the pipeline."
+     },
+     {
+      "title": "iOS unit tests for Water sources and bucket test",
+      "area": "ios",
+      "hours": 1,
+      "description": "Unit tests for the view models and formatting of this feature. Done when they run in the pipeline."
+     },
+     {
+      "title": "iOS UI tests for Water sources and bucket test",
+      "area": "ios",
+      "hours": 2,
+      "description": "XCUITest flows for the screens of this feature against the fake API. Done when they run in the pipeline."
+     },
+     {
       "title": "Test water sources and bucket test on iPhone at the plot",
       "area": "testing",
       "hours": 2,
@@ -126,6 +144,30 @@
       "area": "ios",
       "hours": 4,
       "description": "Show each bed's recommended method and reason, with a picker to override. Done when changes persist."
+     },
+     {
+      "title": "API unit tests for Method per bed",
+      "area": "backend",
+      "hours": 2,
+      "description": "Unit tests for the domain logic and rules of this feature. Done when they run in the pipeline and cover the main cases."
+     },
+     {
+      "title": "API integration tests for Method per bed",
+      "area": "backend",
+      "hours": 1,
+      "description": "Endpoint tests against the database containers, including user scoping. Done when they run in the pipeline."
+     },
+     {
+      "title": "iOS unit tests for Method per bed",
+      "area": "ios",
+      "hours": 1,
+      "description": "Unit tests for the view models and formatting of this feature. Done when they run in the pipeline."
+     },
+     {
+      "title": "iOS UI tests for Method per bed",
+      "area": "ios",
+      "hours": 2,
+      "description": "XCUITest flows for the screens of this feature against the fake API. Done when they run in the pipeline."
      },
      {
       "title": "Test method recommendations on iPhone",
@@ -185,6 +227,30 @@
       "description": "Drag route points to adjust the pipe path; lengths update. Done when edits save to the API."
      },
      {
+      "title": "API unit tests for System layout on map",
+      "area": "backend",
+      "hours": 2,
+      "description": "Unit tests for the domain logic and rules of this feature. Done when they run in the pipeline and cover the main cases."
+     },
+     {
+      "title": "API integration tests for System layout on map",
+      "area": "backend",
+      "hours": 1,
+      "description": "Endpoint tests against the database containers, including user scoping. Done when they run in the pipeline."
+     },
+     {
+      "title": "iOS unit tests for System layout on map",
+      "area": "ios",
+      "hours": 1,
+      "description": "Unit tests for the view models and formatting of this feature. Done when they run in the pipeline."
+     },
+     {
+      "title": "iOS UI tests for System layout on map",
+      "area": "ios",
+      "hours": 2,
+      "description": "XCUITest flows for the screens of this feature against the fake API. Done when they run in the pipeline."
+     },
+     {
       "title": "Test irrigation layout on iPhone at the plot",
       "area": "testing",
       "hours": 2,
@@ -233,6 +299,30 @@
       "description": "Show demand vs available flow, a warning when exceeded, and colour sectors on the map. Done when sectors render."
      },
      {
+      "title": "API unit tests for Flow check and sectors",
+      "area": "backend",
+      "hours": 2,
+      "description": "Unit tests for the domain logic and rules of this feature. Done when they run in the pipeline and cover the main cases."
+     },
+     {
+      "title": "API integration tests for Flow check and sectors",
+      "area": "backend",
+      "hours": 1,
+      "description": "Endpoint tests against the database containers, including user scoping. Done when they run in the pipeline."
+     },
+     {
+      "title": "iOS unit tests for Flow check and sectors",
+      "area": "ios",
+      "hours": 1,
+      "description": "Unit tests for the view models and formatting of this feature. Done when they run in the pipeline."
+     },
+     {
+      "title": "iOS UI tests for Flow check and sectors",
+      "area": "ios",
+      "hours": 2,
+      "description": "XCUITest flows for the screens of this feature against the fake API. Done when they run in the pipeline."
+     },
+     {
       "title": "Test flow check with real flow measurements",
       "area": "testing",
       "hours": 1,
@@ -279,6 +369,30 @@
       "area": "ios",
       "hours": 3,
       "description": "Show grouped parts list with quantities and a share-as-text action. Done when sharing works."
+     },
+     {
+      "title": "API unit tests for Parts list",
+      "area": "backend",
+      "hours": 2,
+      "description": "Unit tests for the domain logic and rules of this feature. Done when they run in the pipeline and cover the main cases."
+     },
+     {
+      "title": "API integration tests for Parts list",
+      "area": "backend",
+      "hours": 1,
+      "description": "Endpoint tests against the database containers, including user scoping. Done when they run in the pipeline."
+     },
+     {
+      "title": "iOS unit tests for Parts list",
+      "area": "ios",
+      "hours": 1,
+      "description": "Unit tests for the view models and formatting of this feature. Done when they run in the pipeline."
+     },
+     {
+      "title": "iOS UI tests for Parts list",
+      "area": "ios",
+      "hours": 2,
+      "description": "XCUITest flows for the screens of this feature against the fake API. Done when they run in the pipeline."
      },
      {
       "title": "Test parts list against the layout",
@@ -345,6 +459,30 @@
       "description": "Week view per sector with run times, weather adjustments explained, and editing of run times. Done when changes persist."
      },
      {
+      "title": "API unit tests for Watering schedule",
+      "area": "backend",
+      "hours": 2,
+      "description": "Unit tests for the domain logic and rules of this feature. Done when they run in the pipeline and cover the main cases."
+     },
+     {
+      "title": "API integration tests for Watering schedule",
+      "area": "backend",
+      "hours": 1,
+      "description": "Endpoint tests against the database containers, including user scoping. Done when they run in the pipeline."
+     },
+     {
+      "title": "iOS unit tests for Watering schedule",
+      "area": "ios",
+      "hours": 1,
+      "description": "Unit tests for the view models and formatting of this feature. Done when they run in the pipeline."
+     },
+     {
+      "title": "iOS UI tests for Watering schedule",
+      "area": "ios",
+      "hours": 2,
+      "description": "XCUITest flows for the screens of this feature against the fake API. Done when they run in the pipeline."
+     },
+     {
       "title": "Test watering schedule over a week",
       "area": "testing",
       "hours": 2,
@@ -385,6 +523,30 @@
       "area": "ios",
       "hours": 3,
       "description": "Display guidance and weather notes for beds without a system. Done when visible for flagged beds."
+     },
+     {
+      "title": "API unit tests for Hand-watering guidance",
+      "area": "backend",
+      "hours": 1,
+      "description": "Unit tests for the domain logic and rules of this feature. Done when they run in the pipeline and cover the main cases."
+     },
+     {
+      "title": "API integration tests for Hand-watering guidance",
+      "area": "backend",
+      "hours": 1,
+      "description": "Endpoint tests against the database containers, including user scoping. Done when they run in the pipeline."
+     },
+     {
+      "title": "iOS unit tests for Hand-watering guidance",
+      "area": "ios",
+      "hours": 1,
+      "description": "Unit tests for the view models and formatting of this feature. Done when they run in the pipeline."
+     },
+     {
+      "title": "iOS UI tests for Hand-watering guidance",
+      "area": "ios",
+      "hours": 1,
+      "description": "XCUITest flows for the screens of this feature against the fake API. Done when they run in the pipeline."
      },
      {
       "title": "Test hand-watering guidance on iPhone",
@@ -455,6 +617,30 @@
       "area": "ios",
       "hours": 2,
       "description": "List upcoming maintenance with links to guides. Done when tasks appear."
+     },
+     {
+      "title": "API unit tests for Seasonal reminders",
+      "area": "backend",
+      "hours": 1,
+      "description": "Unit tests for the domain logic and rules of this feature. Done when they run in the pipeline and cover the main cases."
+     },
+     {
+      "title": "API integration tests for Seasonal reminders",
+      "area": "backend",
+      "hours": 1,
+      "description": "Endpoint tests against the database containers, including user scoping. Done when they run in the pipeline."
+     },
+     {
+      "title": "iOS unit tests for Seasonal reminders",
+      "area": "ios",
+      "hours": 1,
+      "description": "Unit tests for the view models and formatting of this feature. Done when they run in the pipeline."
+     },
+     {
+      "title": "iOS UI tests for Seasonal reminders",
+      "area": "ios",
+      "hours": 1,
+      "description": "XCUITest flows for the screens of this feature against the fake API. Done when they run in the pipeline."
      },
      {
       "title": "Test seasonal reminders",
@@ -548,6 +734,30 @@
       "description": "Open the alert detail from a notification. Done when tapping a notification opens the right alert."
      },
      {
+      "title": "API unit tests for Crop-aware alerts",
+      "area": "backend",
+      "hours": 2,
+      "description": "Unit tests for the domain logic and rules of this feature. Done when they run in the pipeline and cover the main cases."
+     },
+     {
+      "title": "API integration tests for Crop-aware alerts",
+      "area": "backend",
+      "hours": 1,
+      "description": "Endpoint tests against the database containers, including user scoping. Done when they run in the pipeline."
+     },
+     {
+      "title": "iOS unit tests for Crop-aware alerts",
+      "area": "ios",
+      "hours": 1,
+      "description": "Unit tests for the view models and formatting of this feature. Done when they run in the pipeline."
+     },
+     {
+      "title": "iOS UI tests for Crop-aware alerts",
+      "area": "ios",
+      "hours": 2,
+      "description": "XCUITest flows for the screens of this feature against the fake API. Done when they run in the pipeline."
+     },
+     {
       "title": "Test crop-aware alerts with simulated forecasts",
       "area": "testing",
       "hours": 2,
@@ -590,6 +800,30 @@
       "description": "Display the notice and let the user skip the task in one tap. Done when skip is recorded."
      },
      {
+      "title": "API unit tests for Skip-watering notices",
+      "area": "backend",
+      "hours": 1,
+      "description": "Unit tests for the domain logic and rules of this feature. Done when they run in the pipeline and cover the main cases."
+     },
+     {
+      "title": "API integration tests for Skip-watering notices",
+      "area": "backend",
+      "hours": 1,
+      "description": "Endpoint tests against the database containers, including user scoping. Done when they run in the pipeline."
+     },
+     {
+      "title": "iOS unit tests for Skip-watering notices",
+      "area": "ios",
+      "hours": 1,
+      "description": "Unit tests for the view models and formatting of this feature. Done when they run in the pipeline."
+     },
+     {
+      "title": "iOS UI tests for Skip-watering notices",
+      "area": "ios",
+      "hours": 1,
+      "description": "XCUITest flows for the screens of this feature against the fake API. Done when they run in the pipeline."
+     },
+     {
       "title": "Test skip-watering notices",
       "area": "testing",
       "hours": 1,
@@ -630,6 +864,30 @@
       "area": "ios",
       "hours": 2,
       "description": "Show positive alerts with their own style and a settings toggle. Done when toggle works."
+     },
+     {
+      "title": "API unit tests for Good-conditions alerts",
+      "area": "backend",
+      "hours": 1,
+      "description": "Unit tests for the domain logic and rules of this feature. Done when they run in the pipeline and cover the main cases."
+     },
+     {
+      "title": "API integration tests for Good-conditions alerts",
+      "area": "backend",
+      "hours": 1,
+      "description": "Endpoint tests against the database containers, including user scoping. Done when they run in the pipeline."
+     },
+     {
+      "title": "iOS unit tests for Good-conditions alerts",
+      "area": "ios",
+      "hours": 1,
+      "description": "Unit tests for the view models and formatting of this feature. Done when they run in the pipeline."
+     },
+     {
+      "title": "iOS UI tests for Good-conditions alerts",
+      "area": "ios",
+      "hours": 1,
+      "description": "XCUITest flows for the screens of this feature against the fake API. Done when they run in the pipeline."
      },
      {
       "title": "Test good-conditions alerts",
@@ -680,6 +938,30 @@
       "description": "List actions with guide links and one-tap task creation. Done when tasks appear in the task list."
      },
      {
+      "title": "API unit tests for Actions as tasks",
+      "area": "backend",
+      "hours": 2,
+      "description": "Unit tests for the domain logic and rules of this feature. Done when they run in the pipeline and cover the main cases."
+     },
+     {
+      "title": "API integration tests for Actions as tasks",
+      "area": "backend",
+      "hours": 1,
+      "description": "Endpoint tests against the database containers, including user scoping. Done when they run in the pipeline."
+     },
+     {
+      "title": "iOS unit tests for Actions as tasks",
+      "area": "ios",
+      "hours": 1,
+      "description": "Unit tests for the view models and formatting of this feature. Done when they run in the pipeline."
+     },
+     {
+      "title": "iOS UI tests for Actions as tasks",
+      "area": "ios",
+      "hours": 2,
+      "description": "XCUITest flows for the screens of this feature against the fake API. Done when they run in the pipeline."
+     },
+     {
       "title": "Test alert actions end to end",
       "area": "testing",
       "hours": 1,
@@ -713,6 +995,30 @@
       "area": "ios",
       "hours": 2,
       "description": "Badges and plain-language confidence on alert screens. Done when visible."
+     },
+     {
+      "title": "API unit tests for Severity and confidence",
+      "area": "backend",
+      "hours": 1,
+      "description": "Unit tests for the domain logic and rules of this feature. Done when they run in the pipeline and cover the main cases."
+     },
+     {
+      "title": "API integration tests for Severity and confidence",
+      "area": "backend",
+      "hours": 1,
+      "description": "Endpoint tests against the database containers, including user scoping. Done when they run in the pipeline."
+     },
+     {
+      "title": "iOS unit tests for Severity and confidence",
+      "area": "ios",
+      "hours": 1,
+      "description": "Unit tests for the view models and formatting of this feature. Done when they run in the pipeline."
+     },
+     {
+      "title": "iOS UI tests for Severity and confidence",
+      "area": "ios",
+      "hours": 1,
+      "description": "XCUITest flows for the screens of this feature against the fake API. Done when they run in the pipeline."
      },
      {
       "title": "Test severity levels",
@@ -749,6 +1055,30 @@
       "area": "ios",
       "hours": 2,
       "description": "Send urgent alerts as time-sensitive notifications and add a settings toggle. Done when override works on device."
+     },
+     {
+      "title": "API unit tests for Quiet-hours override",
+      "area": "backend",
+      "hours": 1,
+      "description": "Unit tests for the domain logic and rules of this feature. Done when they run in the pipeline and cover the main cases."
+     },
+     {
+      "title": "API integration tests for Quiet-hours override",
+      "area": "backend",
+      "hours": 1,
+      "description": "Endpoint tests against the database containers, including user scoping. Done when they run in the pipeline."
+     },
+     {
+      "title": "iOS unit tests for Quiet-hours override",
+      "area": "ios",
+      "hours": 1,
+      "description": "Unit tests for the view models and formatting of this feature. Done when they run in the pipeline."
+     },
+     {
+      "title": "iOS UI tests for Quiet-hours override",
+      "area": "ios",
+      "hours": 1,
+      "description": "XCUITest flows for the screens of this feature against the fake API. Done when they run in the pipeline."
      },
      {
       "title": "Test quiet-hours override",
@@ -799,6 +1129,30 @@
       "description": "Store the latest forecast for offline viewing. Done when the screen works in airplane mode."
      },
      {
+      "title": "API unit tests for 7-day weather screen",
+      "area": "backend",
+      "hours": 2,
+      "description": "Unit tests for the domain logic and rules of this feature. Done when they run in the pipeline and cover the main cases."
+     },
+     {
+      "title": "API integration tests for 7-day weather screen",
+      "area": "backend",
+      "hours": 1,
+      "description": "Endpoint tests against the database containers, including user scoping. Done when they run in the pipeline."
+     },
+     {
+      "title": "iOS unit tests for 7-day weather screen",
+      "area": "ios",
+      "hours": 1,
+      "description": "Unit tests for the view models and formatting of this feature. Done when they run in the pipeline."
+     },
+     {
+      "title": "iOS UI tests for 7-day weather screen",
+      "area": "ios",
+      "hours": 2,
+      "description": "XCUITest flows for the screens of this feature against the fake API. Done when they run in the pipeline."
+     },
+     {
       "title": "Test weather screen against a reference forecast",
       "area": "testing",
       "hours": 1,
@@ -833,6 +1187,30 @@
       "area": "ios",
       "hours": 3,
       "description": "Checklist of affected plantings with quick damage logging to the journal. Done when entries save."
+     },
+     {
+      "title": "API unit tests for Follow-up after event",
+      "area": "backend",
+      "hours": 1,
+      "description": "Unit tests for the domain logic and rules of this feature. Done when they run in the pipeline and cover the main cases."
+     },
+     {
+      "title": "API integration tests for Follow-up after event",
+      "area": "backend",
+      "hours": 1,
+      "description": "Endpoint tests against the database containers, including user scoping. Done when they run in the pipeline."
+     },
+     {
+      "title": "iOS unit tests for Follow-up after event",
+      "area": "ios",
+      "hours": 1,
+      "description": "Unit tests for the view models and formatting of this feature. Done when they run in the pipeline."
+     },
+     {
+      "title": "iOS UI tests for Follow-up after event",
+      "area": "ios",
+      "hours": 1,
+      "description": "XCUITest flows for the screens of this feature against the fake API. Done when they run in the pipeline."
      },
      {
       "title": "Test follow-up after a simulated frost",
@@ -881,6 +1259,30 @@
       "area": "ios",
       "hours": 2,
       "description": "Show IPMA warnings with an 'official' label and attribution. Done when visible."
+     },
+     {
+      "title": "API unit tests for IPMA official warnings",
+      "area": "backend",
+      "hours": 1,
+      "description": "Unit tests for the domain logic and rules of this feature. Done when they run in the pipeline and cover the main cases."
+     },
+     {
+      "title": "API integration tests for IPMA official warnings",
+      "area": "backend",
+      "hours": 1,
+      "description": "Endpoint tests against the database containers, including user scoping. Done when they run in the pipeline."
+     },
+     {
+      "title": "iOS unit tests for IPMA official warnings",
+      "area": "ios",
+      "hours": 1,
+      "description": "Unit tests for the view models and formatting of this feature. Done when they run in the pipeline."
+     },
+     {
+      "title": "iOS UI tests for IPMA official warnings",
+      "area": "ios",
+      "hours": 1,
+      "description": "XCUITest flows for the screens of this feature against the fake API. Done when they run in the pipeline."
      },
      {
       "title": "Test IPMA warnings",
@@ -985,6 +1387,30 @@
       "description": "\"Not sure? Identify it with a photo\" opens the camera in Identify mode and fills the tree type. Done when it works end to end."
      },
      {
+      "title": "API unit tests for Photo identification",
+      "area": "backend",
+      "hours": 3,
+      "description": "Unit tests for the domain logic and rules of this feature. Done when they run in the pipeline and cover the main cases."
+     },
+     {
+      "title": "API integration tests for Photo identification",
+      "area": "backend",
+      "hours": 2,
+      "description": "Endpoint tests against the database containers, including user scoping. Done when they run in the pipeline."
+     },
+     {
+      "title": "iOS unit tests for Photo identification",
+      "area": "ios",
+      "hours": 2,
+      "description": "Unit tests for the view models and formatting of this feature. Done when they run in the pipeline."
+     },
+     {
+      "title": "iOS UI tests for Photo identification",
+      "area": "ios",
+      "hours": 3,
+      "description": "XCUITest flows for the screens of this feature against the fake API. Done when they run in the pipeline."
+     },
+     {
       "title": "Test identification on iPhone at the plot",
       "area": "testing",
       "hours": 2,
@@ -1025,6 +1451,30 @@
       "area": "ios",
       "hours": 3,
       "description": "Prominent verdict badge and a reminder to re-photograph when unsure. Done when the reminder creates a task."
+     },
+     {
+      "title": "API unit tests for Crop-or-weed verdict",
+      "area": "backend",
+      "hours": 1,
+      "description": "Unit tests for the domain logic and rules of this feature. Done when they run in the pipeline and cover the main cases."
+     },
+     {
+      "title": "API integration tests for Crop-or-weed verdict",
+      "area": "backend",
+      "hours": 1,
+      "description": "Endpoint tests against the database containers, including user scoping. Done when they run in the pipeline."
+     },
+     {
+      "title": "iOS unit tests for Crop-or-weed verdict",
+      "area": "ios",
+      "hours": 1,
+      "description": "Unit tests for the view models and formatting of this feature. Done when they run in the pipeline."
+     },
+     {
+      "title": "iOS UI tests for Crop-or-weed verdict",
+      "area": "ios",
+      "hours": 1,
+      "description": "XCUITest flows for the screens of this feature against the fake API. Done when they run in the pipeline."
      },
      {
       "title": "Test crop-or-weed verdict on seedlings",
@@ -1069,6 +1519,30 @@
       "description": "Display a short 'based on' line. Done when visible."
      },
      {
+      "title": "API unit tests for Context for accuracy",
+      "area": "backend",
+      "hours": 1,
+      "description": "Unit tests for the domain logic and rules of this feature. Done when they run in the pipeline and cover the main cases."
+     },
+     {
+      "title": "API integration tests for Context for accuracy",
+      "area": "backend",
+      "hours": 1,
+      "description": "Endpoint tests against the database containers, including user scoping. Done when they run in the pipeline."
+     },
+     {
+      "title": "iOS unit tests for Context for accuracy",
+      "area": "ios",
+      "hours": 1,
+      "description": "Unit tests for the view models and formatting of this feature. Done when they run in the pipeline."
+     },
+     {
+      "title": "iOS UI tests for Context for accuracy",
+      "area": "ios",
+      "hours": 1,
+      "description": "XCUITest flows for the screens of this feature against the fake API. Done when they run in the pipeline."
+     },
+     {
       "title": "Compare eval accuracy with and without context",
       "area": "testing",
       "hours": 2,
@@ -1102,6 +1576,30 @@
       "area": "ios",
       "hours": 3,
       "description": "Capture several photos with guidance for leaf, flower and whole plant. Done when all upload."
+     },
+     {
+      "title": "API unit tests for Several photos",
+      "area": "backend",
+      "hours": 1,
+      "description": "Unit tests for the domain logic and rules of this feature. Done when they run in the pipeline and cover the main cases."
+     },
+     {
+      "title": "API integration tests for Several photos",
+      "area": "backend",
+      "hours": 1,
+      "description": "Endpoint tests against the database containers, including user scoping. Done when they run in the pipeline."
+     },
+     {
+      "title": "iOS unit tests for Several photos",
+      "area": "ios",
+      "hours": 1,
+      "description": "Unit tests for the view models and formatting of this feature. Done when they run in the pipeline."
+     },
+     {
+      "title": "iOS UI tests for Several photos",
+      "area": "ios",
+      "hours": 1,
+      "description": "XCUITest flows for the screens of this feature against the fake API. Done when they run in the pipeline."
      },
      {
       "title": "Test multi-photo identification",
@@ -1145,6 +1643,30 @@
       "description": "Warning banners for invasive/toxic results and a disclaimer footer. Done when visible."
      },
      {
+      "title": "API unit tests for Invasive and toxic flags",
+      "area": "backend",
+      "hours": 1,
+      "description": "Unit tests for the domain logic and rules of this feature. Done when they run in the pipeline and cover the main cases."
+     },
+     {
+      "title": "API integration tests for Invasive and toxic flags",
+      "area": "backend",
+      "hours": 1,
+      "description": "Endpoint tests against the database containers, including user scoping. Done when they run in the pipeline."
+     },
+     {
+      "title": "iOS unit tests for Invasive and toxic flags",
+      "area": "ios",
+      "hours": 1,
+      "description": "Unit tests for the view models and formatting of this feature. Done when they run in the pipeline."
+     },
+     {
+      "title": "iOS UI tests for Invasive and toxic flags",
+      "area": "ios",
+      "hours": 1,
+      "description": "XCUITest flows for the screens of this feature against the fake API. Done when they run in the pipeline."
+     },
+     {
       "title": "Test safety flags with known toxic plants",
       "area": "testing",
       "hours": 1,
@@ -1186,6 +1708,30 @@
       "area": "ios",
       "hours": 3,
       "description": "Three actions with confirmation. Done when each creates the right record."
+     },
+     {
+      "title": "API unit tests for One-tap actions",
+      "area": "backend",
+      "hours": 1,
+      "description": "Unit tests for the domain logic and rules of this feature. Done when they run in the pipeline and cover the main cases."
+     },
+     {
+      "title": "API integration tests for One-tap actions",
+      "area": "backend",
+      "hours": 1,
+      "description": "Endpoint tests against the database containers, including user scoping. Done when they run in the pipeline."
+     },
+     {
+      "title": "iOS unit tests for One-tap actions",
+      "area": "ios",
+      "hours": 1,
+      "description": "Unit tests for the view models and formatting of this feature. Done when they run in the pipeline."
+     },
+     {
+      "title": "iOS UI tests for One-tap actions",
+      "area": "ios",
+      "hours": 1,
+      "description": "XCUITest flows for the screens of this feature against the fake API. Done when they run in the pipeline."
      },
      {
       "title": "Test one-tap actions",
@@ -1233,6 +1779,30 @@
       "area": "ios",
       "hours": 2,
       "description": "'This is wrong' with a species search. Done when saved."
+     },
+     {
+      "title": "API unit tests for Corrections",
+      "area": "backend",
+      "hours": 1,
+      "description": "Unit tests for the domain logic and rules of this feature. Done when they run in the pipeline and cover the main cases."
+     },
+     {
+      "title": "API integration tests for Corrections",
+      "area": "backend",
+      "hours": 1,
+      "description": "Endpoint tests against the database containers, including user scoping. Done when they run in the pipeline."
+     },
+     {
+      "title": "iOS unit tests for Corrections",
+      "area": "ios",
+      "hours": 1,
+      "description": "Unit tests for the view models and formatting of this feature. Done when they run in the pipeline."
+     },
+     {
+      "title": "iOS UI tests for Corrections",
+      "area": "ios",
+      "hours": 1,
+      "description": "XCUITest flows for the screens of this feature against the fake API. Done when they run in the pipeline."
      },
      {
       "title": "Test corrections",
@@ -1332,6 +1902,30 @@
       "description": "Collect photos of common problems (incl. sunscald, blossom end rot) with known causes. Done when stored."
      },
      {
+      "title": "API unit tests for Photo diagnosis",
+      "area": "backend",
+      "hours": 3,
+      "description": "Unit tests for the domain logic and rules of this feature. Done when they run in the pipeline and cover the main cases."
+     },
+     {
+      "title": "API integration tests for Photo diagnosis",
+      "area": "backend",
+      "hours": 2,
+      "description": "Endpoint tests against the database containers, including user scoping. Done when they run in the pipeline."
+     },
+     {
+      "title": "iOS unit tests for Photo diagnosis",
+      "area": "ios",
+      "hours": 2,
+      "description": "Unit tests for the view models and formatting of this feature. Done when they run in the pipeline."
+     },
+     {
+      "title": "iOS UI tests for Photo diagnosis",
+      "area": "ios",
+      "hours": 3,
+      "description": "XCUITest flows for the screens of this feature against the fake API. Done when they run in the pipeline."
+     },
+     {
       "title": "Test diagnosis on iPhone with real problems",
       "area": "testing",
       "hours": 2,
@@ -1365,6 +1959,30 @@
       "area": "ios",
       "hours": 3,
       "description": "Show questions with quick-answer options and free text. Done when refined results display."
+     },
+     {
+      "title": "API unit tests for Follow-up questions",
+      "area": "backend",
+      "hours": 1,
+      "description": "Unit tests for the domain logic and rules of this feature. Done when they run in the pipeline and cover the main cases."
+     },
+     {
+      "title": "API integration tests for Follow-up questions",
+      "area": "backend",
+      "hours": 1,
+      "description": "Endpoint tests against the database containers, including user scoping. Done when they run in the pipeline."
+     },
+     {
+      "title": "iOS unit tests for Follow-up questions",
+      "area": "ios",
+      "hours": 1,
+      "description": "Unit tests for the view models and formatting of this feature. Done when they run in the pipeline."
+     },
+     {
+      "title": "iOS UI tests for Follow-up questions",
+      "area": "ios",
+      "hours": 1,
+      "description": "XCUITest flows for the screens of this feature against the fake API. Done when they run in the pipeline."
      },
      {
       "title": "Test follow-up questions",
@@ -1416,6 +2034,30 @@
       "description": "Ordered steps from mildest to strongest with guide links and safety notes. Done when visible."
      },
      {
+      "title": "API unit tests for Treatment plans",
+      "area": "backend",
+      "hours": 2,
+      "description": "Unit tests for the domain logic and rules of this feature. Done when they run in the pipeline and cover the main cases."
+     },
+     {
+      "title": "API integration tests for Treatment plans",
+      "area": "backend",
+      "hours": 1,
+      "description": "Endpoint tests against the database containers, including user scoping. Done when they run in the pipeline."
+     },
+     {
+      "title": "iOS unit tests for Treatment plans",
+      "area": "ios",
+      "hours": 1,
+      "description": "Unit tests for the view models and formatting of this feature. Done when they run in the pipeline."
+     },
+     {
+      "title": "iOS UI tests for Treatment plans",
+      "area": "ios",
+      "hours": 2,
+      "description": "XCUITest flows for the screens of this feature against the fake API. Done when they run in the pipeline."
+     },
+     {
       "title": "Review treatment content for safety",
       "area": "testing",
       "hours": 1,
@@ -1456,6 +2098,30 @@
       "area": "ios",
       "hours": 3,
       "description": "Re-photograph from the task and show the comparison. Done when result is logged."
+     },
+     {
+      "title": "API unit tests for Treatment tasks and check-ups",
+      "area": "backend",
+      "hours": 1,
+      "description": "Unit tests for the domain logic and rules of this feature. Done when they run in the pipeline and cover the main cases."
+     },
+     {
+      "title": "API integration tests for Treatment tasks and check-ups",
+      "area": "backend",
+      "hours": 1,
+      "description": "Endpoint tests against the database containers, including user scoping. Done when they run in the pipeline."
+     },
+     {
+      "title": "iOS unit tests for Treatment tasks and check-ups",
+      "area": "ios",
+      "hours": 1,
+      "description": "Unit tests for the view models and formatting of this feature. Done when they run in the pipeline."
+     },
+     {
+      "title": "iOS UI tests for Treatment tasks and check-ups",
+      "area": "ios",
+      "hours": 1,
+      "description": "XCUITest flows for the screens of this feature against the fake API. Done when they run in the pipeline."
      },
      {
       "title": "Test treatment check-ups",
@@ -1499,6 +2165,30 @@
       "description": "Warnings on affected beds and flags in bed history. Done when visible."
      },
      {
+      "title": "API unit tests for Spread warnings and bed flags",
+      "area": "backend",
+      "hours": 1,
+      "description": "Unit tests for the domain logic and rules of this feature. Done when they run in the pipeline and cover the main cases."
+     },
+     {
+      "title": "API integration tests for Spread warnings and bed flags",
+      "area": "backend",
+      "hours": 1,
+      "description": "Endpoint tests against the database containers, including user scoping. Done when they run in the pipeline."
+     },
+     {
+      "title": "iOS unit tests for Spread warnings and bed flags",
+      "area": "ios",
+      "hours": 1,
+      "description": "Unit tests for the view models and formatting of this feature. Done when they run in the pipeline."
+     },
+     {
+      "title": "iOS UI tests for Spread warnings and bed flags",
+      "area": "ios",
+      "hours": 1,
+      "description": "XCUITest flows for the screens of this feature against the fake API. Done when they run in the pipeline."
+     },
+     {
       "title": "Test spread warnings",
       "area": "testing",
       "hours": 1,
@@ -1539,6 +2229,30 @@
       "area": "ios",
       "hours": 2,
       "description": "Display as alerts with preventive actions. Done when visible."
+     },
+     {
+      "title": "API unit tests for Disease-risk warnings",
+      "area": "backend",
+      "hours": 1,
+      "description": "Unit tests for the domain logic and rules of this feature. Done when they run in the pipeline and cover the main cases."
+     },
+     {
+      "title": "API integration tests for Disease-risk warnings",
+      "area": "backend",
+      "hours": 1,
+      "description": "Endpoint tests against the database containers, including user scoping. Done when they run in the pipeline."
+     },
+     {
+      "title": "iOS unit tests for Disease-risk warnings",
+      "area": "ios",
+      "hours": 1,
+      "description": "Unit tests for the view models and formatting of this feature. Done when they run in the pipeline."
+     },
+     {
+      "title": "iOS UI tests for Disease-risk warnings",
+      "area": "ios",
+      "hours": 1,
+      "description": "XCUITest flows for the screens of this feature against the fake API. Done when they run in the pipeline."
      },
      {
       "title": "Test disease-risk warnings with simulated weather",
@@ -1594,6 +2308,30 @@
       "area": "ios",
       "hours": 2,
       "description": "Friendly 'keep this one' result with explanation. Done when visible."
+     },
+     {
+      "title": "API unit tests for Beneficial insects",
+      "area": "backend",
+      "hours": 1,
+      "description": "Unit tests for the domain logic and rules of this feature. Done when they run in the pipeline and cover the main cases."
+     },
+     {
+      "title": "API integration tests for Beneficial insects",
+      "area": "backend",
+      "hours": 1,
+      "description": "Endpoint tests against the database containers, including user scoping. Done when they run in the pipeline."
+     },
+     {
+      "title": "iOS unit tests for Beneficial insects",
+      "area": "ios",
+      "hours": 1,
+      "description": "Unit tests for the view models and formatting of this feature. Done when they run in the pipeline."
+     },
+     {
+      "title": "iOS UI tests for Beneficial insects",
+      "area": "ios",
+      "hours": 1,
+      "description": "XCUITest flows for the screens of this feature against the fake API. Done when they run in the pipeline."
      },
      {
       "title": "Add beneficial insects to the eval set",

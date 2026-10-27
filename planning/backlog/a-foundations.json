@@ -104,12 +104,12 @@
     "title": "Continuous integration",
     "priority": "MVP",
     "seq": 1,
-    "story": "As the developer, I want every push checked automatically so that broken builds are caught early.",
+    "story": "As the developer, I want every pull request checked automatically so that nothing broken can be merged.",
     "acceptance": [
-     "Backend builds, tests and lints on every push and pull request",
-     "iOS app builds and runs unit tests on a macOS runner",
-     "OpenAPI spec is generated and the Swift client is regenerated and checked for drift",
-     "CI status is visible on pull requests"
+     "Every pull request runs required checks: build (with format and OpenAPI drift), API unit tests, API integration tests, iOS unit tests, iOS UI tests and the QA deploy",
+     "iOS checks run only when the iOS app or the OpenAPI description changes; otherwise they report \"not needed\" and pass",
+     "\"main\" is protected: no direct pushes, every required check must pass, and the owner merges",
+     "Check results and test reports are visible on the pull request"
     ],
     "depends_on": [
      "X.E00.1",
@@ -117,40 +117,64 @@
     ],
     "tasks": [
      {
-      "title": "GitHub Actions workflow: backend build, test and format check",
+      "title": "Build workflow: dotnet build, format check and OpenAPI drift",
       "area": "infra",
       "hours": 3,
-      "description": "Run dotnet build, test and format --verify-no-changes. Done when the workflow is green on master."
+      "description": "Build the API, run format --verify-no-changes and fail if the exported OpenAPI file differs from the committed one. Done when it runs on pull requests."
      },
      {
-      "title": "Run integration tests against PostgreSQL service container in CI",
-      "area": "infra",
-      "hours": 3,
-      "description": "Use a PostGIS service container. Done when integration tests run in CI."
-     },
-     {
-      "title": "GitHub Actions workflow: iOS build and unit tests on macOS",
-      "area": "infra",
-      "hours": 4,
-      "description": "xcodebuild build and test on a simulator. Done when the workflow is green."
-     },
-     {
-      "title": "Generate OpenAPI spec in CI and fail on uncommitted changes",
+      "title": "API unit test job with test report",
       "area": "infra",
       "hours": 2,
-      "description": "Export the spec at build time and compare to the committed file. Done when drift fails the build."
+      "description": "Run the unit test projects and publish results on the pull request. Done when a failing test fails the check."
      },
      {
-      "title": "Generate Swift API client from OpenAPI in CI",
+      "title": "API integration test job with containers",
+      "area": "infra",
+      "hours": 3,
+      "description": "Run integration tests against PostGIS + pgvector and Azurite containers. Done when they run in the pipeline in under 10 minutes."
+     },
+     {
+      "title": "iOS unit test job on macOS, path-filtered",
+      "area": "infra",
+      "hours": 3,
+      "description": "xcodebuild test for the unit target, only when ios/ or the OpenAPI file changes. Done when it runs on an iOS pull request."
+     },
+     {
+      "title": "iOS UI test job on a simulator with the fake API",
+      "area": "infra",
+      "hours": 3,
+      "description": "Run the XCUITest target against the fake API. Done when a broken flow fails the check."
+     },
+     {
+      "title": "\"Not needed\" pass for skipped checks",
+      "area": "infra",
+      "hours": 2,
+      "description": "A gate job reports success for checks skipped by path filters, so required checks never stay pending. Done when an API-only pull request can merge."
+     },
+     {
+      "title": "Generate the Swift API client from OpenAPI in CI",
       "area": "infra",
       "hours": 3,
       "description": "Use swift-openapi-generator. Done when the iOS build uses the generated client."
      },
      {
-      "title": "Add branch protection guidance and PR template",
+      "title": "Protect main: required checks and no direct pushes",
+      "area": "infra",
+      "hours": 2,
+      "description": "Branch ruleset: pull request required, all checks required, no bypass, rename master to main. Done when a direct push is refused."
+     },
+     {
+      "title": "Pull request template",
       "area": "infra",
       "hours": 1,
-      "description": "Document required checks and add a pull request template. Done when the template is used on the next PR."
+      "description": "Template with what changed, how it was tested and screenshots. Done when the next pull request uses it."
+     },
+     {
+      "title": "Test the checks with a deliberately failing pull request",
+      "area": "testing",
+      "hours": 1,
+      "description": "Open a pull request with a failing test and confirm merge is blocked. Done when verified."
      }
     ]
    },
@@ -161,9 +185,10 @@
     "seq": 1,
     "story": "As the developer, I want the Azure environment defined as code and deployed automatically so that it is reproducible and cheap to run.",
     "acceptance": [
-     "Bicep templates create Container Apps, PostgreSQL Flexible Server, Blob Storage, Key Vault, Notification Hubs and Application Insights",
-     "Resources use the cheapest tiers that fit (scale to zero, burstable B1ms)",
-     "A GitHub Actions pipeline deploys the API on merge to master",
+     "Bicep templates create Container Apps (prod and QA apps), PostgreSQL Flexible Server, Blob Storage, Key Vault, Notification Hubs and Application Insights",
+     "Resources use the cheapest tiers that fit (scale to zero, burstable B1ms); prod and QA databases share the one server with separate logins",
+     "Prod deploys automatically when main changes: build, migrate, start the new revision, health check, then switch traffic",
+     "If the health check fails, traffic stays on the previous revision",
      "Secrets live in Key Vault and are accessed with managed identity",
      "A monthly budget alert is configured"
     ],
@@ -215,10 +240,10 @@
       "description": "Alert at €10 and €25. Done when a test alert email arrives."
      },
      {
-      "title": "GitHub Actions deployment pipeline with OIDC to Azure",
+      "title": "Prod deploy workflow on main with OIDC to Azure",
       "area": "infra",
       "hours": 4,
-      "description": "Build container image, push to registry, deploy revision. Done when a merge deploys automatically."
+      "description": "Build the image, push to the registry and create a new revision when main changes. Done when a merge deploys automatically."
      },
      {
       "title": "Run database migrations as part of deployment",
@@ -227,10 +252,142 @@
       "description": "Migration job before the new revision goes live. Done when a schema change deploys cleanly."
      },
      {
+      "title": "Health check and traffic switch with rollback",
+      "area": "infra",
+      "hours": 2,
+      "description": "Move traffic to the new revision only after /health passes; otherwise keep the old one and fail the run. Done when a broken build is kept out of traffic."
+     },
+     {
       "title": "Test end-to-end deployment and cold start",
       "area": "testing",
       "hours": 2,
       "description": "Deploy, wait for scale to zero, call the API and measure the first response. Done when it works and timing is noted."
+     }
+    ]
+   },
+   {
+    "key": "X.E00.15",
+    "title": "Test frameworks and fakes",
+    "priority": "MVP",
+    "seq": 1,
+    "story": "As the developer, I want test projects, fixtures and fakes ready from day one so that every feature can ship with its unit, integration and UI tests.",
+    "acceptance": [
+     "API unit and integration test projects with shared conventions",
+     "Integration fixture starts PostGIS + pgvector and Azurite, applies migrations and loads sample data",
+     "A fake AI provider returns canned answers so tests never call a model",
+     "The iOS app has a fake API for UI tests, chosen by a launch argument",
+     "A short testing guide explains how to add each kind of test"
+    ],
+    "depends_on": [
+     "X.E00.1",
+     "X.E00.2",
+     "X.E00.7"
+    ],
+    "tasks": [
+     {
+      "title": "Create API unit and integration test projects",
+      "area": "backend",
+      "hours": 2,
+      "description": "xUnit projects, naming conventions and shared builders. Done when sample tests run locally and in CI."
+     },
+     {
+      "title": "Integration fixture with Testcontainers",
+      "area": "backend",
+      "hours": 3,
+      "description": "PostGIS + pgvector and Azurite containers, migrations and sample data per test run. Done when a sample API test passes against it."
+     },
+     {
+      "title": "Fake AI provider with canned answers",
+      "area": "backend",
+      "hours": 2,
+      "description": "IAiService fake that returns stored structured outputs per task. Done when the test projects use it by default."
+     },
+     {
+      "title": "Fake API for iOS UI tests",
+      "area": "ios",
+      "hours": 3,
+      "description": "Local stub that serves recorded OpenAPI responses, selected by a launch argument. Done when a UI test runs without the network."
+     },
+     {
+      "title": "UI test helpers and screenshots on failure",
+      "area": "ios",
+      "hours": 2,
+      "description": "Page helpers, accessibility identifiers convention and screenshots attached to failures. Done when a failing UI test shows its screenshot."
+     },
+     {
+      "title": "Write the testing guide",
+      "area": "testing",
+      "hours": 1,
+      "description": "How to add unit, integration and UI tests, with examples. Done when it is in docs/."
+     }
+    ]
+   },
+   {
+    "key": "X.E00.16",
+    "title": "QA version per pull request",
+    "priority": "MVP",
+    "seq": 1,
+    "story": "As the developer, I want each pull request to get its own working copy of the API so that I can try changes on the phone before merging.",
+    "acceptance": [
+     "Each pull request deploys a QA revision with its own URL (label pr-<n>)",
+     "Each QA revision has its own database qa_pr_<n> with the schema and sample data, and its own storage folder",
+     "The AI uses the fake provider unless switched on for that pull request",
+     "The URL is commented on the pull request and a smoke test must pass",
+     "When the pull request is merged or closed, the revision, database and files are removed",
+     "Test builds of the app can point at a QA URL from a hidden setting"
+    ],
+    "depends_on": [
+     "X.E00.3",
+     "X.E00.4"
+    ],
+    "tasks": [
+     {
+      "title": "Bicep: QA container app and QA database login",
+      "area": "infra",
+      "hours": 2,
+      "description": "QA app in the same Container Apps environment and a QA login on the shared server. Done when deployed."
+     },
+     {
+      "title": "Deploy a labelled revision per pull request",
+      "area": "infra",
+      "hours": 4,
+      "description": "Build the image and create a revision with label pr-<n> on every pull request update. Done when the URL answers."
+     },
+     {
+      "title": "Create, migrate and seed the database qa_pr_<n>",
+      "area": "infra",
+      "hours": 2,
+      "description": "Create the database on first deploy, apply migrations on every update and load sample data. Done when the QA API reads its own data."
+     },
+     {
+      "title": "Per pull request storage folder and settings",
+      "area": "infra",
+      "hours": 1,
+      "description": "Blob prefix and configuration per pull request, AI fake by default. Done when uploads stay separate."
+     },
+     {
+      "title": "Smoke test and pull request comment with the URL",
+      "area": "infra",
+      "hours": 2,
+      "description": "Call /health and a sample endpoint, then comment or update the URL on the pull request. Done when the check passes on a sample pull request."
+     },
+     {
+      "title": "Clean up when the pull request closes",
+      "area": "infra",
+      "hours": 2,
+      "description": "Remove the label and revision, drop the database and delete the files. Done when nothing is left after closing."
+     },
+     {
+      "title": "Hidden setting to point test builds at a QA URL",
+      "area": "ios",
+      "hours": 1,
+      "description": "Debug and TestFlight-internal builds only. Done when the app talks to a pull request's QA API."
+     },
+     {
+      "title": "Test a full pull request lifecycle",
+      "area": "testing",
+      "hours": 1,
+      "description": "Open, update, use from the phone, then merge. Done when QA is created and cleaned up correctly."
      }
     ]
    },
@@ -286,6 +443,18 @@
       "area": "backend",
       "hours": 1,
       "description": "Naming, pagination, dates (UTC), units. Done when docs/api-conventions.md exists."
+     },
+     {
+      "title": "API unit tests for API skeleton",
+      "area": "backend",
+      "hours": 2,
+      "description": "Unit tests for the domain logic and rules of this feature. Done when they run in the pipeline and cover the main cases."
+     },
+     {
+      "title": "API integration tests for API skeleton",
+      "area": "backend",
+      "hours": 1,
+      "description": "Endpoint tests against the database containers, including user scoping. Done when they run in the pipeline."
      }
     ]
    },
@@ -329,6 +498,18 @@
       "area": "backend",
       "hours": 3,
       "description": "Plot as its own entity to allow several plots later. Done when migrations apply."
+     },
+     {
+      "title": "API unit tests for Core data model ready for offline sync",
+      "area": "backend",
+      "hours": 2,
+      "description": "Unit tests for the domain logic and rules of this feature. Done when they run in the pipeline and cover the main cases."
+     },
+     {
+      "title": "API integration tests for Core data model ready for offline sync",
+      "area": "backend",
+      "hours": 1,
+      "description": "Endpoint tests against the database containers, including user scoping. Done when they run in the pipeline."
      },
      {
       "title": "Write integration tests for ownership isolation",
@@ -444,6 +625,18 @@
       "area": "content",
       "hours": 2,
       "description": "Tomato, broad bean; hoe, spade, wheelbarrow. Done when they validate and load."
+     },
+     {
+      "title": "API unit tests for Knowledge base schema for crops and tools",
+      "area": "backend",
+      "hours": 2,
+      "description": "Unit tests for the domain logic and rules of this feature. Done when they run in the pipeline and cover the main cases."
+     },
+     {
+      "title": "API integration tests for Knowledge base schema for crops and tools",
+      "area": "backend",
+      "hours": 1,
+      "description": "Endpoint tests against the database containers, including user scoping. Done when they run in the pipeline."
      }
     ]
    },
@@ -495,6 +688,18 @@
       "description": "Done when the iOS client can read a 7-day forecast."
      },
      {
+      "title": "API unit tests for Weather data service",
+      "area": "backend",
+      "hours": 2,
+      "description": "Unit tests for the domain logic and rules of this feature. Done when they run in the pipeline and cover the main cases."
+     },
+     {
+      "title": "API integration tests for Weather data service",
+      "area": "backend",
+      "hours": 1,
+      "description": "Endpoint tests against the database containers, including user scoping. Done when they run in the pipeline."
+     },
+     {
       "title": "Write tests for normals calculation",
       "area": "testing",
       "hours": 2,
@@ -542,6 +747,18 @@
       "area": "backend",
       "hours": 2,
       "description": "Done when a failing job sends an alert."
+     },
+     {
+      "title": "API unit tests for Background worker and scheduler",
+      "area": "backend",
+      "hours": 2,
+      "description": "Unit tests for the domain logic and rules of this feature. Done when they run in the pipeline and cover the main cases."
+     },
+     {
+      "title": "API integration tests for Background worker and scheduler",
+      "area": "backend",
+      "hours": 1,
+      "description": "Endpoint tests against the database containers, including user scoping. Done when they run in the pipeline."
      },
      {
       "title": "Test worker end-to-end in Azure",
@@ -606,6 +823,30 @@
       "description": "Reusable component with upload progress and retry. Done when used in a sample screen."
      },
      {
+      "title": "API unit tests for Media and photo upload service",
+      "area": "backend",
+      "hours": 2,
+      "description": "Unit tests for the domain logic and rules of this feature. Done when they run in the pipeline and cover the main cases."
+     },
+     {
+      "title": "API integration tests for Media and photo upload service",
+      "area": "backend",
+      "hours": 1,
+      "description": "Endpoint tests against the database containers, including user scoping. Done when they run in the pipeline."
+     },
+     {
+      "title": "iOS unit tests for Media and photo upload service",
+      "area": "ios",
+      "hours": 1,
+      "description": "Unit tests for the view models and formatting of this feature. Done when they run in the pipeline."
+     },
+     {
+      "title": "iOS UI tests for Media and photo upload service",
+      "area": "ios",
+      "hours": 2,
+      "description": "XCUITest flows for the screens of this feature against the fake API. Done when they run in the pipeline."
+     },
+     {
       "title": "Test photo upload on iPhone over mobile data",
       "area": "testing",
       "hours": 1,
@@ -659,6 +900,30 @@
       "area": "ios",
       "hours": 3,
       "description": "Done when tapping opens the right task or alert."
+     },
+     {
+      "title": "API unit tests for Push notification infrastructure",
+      "area": "backend",
+      "hours": 2,
+      "description": "Unit tests for the domain logic and rules of this feature. Done when they run in the pipeline and cover the main cases."
+     },
+     {
+      "title": "API integration tests for Push notification infrastructure",
+      "area": "backend",
+      "hours": 1,
+      "description": "Endpoint tests against the database containers, including user scoping. Done when they run in the pipeline."
+     },
+     {
+      "title": "iOS unit tests for Push notification infrastructure",
+      "area": "ios",
+      "hours": 1,
+      "description": "Unit tests for the view models and formatting of this feature. Done when they run in the pipeline."
+     },
+     {
+      "title": "iOS UI tests for Push notification infrastructure",
+      "area": "ios",
+      "hours": 2,
+      "description": "XCUITest flows for the screens of this feature against the fake API. Done when they run in the pipeline."
      },
      {
       "title": "Test push notifications on iPhone",
@@ -741,6 +1006,12 @@
       "description": "Run a set of inputs with expected outputs and report a score. Done when it runs from the command line and in CI on demand."
      },
      {
+      "title": "API integration tests for AI layer core",
+      "area": "backend",
+      "hours": 2,
+      "description": "Endpoint tests against the database containers, including user scoping. Done when they run in the pipeline."
+     },
+     {
       "title": "Test AI layer with real photos from the plot",
       "area": "testing",
       "hours": 2,
@@ -788,6 +1059,18 @@
       "area": "backend",
       "hours": 4,
       "description": "Combine vector and keyword results. Done when search returns relevant chunks with sources."
+     },
+     {
+      "title": "API unit tests for Embeddings and hybrid knowledge search",
+      "area": "backend",
+      "hours": 2,
+      "description": "Unit tests for the domain logic and rules of this feature. Done when they run in the pipeline and cover the main cases."
+     },
+     {
+      "title": "API integration tests for Embeddings and hybrid knowledge search",
+      "area": "backend",
+      "hours": 1,
+      "description": "Endpoint tests against the database containers, including user scoping. Done when they run in the pipeline."
      },
      {
       "title": "Write retrieval quality tests with sample questions",
@@ -851,6 +1134,30 @@
       "description": "Branded, localized screens. Done when the flow looks finished."
      },
      {
+      "title": "API unit tests for Sign-in and accounts",
+      "area": "backend",
+      "hours": 2,
+      "description": "Unit tests for the domain logic and rules of this feature. Done when they run in the pipeline and cover the main cases."
+     },
+     {
+      "title": "API integration tests for Sign-in and accounts",
+      "area": "backend",
+      "hours": 1,
+      "description": "Endpoint tests against the database containers, including user scoping. Done when they run in the pipeline."
+     },
+     {
+      "title": "iOS unit tests for Sign-in and accounts",
+      "area": "ios",
+      "hours": 1,
+      "description": "Unit tests for the view models and formatting of this feature. Done when they run in the pipeline."
+     },
+     {
+      "title": "iOS UI tests for Sign-in and accounts",
+      "area": "ios",
+      "hours": 2,
+      "description": "XCUITest flows for the screens of this feature against the fake API. Done when they run in the pipeline."
+     },
+     {
       "title": "Test sign-in with all three providers on iPhone",
       "area": "testing",
       "hours": 2,
@@ -898,6 +1205,30 @@
       "area": "infra",
       "hours": 2,
       "description": "Done when a missing string fails the check."
+     },
+     {
+      "title": "API unit tests for Portuguese and English",
+      "area": "backend",
+      "hours": 1,
+      "description": "Unit tests for the domain logic and rules of this feature. Done when they run in the pipeline and cover the main cases."
+     },
+     {
+      "title": "API integration tests for Portuguese and English",
+      "area": "backend",
+      "hours": 1,
+      "description": "Endpoint tests against the database containers, including user scoping. Done when they run in the pipeline."
+     },
+     {
+      "title": "iOS unit tests for Portuguese and English",
+      "area": "ios",
+      "hours": 1,
+      "description": "Unit tests for the view models and formatting of this feature. Done when they run in the pipeline."
+     },
+     {
+      "title": "iOS UI tests for Portuguese and English",
+      "area": "ios",
+      "hours": 1,
+      "description": "XCUITest flows for the screens of this feature against the fake API. Done when they run in the pipeline."
      },
      {
       "title": "Test the app in both languages",
@@ -952,6 +1283,18 @@
       "area": "backend",
       "hours": 2,
       "description": "Done when recommendations store them."
+     },
+     {
+      "title": "API unit tests for Activity log",
+      "area": "backend",
+      "hours": 2,
+      "description": "Unit tests for the domain logic and rules of this feature. Done when they run in the pipeline and cover the main cases."
+     },
+     {
+      "title": "API integration tests for Activity log",
+      "area": "backend",
+      "hours": 1,
+      "description": "Endpoint tests against the database containers, including user scoping. Done when they run in the pipeline."
      },
      {
       "title": "Write tests for projections and event ordering",
@@ -1009,6 +1352,18 @@
       "description": "Done when the app shows the content version in settings."
      },
      {
+      "title": "API unit tests for Knowledge base pipeline",
+      "area": "backend",
+      "hours": 2,
+      "description": "Unit tests for the domain logic and rules of this feature. Done when they run in the pipeline and cover the main cases."
+     },
+     {
+      "title": "API integration tests for Knowledge base pipeline",
+      "area": "backend",
+      "hours": 1,
+      "description": "Endpoint tests against the database containers, including user scoping. Done when they run in the pipeline."
+     },
+     {
       "title": "Test the full content flow with a sample change",
       "area": "testing",
       "hours": 1,
@@ -1050,6 +1405,30 @@
       "area": "ios",
       "hours": 3,
       "description": "Confirmation and progress states. Done when both flows work."
+     },
+     {
+      "title": "API unit tests for Account deletion and data export",
+      "area": "backend",
+      "hours": 2,
+      "description": "Unit tests for the domain logic and rules of this feature. Done when they run in the pipeline and cover the main cases."
+     },
+     {
+      "title": "API integration tests for Account deletion and data export",
+      "area": "backend",
+      "hours": 1,
+      "description": "Endpoint tests against the database containers, including user scoping. Done when they run in the pipeline."
+     },
+     {
+      "title": "iOS unit tests for Account deletion and data export",
+      "area": "ios",
+      "hours": 1,
+      "description": "Unit tests for the view models and formatting of this feature. Done when they run in the pipeline."
+     },
+     {
+      "title": "iOS UI tests for Account deletion and data export",
+      "area": "ios",
+      "hours": 2,
+      "description": "XCUITest flows for the screens of this feature against the fake API. Done when they run in the pipeline."
      },
      {
       "title": "Test deletion and export with a test account",
@@ -1130,6 +1509,30 @@
       "area": "testing",
       "hours": 3,
       "description": "Done when tests pass."
+     },
+     {
+      "title": "API unit tests for Offline sync",
+      "area": "backend",
+      "hours": 3,
+      "description": "Unit tests for the domain logic and rules of this feature. Done when they run in the pipeline and cover the main cases."
+     },
+     {
+      "title": "API integration tests for Offline sync",
+      "area": "backend",
+      "hours": 2,
+      "description": "Endpoint tests against the database containers, including user scoping. Done when they run in the pipeline."
+     },
+     {
+      "title": "iOS unit tests for Offline sync",
+      "area": "ios",
+      "hours": 2,
+      "description": "Unit tests for the view models and formatting of this feature. Done when they run in the pipeline."
+     },
+     {
+      "title": "iOS UI tests for Offline sync",
+      "area": "ios",
+      "hours": 3,
+      "description": "XCUITest flows for the screens of this feature against the fake API. Done when they run in the pipeline."
      },
      {
       "title": "Test offline use at the plot with airplane mode",
@@ -1215,6 +1618,18 @@
       "description": "Done when a build installs from internal testing."
      },
      {
+      "title": "Android build, unit and UI test jobs, path-filtered",
+      "area": "infra",
+      "hours": 3,
+      "description": "Gradle build, unit tests and emulator UI tests on Linux, only when android/ or the OpenAPI file changes; required on Android pull requests. Done when a failing test blocks merge."
+     },
+     {
+      "title": "Android unit and UI tests for Android app",
+      "area": "android",
+      "hours": 4,
+      "description": "Unit tests for view models and Compose UI tests for the main flows, run in CI. Done when they pass in the pipeline."
+     },
+     {
       "title": "Test the skeleton on an Android phone",
       "area": "testing",
       "hours": 1,
@@ -1263,6 +1678,12 @@
       "description": "Reimplement the iOS behaviour in Compose using the shared API. Done when it matches the iOS acceptance criteria for plot mapping."
      },
      {
+      "title": "Android unit and UI tests for Plot mapping",
+      "area": "android",
+      "hours": 2,
+      "description": "Unit tests for view models and Compose UI tests for the main flows, run in CI. Done when they pass in the pipeline."
+     },
+     {
       "title": "Test plot mapping on an Android phone",
       "area": "testing",
       "hours": 2,
@@ -1303,6 +1724,12 @@
       "area": "android",
       "hours": 3,
       "description": "Reimplement the iOS behaviour in Compose using the shared API. Done when it matches the iOS acceptance criteria for crops and planting calendar."
+     },
+     {
+      "title": "Android unit and UI tests for Crops and planting calendar",
+      "area": "android",
+      "hours": 2,
+      "description": "Unit tests for view models and Compose UI tests for the main flows, run in CI. Done when they pass in the pipeline."
      },
      {
       "title": "Test crops and planting calendar on an Android phone",
@@ -1347,6 +1774,12 @@
       "description": "Reimplement the iOS behaviour in Compose using the shared API. Done when it matches the iOS acceptance criteria for roadmap, 'today' screen and first-run setup."
      },
      {
+      "title": "Android unit and UI tests for Roadmap, 'Today' screen and first-run setup",
+      "area": "android",
+      "hours": 2,
+      "description": "Unit tests for view models and Compose UI tests for the main flows, run in CI. Done when they pass in the pipeline."
+     },
+     {
       "title": "Test roadmap, 'today' screen and first-run setup on an Android phone",
       "area": "testing",
       "hours": 2,
@@ -1387,6 +1820,12 @@
       "area": "android",
       "hours": 3,
       "description": "Reimplement the iOS behaviour in Compose using the shared API. Done when it matches the iOS acceptance criteria for journal."
+     },
+     {
+      "title": "Android unit and UI tests for Journal",
+      "area": "android",
+      "hours": 2,
+      "description": "Unit tests for view models and Compose UI tests for the main flows, run in CI. Done when they pass in the pipeline."
      },
      {
       "title": "Test journal on an Android phone",
@@ -1431,6 +1870,12 @@
       "description": "Reimplement the iOS behaviour in Compose using the shared API. Done when it matches the iOS acceptance criteria for tasks and reminders."
      },
      {
+      "title": "Android unit and UI tests for Tasks and reminders",
+      "area": "android",
+      "hours": 2,
+      "description": "Unit tests for view models and Compose UI tests for the main flows, run in CI. Done when they pass in the pipeline."
+     },
+     {
       "title": "Test tasks and reminders on an Android phone",
       "area": "testing",
       "hours": 2,
@@ -1465,6 +1910,12 @@
       "area": "android",
       "hours": 3,
       "description": "Reimplement the iOS behaviour in Compose using the shared API. Done when it matches the iOS acceptance criteria for tools."
+     },
+     {
+      "title": "Android unit and UI tests for Tools",
+      "area": "android",
+      "hours": 2,
+      "description": "Unit tests for view models and Compose UI tests for the main flows, run in CI. Done when they pass in the pipeline."
      },
      {
       "title": "Test tools on an Android phone",
@@ -1509,6 +1960,12 @@
       "description": "Reimplement the iOS behaviour in Compose using the shared API. Done when it matches the iOS acceptance criteria for irrigation planner."
      },
      {
+      "title": "Android unit and UI tests for Irrigation planner",
+      "area": "android",
+      "hours": 2,
+      "description": "Unit tests for view models and Compose UI tests for the main flows, run in CI. Done when they pass in the pipeline."
+     },
+     {
       "title": "Test irrigation planner on an Android phone",
       "area": "testing",
       "hours": 2,
@@ -1545,6 +2002,12 @@
       "description": "Reimplement the iOS behaviour in Compose using the shared API. Done when it matches the iOS acceptance criteria for guides."
      },
      {
+      "title": "Android unit and UI tests for Guides",
+      "area": "android",
+      "hours": 2,
+      "description": "Unit tests for view models and Compose UI tests for the main flows, run in CI. Done when they pass in the pipeline."
+     },
+     {
       "title": "Test guides on an Android phone",
       "area": "testing",
       "hours": 2,
@@ -1579,6 +2042,12 @@
       "area": "android",
       "hours": 3,
       "description": "Reimplement the iOS behaviour in Compose using the shared API. Done when it matches the iOS acceptance criteria for weather alerts."
+     },
+     {
+      "title": "Android unit and UI tests for Weather alerts",
+      "area": "android",
+      "hours": 2,
+      "description": "Unit tests for view models and Compose UI tests for the main flows, run in CI. Done when they pass in the pipeline."
      },
      {
       "title": "Test weather alerts on an Android phone",
@@ -1623,6 +2092,12 @@
       "description": "Reimplement the iOS behaviour in Compose using the shared API. Done when it matches the iOS acceptance criteria for ai photo features."
      },
      {
+      "title": "Android unit and UI tests for AI photo features",
+      "area": "android",
+      "hours": 2,
+      "description": "Unit tests for view models and Compose UI tests for the main flows, run in CI. Done when they pass in the pipeline."
+     },
+     {
       "title": "Test ai photo features on an Android phone",
       "area": "testing",
       "hours": 2,
@@ -1657,6 +2132,12 @@
       "area": "android",
       "hours": 5,
       "description": "Reimplement the iOS behaviour in Compose using the shared API. Done when it matches the iOS acceptance criteria for season planner."
+     },
+     {
+      "title": "Android unit and UI tests for Season planner",
+      "area": "android",
+      "hours": 2,
+      "description": "Unit tests for view models and Compose UI tests for the main flows, run in CI. Done when they pass in the pipeline."
      },
      {
       "title": "Test season planner on an Android phone",
@@ -1695,6 +2176,12 @@
       "description": "Reimplement the iOS behaviour in Compose using the shared API. Done when it matches the iOS acceptance criteria for ai assistant."
      },
      {
+      "title": "Android unit and UI tests for AI assistant",
+      "area": "android",
+      "hours": 2,
+      "description": "Unit tests for view models and Compose UI tests for the main flows, run in CI. Done when they pass in the pipeline."
+     },
+     {
       "title": "Test ai assistant on an Android phone",
       "area": "testing",
       "hours": 2,
@@ -1729,6 +2216,12 @@
       "area": "android",
       "hours": 3,
       "description": "Reimplement the iOS behaviour in Compose using the shared API. Done when it matches the iOS acceptance criteria for settings, privacy and accessibility."
+     },
+     {
+      "title": "Android unit and UI tests for Settings, privacy and accessibility",
+      "area": "android",
+      "hours": 2,
+      "description": "Unit tests for view models and Compose UI tests for the main flows, run in CI. Done when they pass in the pipeline."
      },
      {
       "title": "Test settings, privacy and accessibility on an Android phone",
@@ -1800,6 +2293,12 @@
       "area": "android",
       "hours": 8,
       "description": "Done when Android works offline and syncs."
+     },
+     {
+      "title": "Android unit and UI tests for good-to-have features",
+      "area": "android",
+      "hours": 4,
+      "description": "Unit tests for view models and Compose UI tests for the main flows, run in CI. Done when they pass in the pipeline."
      },
      {
       "title": "Test Android parity on a real phone",

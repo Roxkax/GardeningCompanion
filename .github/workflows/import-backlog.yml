@@ -1,7 +1,8 @@
 name: Import backlog
 
 # Creates labels, sprint milestones and the Epic -> Feature -> Task issues
-# from planning/backlog/backlog.json. Safe to re-run: existing issues are skipped.
+# from planning/backlog/backlog.json. Safe to re-run: existing issues are updated
+# if they changed, missing ones are created, then all are added to the sprint board.
 on:
   workflow_dispatch:
     inputs:
@@ -34,3 +35,9 @@ jobs:
           LIMIT: ${{ inputs.limit }}
           DRY_RUN: ${{ inputs.dry_run }}
           PAUSE_SECONDS: "4"
+      - name: Add new issues to the sprint board
+        run: |
+          if [ -n "$PROJECT_TOKEN" ]; then python3 planning/backlog/setup_project.py; else echo "No PROJECT_TOKEN; board not updated"; fi
+        env:
+          PROJECT_TOKEN: ${{ secrets.PROJECT_TOKEN || secrets.BACKLOG_ADMIN_TOKEN }}
+          PAUSE_SECONDS: "1.5"

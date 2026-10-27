@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Create labels, sprint milestones and the Epic -> Feature -> Task issue tree
 from backlog.json. Idempotent: issues already carrying a backlog-key marker are
-skipped, so the import can be re-run to resume after a failure.
+not created again, so the import can be re-run to resume after a failure. Existing
+issues whose title, body, sprint or labels changed in backlog.json are updated.
 
 Runs in GitHub Actions with GITHUB_TOKEN (see .github/workflows/import-backlog.yml).
 """
@@ -90,6 +91,9 @@ def main():
         if m["title"] not in milestones and not DRY_RUN:
             milestones[m["title"]] = rest("POST", f"/repos/{REPO}/milestones", m)
             print("milestone created:", m["title"])
+        elif not DRY_RUN and milestones[m["title"]].get("description") != m["description"]:
+            rest("PATCH", f"/repos/{REPO}/milestones/{milestones[m['title']]['number']}", {"description": m["description"]})
+            print("milestone updated:", m["title"])
 
     # Node IDs for GraphQL
     meta = graphql("""query($o:String!,$n:String!){repository(owner:$o,name:$n){id
@@ -99,12 +103,34 @@ def main():
     label_ids = {l["name"]: l["id"] for l in repo["labels"]["nodes"]}
 
     # Issues already imported
-    done = {}
+    done, current = {}, {}
     for issue in paginate(f"/repos/{REPO}/issues?state=all&per_page=100"):
         m = MARKER.search(issue.get("body") or "")
         if m:
             done[m.group(1)] = {"number": issue["number"], "id": issue["id"], "node_id": issue["node_id"]}
+            current[m.group(1)] = issue
     print(f"{len(done)} backlog issues already exist; {len(backlog['issues'])} in backlog.json")
+
+    # Update existing issues that changed in backlog.json (sprint moves, new wording, labels)
+    updated = 0
+    for item in backlog["issues"]:
+        issue = current.get(item["key"])
+        if not issue:
+            continue
+        milestone = (issue.get("milestone") or {}).get("title")
+        labels = sorted(l["name"] for l in issue.get("labels", []))
+        if (issue["title"], (issue.get("body") or "").strip(), milestone, labels) == \
+                (item["title"], item["body"].strip(), item["milestone"], sorted(item["labels"])):
+            continue
+        if DRY_RUN:
+            print("would update:", item["title"])
+            continue
+        patch = {"title": item["title"], "body": item["body"], "labels": item["labels"],
+                 "milestone": milestones[item["milestone"]]["number"] if item["milestone"] else None}
+        rest("PATCH", f"/repos/{REPO}/issues/{issue['number']}", patch)
+        updated += 1
+        time.sleep(PAUSE / 2)
+    print(f"Updated {updated} existing issues")
 
     use_parent_field = True
     created = 0
@@ -147,7 +173,7 @@ def main():
         time.sleep(PAUSE)
 
     remaining = sum(1 for i in backlog["issues"] if i["key"] not in done)
-    summary = f"Created {created} issues. {remaining} still to create."
+    summary = f"Created {created} issues, updated {updated}. {remaining} still to create."
     print(summary)
     if os.environ.get("GITHUB_STEP_SUMMARY"):
         with open(os.environ["GITHUB_STEP_SUMMARY"], "a") as f:
