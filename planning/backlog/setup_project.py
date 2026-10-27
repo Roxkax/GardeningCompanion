@@ -124,49 +124,69 @@ def estimate_field(project_id):
     return created["createProjectV2Field"]["projectV2Field"]["id"]
 
 
-def existing_items(project_id):
-    """Map issue node id -> True for issues already on the project."""
-    seen, cursor = set(), None
+def board_items(project_id):
+    """All project items: issue node id, item id, issue body and current estimate."""
+    items, cursor = [], None
     while True:
         data = graphql("""query($p:ID!,$c:String){node(id:$p){... on ProjectV2{items(first:100,after:$c){
-            pageInfo{hasNextPage endCursor} nodes{content{... on Issue{id}}}}}}}""", {"p": project_id, "c": cursor})
-        items = data["node"]["items"]
-        seen.update(n["content"]["id"] for n in items["nodes"] if n.get("content"))
-        if not items["pageInfo"]["hasNextPage"]:
-            return seen
-        cursor = items["pageInfo"]["endCursor"]
+            pageInfo{hasNextPage endCursor} nodes{id content{... on Issue{id body}}
+            estimate:fieldValueByName(name:"%s"){... on ProjectV2ItemFieldNumberValue{number}}}}}}}""" % ESTIMATE,
+                       {"p": project_id, "c": cursor})
+        page = data["node"]["items"]
+        for n in page["nodes"]:
+            if n.get("content"):
+                items.append({"item": n["id"], "issue": n["content"]["id"], "body": n["content"].get("body") or "",
+                              "estimate": (n.get("estimate") or {}).get("number")})
+        if not page["pageInfo"]["hasNextPage"]:
+            return items
+        cursor = page["pageInfo"]["endCursor"]
 
 
 def main():
     owner, name = REPO.split("/")
     project_id, url = find_or_create_project(owner, name)
     field_id = estimate_field(project_id)
-    on_board = existing_items(project_id)
+    on_board = {i["issue"] for i in board_items(project_id)}
 
     issues = [i for i in paginate(f"/repos/{REPO}/issues?state=all&per_page=100")
               if "pull_request" not in i and MARKER.search(i.get("body") or "")]
     issues.sort(key=lambda i: i["number"])
     print(f"{len(issues)} backlog issues, {len(on_board)} already on the board")
 
+    # 1. Add missing issues. The project's built-in "auto-add sub-issues" workflow may add
+    #    children on its own while this runs, so "already exists" is not an error.
     added = 0
     for issue in issues:
         if issue["node_id"] in on_board:
             continue
-        res = graphql("""mutation($p:ID!,$c:ID!){addProjectV2ItemById(input:{projectId:$p,contentId:$c}){item{id}}}""",
-                      {"p": project_id, "c": issue["node_id"]})
-        item_id = res["addProjectV2ItemById"]["item"]["id"]
-        hours = HOURS.search(issue.get("body") or "")
-        if hours:
-            time.sleep(PAUSE / 2)
-            graphql("""mutation($p:ID!,$i:ID!,$f:ID!,$v:Float!){updateProjectV2ItemFieldValue(input:{
-                projectId:$p,itemId:$i,fieldId:$f,value:{number:$v}}){projectV2Item{id}}}""",
-                    {"p": project_id, "i": item_id, "f": field_id, "v": float(hours.group(1))})
+        try:
+            graphql("""mutation($p:ID!,$c:ID!){addProjectV2ItemById(input:{projectId:$p,contentId:$c}){item{id}}}""",
+                    {"p": project_id, "c": issue["node_id"]})
+        except RuntimeError as exc:
+            if "already exists" not in str(exc):
+                raise
         added += 1
         if added % 50 == 0:
             print(f"  {added} added")
         time.sleep(PAUSE)
 
-    summary = f"Added {added} issues to the project {url}"
+    # 2. Fill Estimate (h) on every task that doesn't have it yet.
+    time.sleep(10)
+    filled = 0
+    for item in board_items(project_id):
+        hours = HOURS.search(item["body"])
+        if not hours or item["estimate"] == float(hours.group(1)):
+            continue
+        graphql("""mutation($p:ID!,$i:ID!,$f:ID!,$v:Float!){updateProjectV2ItemFieldValue(input:{
+            projectId:$p,itemId:$i,fieldId:$f,value:{number:$v}}){projectV2Item{id}}}""",
+                {"p": project_id, "i": item["item"], "f": field_id, "v": float(hours.group(1))})
+        filled += 1
+        if filled % 100 == 0:
+            print(f"  {filled} estimates set")
+        time.sleep(PAUSE / 2)
+    print(f"Set {filled} estimates")
+
+    summary = f"Added {added} issues and set {filled} estimates on the project {url}"
     print(summary)
     if os.environ.get("GITHUB_STEP_SUMMARY"):
         with open(os.environ["GITHUB_STEP_SUMMARY"], "a") as f:
