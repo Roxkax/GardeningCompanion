@@ -59,7 +59,7 @@
  "milestones": [
   {
    "title": "Sprint 01",
-   "description": "Release tier: MVP · Capacity 100 h · Planned 99 h · Foundations 99 h"
+   "description": "Release tier: MVP · Capacity 100 h · Planned 100 h · Foundations 100 h"
   },
   {
    "title": "Sprint 02",
@@ -211,7 +211,7 @@
    "labels": [
     "epic"
    ],
-   "body": "The platform everything else builds on: repository, local development, CI, Azure infrastructure, API skeleton, data model, iOS skeleton, sign-in, languages, activity log, knowledge base pipeline, shared services (weather, media, notifications, background worker, AI layer, search) and account deletion and export. Offline sync is a good-to-have feature built on top of a data model designed for it from day one.\n\n**Plan:** PLAN.md §2, §4, §5\n\n**Features:** 21 MVP, 1 Good to have\n**Estimated effort:** 426 h (scheduled features)\n\n<!-- backlog-key: E00 -->",
+   "body": "The platform everything else builds on: repository, local development, CI, Azure infrastructure, API skeleton, data model, iOS skeleton, sign-in, languages, activity log, knowledge base pipeline, shared services (weather, media, notifications, background worker, AI layer, search) and account deletion and export. Offline sync is a good-to-have feature built on top of a data model designed for it from day one.\n\n**Plan:** PLAN.md §2, §4, §5\n\n**Features:** 21 MVP, 1 Good to have\n**Estimated effort:** 427 h (scheduled features)\n\n<!-- backlog-key: E00 -->",
    "parent": null,
    "milestone": null
   },
@@ -519,7 +519,7 @@
    "labels": [
     "MVP"
    ],
-   "body": "**User story:** As the developer, I want the Azure environment defined as code and deployed automatically so that it is reproducible and cheap to run.\n\n**Acceptance criteria**\n- [ ] Bicep templates create Container Apps (prod and QA apps), PostgreSQL Flexible Server, Blob Storage, Key Vault, Notification Hubs and Application Insights\n- [ ] Resources use the cheapest tiers that fit (scale to zero, burstable B1ms); prod and QA databases share the one server with separate logins\n- [ ] Prod deploys automatically when main changes: build, migrate, start the new revision, health check, then switch traffic\n- [ ] If the health check fails, traffic stays on the previous revision\n- [ ] Secrets live in Key Vault and are accessed with managed identity\n- [ ] A monthly budget alert is configured\n\n**Release tier:** MVP\n**Estimated effort:** 24 h across 11 tasks (includes testing)\n**Sprints:** Sprint 01\n**Depends on:** Repository structure and .NET solution; Continuous integration\n**Plan:** PLAN.md §2, §4, §5 · row X.E00.4\n\n<!-- backlog-key: E00/X.E00.4 -->",
+   "body": "**User story:** As the developer, I want the Azure environment defined as code and deployed automatically so that it is reproducible and cheap to run.\n\n**Acceptance criteria**\n- [ ] Bicep templates create Container Apps (prod and QA apps), PostgreSQL Flexible Server, Blob Storage, Key Vault, Notification Hubs and Application Insights\n- [ ] Resources use the cheapest tiers that fit (scale to zero, burstable B1ms); prod and QA databases share the one server with separate logins\n- [ ] Prod deploys automatically when main changes: build, migrate, start the new revision, health check, then switch traffic\n- [ ] If the health check fails, traffic stays on the previous revision\n- [ ] Secrets live in Key Vault and are accessed with managed identity\n- [ ] A monthly budget alert is configured\n- [ ] Container images live in GitHub Container Registry (ghcr.io), not Azure Container Registry\n\n**Release tier:** MVP\n**Estimated effort:** 25 h across 12 tasks (includes testing)\n**Sprints:** Sprint 01\n**Depends on:** Repository structure and .NET solution; Continuous integration\n**Plan:** PLAN.md §2, §4, §5 · row X.E00.4\n\n<!-- backlog-key: E00/X.E00.4 -->",
    "parent": "E00",
    "milestone": null
   },
@@ -623,7 +623,7 @@
     "MVP",
     "area:infra"
    ],
-   "body": "Build the image, push to the registry and create a new revision when main changes. Done when a merge deploys automatically.\n\n**Estimate:** 4 h (includes testing)\n**Area:** Infra\n**Sprint:** Sprint 01\n**Feature:** Azure infrastructure and deployment (MVP)\n\n<!-- backlog-key: E00/X.E00.4/T8 -->",
+   "body": "Build the image, push it to GitHub Container Registry (ghcr.io) and create a new revision when main changes. Done when a merge deploys automatically.\n\n**Estimate:** 4 h (includes testing)\n**Area:** Infra\n**Sprint:** Sprint 01\n**Feature:** Azure infrastructure and deployment (MVP)\n\n<!-- backlog-key: E00/X.E00.4/T8 -->",
    "parent": "E00/X.E00.4",
    "milestone": "Sprint 01"
   },
@@ -656,13 +656,26 @@
   {
    "key": "E00/X.E00.4/T11",
    "kind": "task",
+   "title": "[Infra] Pull images from GitHub Container Registry",
+   "type": "Task",
+   "labels": [
+    "MVP",
+    "area:infra"
+   ],
+   "body": "Read-only registry token in Key Vault and the Container Apps registry setting for ghcr.io. Done when prod and QA pull private images.\n\n**Estimate:** 1 h (includes testing)\n**Area:** Infra\n**Sprint:** Sprint 01\n**Feature:** Azure infrastructure and deployment (MVP)\n\n<!-- backlog-key: E00/X.E00.4/T11 -->",
+   "parent": "E00/X.E00.4",
+   "milestone": "Sprint 01"
+  },
+  {
+   "key": "E00/X.E00.4/T12",
+   "kind": "task",
    "title": "[Test] Test end-to-end deployment and cold start",
    "type": "Task",
    "labels": [
     "MVP",
     "area:testing"
    ],
-   "body": "Deploy, wait for scale to zero, call the API and measure the first response. Done when it works and timing is noted.\n\n**Estimate:** 2 h (includes testing)\n**Area:** Test\n**Sprint:** Sprint 01\n**Feature:** Azure infrastructure and deployment (MVP)\n\n<!-- backlog-key: E00/X.E00.4/T11 -->",
+   "body": "Deploy, wait for scale to zero, call the API and measure the first response. Done when it works and timing is noted.\n\n**Estimate:** 2 h (includes testing)\n**Area:** Test\n**Sprint:** Sprint 01\n**Feature:** Azure infrastructure and deployment (MVP)\n\n<!-- backlog-key: E00/X.E00.4/T12 -->",
    "parent": "E00/X.E00.4",
    "milestone": "Sprint 01"
   },
@@ -790,7 +803,7 @@
     "MVP",
     "area:infra"
    ],
-   "body": "Build the image and create a revision with label pr-<n> on every pull request update. Done when the URL answers.\n\n**Estimate:** 4 h (includes testing)\n**Area:** Infra\n**Sprint:** Sprint 01\n**Feature:** QA version per pull request (MVP)\n\n<!-- backlog-key: E00/X.E00.16/T2 -->",
+   "body": "Build the image, push it to ghcr.io with the pr-<n> tag and create a revision labelled pr-<n> on every pull request update. Done when the URL answers.\n\n**Estimate:** 4 h (includes testing)\n**Area:** Infra\n**Sprint:** Sprint 01\n**Feature:** QA version per pull request (MVP)\n\n<!-- backlog-key: E00/X.E00.16/T2 -->",
    "parent": "E00/X.E00.16",
    "milestone": "Sprint 01"
   },

@@ -190,7 +190,8 @@
      "Prod deploys automatically when main changes: build, migrate, start the new revision, health check, then switch traffic",
      "If the health check fails, traffic stays on the previous revision",
      "Secrets live in Key Vault and are accessed with managed identity",
-     "A monthly budget alert is configured"
+     "A monthly budget alert is configured",
+     "Container images live in GitHub Container Registry (ghcr.io), not Azure Container Registry"
     ],
     "depends_on": [
      "X.E00.1",
@@ -243,7 +244,7 @@
       "title": "Prod deploy workflow on main with OIDC to Azure",
       "area": "infra",
       "hours": 4,
-      "description": "Build the image, push to the registry and create a new revision when main changes. Done when a merge deploys automatically."
+      "description": "Build the image, push it to GitHub Container Registry (ghcr.io) and create a new revision when main changes. Done when a merge deploys automatically."
      },
      {
       "title": "Run database migrations as part of deployment",
@@ -256,6 +257,12 @@
       "area": "infra",
       "hours": 2,
       "description": "Move traffic to the new revision only after /health passes; otherwise keep the old one and fail the run. Done when a broken build is kept out of traffic."
+     },
+     {
+      "title": "Pull images from GitHub Container Registry",
+      "area": "infra",
+      "hours": 1,
+      "description": "Read-only registry token in Key Vault and the Container Apps registry setting for ghcr.io. Done when prod and QA pull private images."
      },
      {
       "title": "Test end-to-end deployment and cold start",
@@ -351,7 +358,7 @@
       "title": "Deploy a labelled revision per pull request",
       "area": "infra",
       "hours": 4,
-      "description": "Build the image and create a revision with label pr-<n> on every pull request update. Done when the URL answers."
+      "description": "Build the image, push it to ghcr.io with the pr-<n> tag and create a revision labelled pr-<n> on every pull request update. Done when the URL answers."
      },
      {
       "title": "Create, migrate and seed the database qa_pr_<n>",

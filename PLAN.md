@@ -461,6 +461,7 @@ The API deploys automatically; the mobile apps are released by hand (TestFlight,
   6. **QA deploy and smoke test.**
   Android checks are added with the Android app (Linux runner, only when `android/` changes).
 - **QA: one version per pull request.** Each pull request gets its own Container Apps revision with its own URL (label `pr-<n>`), its own database `qa_pr_<n>` with the schema and sample data, and its own storage folder; the AI uses the fake provider unless switched on. The pipeline comments the URL on the pull request. When the pull request is merged or closed, the revision, database and files are removed. Test builds of the app have a hidden setting to point at a QA URL.
+- **Container images** are stored in **GitHub Container Registry** (ghcr.io, private, free at this size) instead of Azure Container Registry; Container Apps pull them with a read-only registry token kept in Key Vault.
 - **Prod: deploys when `main` changes** (merging a pull request updates `main`): build the image, run the database migrations, start the new revision, check its health, then move traffic to it. If the health check fails, traffic stays on the old revision.
 - **Databases:** prod and QA databases live on the **same PostgreSQL server**, with separate databases and logins, so QA adds no cost.
 - **Tests are part of every feature:** each feature's tasks include API unit tests, API integration tests, iOS unit tests and iOS UI tests (Android tests in each Android port), on top of the manual "Test on iPhone" check.
