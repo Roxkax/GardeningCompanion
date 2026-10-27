@@ -81,6 +81,11 @@ def graphql(query, variables, attempt=0):
         print(f"  GraphQL rate limited, waiting {wait}s")
         time.sleep(wait)
         return graphql(query, variables, attempt + 1)
+    if errors and any("Something went wrong" in (e.get("message") or "") for e in errors) and attempt < 5:
+        wait = 15 * (attempt + 1)
+        print(f"  GitHub server error, retrying in {wait}s")
+        time.sleep(wait)
+        return graphql(query, variables, attempt + 1)
     if errors:
         raise RuntimeError(f"GraphQL error: {errors}")
     return result["data"]
