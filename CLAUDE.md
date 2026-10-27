@@ -23,6 +23,7 @@ A native mobile app that guides a complete beginner from unused land to a produc
 - **Cost:** keep Azure costs as low as possible during the individual phase. Prefer pay-per-use and scale-to-zero services.
 - **Commercial readiness:** design for multiple users from day one, and flag licensing or terms-of-service issues for commercial use.
 - **Git:** commit and push planning documents to `master` after each confirmed change.
+- **Commit identity:** every commit is authored and committed as **Diogo Gonçalves <rxkax@hotmail.com>** (set `git config user.name` and `user.email` in each new session). Claude keeps its `Co-Authored-By` line in the message. All earlier commits were rewritten to this identity on 2026-10-27, so collaborators can be told apart later.
 
 ## Work tracking on GitHub
 The owner is used to Azure DevOps, so the same hierarchy is used, built with sub-issues:
