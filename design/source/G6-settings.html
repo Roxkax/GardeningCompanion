@@ -41,12 +41,11 @@
       <svg width="27" height="13" viewBox="0 0 27 13"><rect x="0.5" y="0.5" width="23" height="12" rx="3.5" fill="none" stroke="#1F2A20" opacity=".4"/><rect x="2" y="2" width="18" height="9" rx="2" fill="#1F2A20"/><path d="M25 4.5v4a2 2 0 0 0 0-4z" fill="#1F2A20" opacity=".4"/></svg>
     </span>
   </div>
-  <div class="nav">
-    <div class="back"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2D6A3A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></div>
-    <span style="font-size: 17px; color: var(--green); font-weight: 600">Me</span>
+  <div class="nav" style="position: relative; height: 48px">
+    <div style="display: flex; align-items: center; gap: 2px; color: var(--green); font-size: 17px; font-weight: 600; height: 44px"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2D6A3A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>Me</div>
+    <span style="position: absolute; left: 50%; transform: translateX(-50%); font-size: 17px; font-weight: 700">Settings</span>
   </div>
   <div class="body">
-    <h1>Settings</h1>
 
     <div class="label">General</div>
     <div class="group">
@@ -59,21 +58,25 @@
       <div class="row">Morning summary<span class="v">8:00 <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="#8A9386" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span></div>
       <div class="row">Quiet hours<span class="v">22:00–7:00 <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="#8A9386" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span></div>
       <div class="row">Urgent weather alerts override<div class="toggle"></div></div>
+      <div class="row">Plan next week reminder<span class="v">Monday <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="#8A9386" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span></div>
     </div>
 
     <div class="label">Garden and AI</div>
     <div class="group">
       <div class="row">Always own tools<div class="toggle"></div></div>
+      <div class="row">Garden calendar on iPhone<span class="v">On <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="#8A9386" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span></div>
+      <div class="row">Garden report<span class="v">Weekly, Monday <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="#8A9386" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span></div>
       <div class="meter">
         <div class="top">AI usage this month<span>42 of 200</span></div>
         <div class="bar"><i></i></div>
-        <small>Photo checks and questions · resets 1 Nov</small>
+        <small>Photo checks, the assistant and weekly reviews · resets 1 Nov</small>
       </div>
     </div>
 
     <div class="label">Privacy and account</div>
     <div class="group">
       <div class="row" style="padding-top: 8px; padding-bottom: 8px"><svg class="check" viewBox="0 0 24 24" fill="none" stroke="#2D6A3A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/></svg><span>Privacy<br><span style="font-size: 13px; color: var(--muted)">Photo locations removed · plot kept private</span></span><span class="v"><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="#8A9386" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span></div>
+      <div class="row">Share anonymous crash reports<div class="toggle"></div></div>
       <div class="row">Export my data<span class="v"><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="#8A9386" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></span></div>
       <div class="row danger">Delete account</div>
     </div>
