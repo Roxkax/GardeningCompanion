@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>F4 Garden report</title>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="frame.css">
+<style>
+  .nav { flex: none; height: 48px; display: flex; align-items: center; justify-content: space-between; padding: 0 12px 0 8px; }
+  .back { display: flex; align-items: center; gap: 2px; color: var(--green); font-size: 17px; font-weight: 600; min-height: 44px; width: 96px; }
+  .nav b { font-size: 17px; font-weight: 700; }
+  .navr { width: 96px; display: flex; justify-content: flex-end; }
+  .body { flex: 1; overflow: hidden; padding: 2px 20px 0; display: flex; flex-direction: column; gap: 14px; }
+  .body > * { flex: none; }
+  .week { display: flex; justify-content: space-between; align-items: center; }
+  .week b { font-size: 22px; font-weight: 800; }
+  .arrows { display: flex; gap: 6px; }
+  .arrows span { width: 36px; height: 36px; border-radius: 10px; background: #fff; border: 1px solid var(--line); display: flex; align-items: center; justify-content: center; }
+  .stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+  .stat { background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 10px 8px; text-align: center; }
+  .stat b { display: block; font-size: 19px; font-weight: 800; }
+  .stat span { font-size: 12px; color: var(--muted); font-weight: 600; line-height: 1.3; display: block; }
+  .card { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 14px; display: flex; flex-direction: column; gap: 10px; }
+  .card h3 { margin: 0; font-size: 16.5px; font-weight: 800; }
+  .pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .ph { border-radius: 12px; overflow: hidden; position: relative; height: 104px; }
+  .ph span { position: absolute; left: 8px; bottom: 8px; background: rgba(31,42,32,.82); color: #fff; font-size: 12px; font-weight: 700; padding: 3px 8px; border-radius: 7px; }
+  .cap { font-size: 14px; color: var(--muted); line-height: 1.4; margin: 0; }
+  h2 { margin: 2px 0 0; font-size: 20px; font-weight: 800; display: flex; align-items: center; gap: 8px; }
+  .count { font-size: 13px; font-weight: 800; background: var(--green-soft); color: var(--green-ink); border-radius: 999px; padding: 2px 8px; }
+  .sug .why { font-size: 14.5px; color: var(--text); line-height: 1.45; margin: 0; }
+  .ev { display: flex; align-items: center; gap: 6px; font-size: 13.5px; font-weight: 700; color: var(--green); }
+  .tags { display: flex; gap: 6px; }
+  .tag { font-size: 12.5px; font-weight: 700; padding: 3px 9px; border-radius: 999px; background: #EEF0EA; color: var(--muted); }
+  .tag.hi { background: var(--green-soft); color: var(--green-ink); }
+  .acts { display: grid; grid-template-columns: 1.3fr 1fr 1fr; gap: 8px; }
+  .acts span { height: 42px; border-radius: 11px; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 700; background: #ECEDE8; }
+  .acts span.ok { background: var(--green); color: #fff; }
+  .tabbar { position: relative; z-index: 30; flex: none; background: #fff; border-top: 1px solid var(--line); padding: 8px 8px 28px; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); align-items: end; }
+  .tab { color: var(--muted); display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 11.5px; font-weight: 600; min-height: 48px; justify-content: flex-end; }
+  .tab.on { color: var(--green); font-weight: 700; }
+  .cam { display: flex; justify-content: center; }
+  .cam span { width: 58px; height: 58px; border-radius: 999px; background: var(--green); display: flex; align-items: center; justify-content: center; margin-top: -22px; border: 4px solid var(--bg); }
+</style>
+<style>.stage{height:1220px}.phone{height:1160px}.screen{height:1120px}</style>
+</head>
+<body>
+<div class="stage"><div class="phone"><div class="screen">
+  <div class="island"></div>
+  <div class="status">
+    <span>9:41</span>
+    <span class="icons">
+      <svg width="18" height="12" viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1" fill="#1F2A20"/><rect x="5" y="5.5" width="3" height="6.5" rx="1" fill="#1F2A20"/><rect x="10" y="3" width="3" height="9" rx="1" fill="#1F2A20"/><rect x="15" y="0" width="3" height="12" rx="1" fill="#1F2A20"/></svg>
+      <svg width="16" height="12" viewBox="0 0 16 12"><path d="M8 11.5l2.2-2.6a3.2 3.2 0 0 0-4.4 0z" fill="#1F2A20"/><path d="M3.6 6.9a6.3 6.3 0 0 1 8.8 0l-1.4 1.6a4.2 4.2 0 0 0-6 0z" fill="#1F2A20"/><path d="M1.2 4.2a9.7 9.7 0 0 1 13.6 0l-1.4 1.6a7.6 7.6 0 0 0-10.8 0z" fill="#1F2A20"/></svg>
+      <svg width="27" height="13" viewBox="0 0 27 13"><rect x="0.5" y="0.5" width="23" height="12" rx="3.5" fill="none" stroke="#1F2A20" opacity=".4"/><rect x="2" y="2" width="18" height="9" rx="2" fill="#1F2A20"/><path d="M25 4.5v4a2 2 0 0 0 0-4z" fill="#1F2A20" opacity=".4"/></svg>
+    </span>
+  </div>
+
+  <div class="nav">
+    <span class="back"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2D6A3A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>Journal</span>
+    <b>Garden report</b>
+    <span class="navr"></span>
+  </div>
+
+  <div class="body">
+    <div class="week">
+      <b>12 – 18 October</b>
+      <div class="arrows">
+        <span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1F2A20" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></span>
+        <span style="opacity:.45"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1F2A20" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></span>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><b>9/11</b><span>tasks done</span></div>
+      <div class="stat"><b>6 h</b><span>worked</span></div>
+      <div class="stat"><b>0 mm</b><span>rain</span></div>
+      <div class="stat"><b>29°</b><span>hottest day</span></div>
+    </div>
+
+    <div class="card">
+      <h3>Bed A4 this week</h3>
+      <div class="pair">
+        <div class="ph">
+          <svg width="100%" height="104" viewBox="0 0 160 104" preserveAspectRatio="xMidYMid slice"><rect width="160" height="104" fill="#8A6A45"/><rect y="0" width="160" height="30" fill="#C9B48A"/><rect x="8" y="34" width="144" height="66" rx="6" fill="#7A5A3A"/><g transform="translate(28 52)"><circle r="5" fill="#5E9A4A"/><circle r="2.2" fill="#A9D48C"/></g><g transform="translate(28 82)"><circle r="5" fill="#5E9A4A"/><circle r="2.2" fill="#A9D48C"/></g><g transform="translate(64 52)"><circle r="5" fill="#5E9A4A"/><circle r="2.2" fill="#A9D48C"/></g><g transform="translate(64 82)"><circle r="5" fill="#5E9A4A"/><circle r="2.2" fill="#A9D48C"/></g><g transform="translate(100 52)"><circle r="5" fill="#5E9A4A"/><circle r="2.2" fill="#A9D48C"/></g><g transform="translate(100 82)"><circle r="5" fill="#5E9A4A"/><circle r="2.2" fill="#A9D48C"/></g><g transform="translate(136 52)"><circle r="5" fill="#5E9A4A"/><circle r="2.2" fill="#A9D48C"/></g><g transform="translate(136 82)"><circle r="5" fill="#5E9A4A"/><circle r="2.2" fill="#A9D48C"/></g></svg>
+          <span>12 Oct</span>
+        </div>
+        <div class="ph">
+          <svg width="100%" height="104" viewBox="0 0 160 104" preserveAspectRatio="xMidYMid slice"><rect width="160" height="104" fill="#8A6A45"/><rect y="0" width="160" height="30" fill="#C9B48A"/><rect x="8" y="34" width="144" height="66" rx="6" fill="#7A5A3A"/><g transform="translate(28 52)"><circle r="9" fill="#5E9A4A"/><circle r="4.0" fill="#A9D48C"/></g><g transform="translate(28 82)"><circle r="9" fill="#5E9A4A"/><circle r="4.0" fill="#A9D48C"/></g><g transform="translate(64 52)"><circle r="9" fill="#5E9A4A"/><circle r="4.0" fill="#A9D48C"/></g><g transform="translate(64 82)"><circle r="9" fill="#5E9A4A"/><circle r="4.0" fill="#A9D48C"/></g><g transform="translate(100 52)"><circle r="9" fill="#5E9A4A"/><circle r="4.0" fill="#A9D48C"/></g><g transform="translate(100 82)"><circle r="9" fill="#5E9A4A"/><circle r="4.0" fill="#A9D48C"/></g><g transform="translate(136 52)"><circle r="9" fill="#5E9A4A"/><circle r="4.0" fill="#A9D48C"/></g><g transform="translate(136 82)"><circle r="9" fill="#5E9A4A"/><circle r="4.0" fill="#A9D48C"/></g></svg>
+          <span>18 Oct</span>
+        </div>
+      </div>
+      <p class="cap">The lettuce settled in well: new leaves on every plant, none lost since planting on 8 Oct.</p>
+    </div>
+
+    <h2>Suggestions <span class="count">2</span></h2>
+    <div class="card sug">
+      <h3>Mulch bed A2 once the beans are up</h3>
+      <p class="why">The soil in A2 dried out within a day after each watering this week. Once the beans are 10 cm tall, 5 cm of straw keeps it moist and cuts watering by about a third.</p>
+      <span class="ev"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2D6A3A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z"/><path d="M9 9h6M9 13h6"/></svg>Based on 3 journal notes and 2 photos</span>
+      <div class="tags"><span class="tag hi">High impact</span><span class="tag">About 30 min</span></div>
+      <div class="acts"><span class="ok">Accept</span><span>Snooze</span><span>Dismiss</span></div>
+    </div>
+    <div class="card sug">
+      <h3>Shade new seedlings on hot afternoons</h3>
+      <p class="why">It reached 29° on Wednesday and the lettuce in A4 wilted by mid-afternoon twice. A light shade cloth for the hottest hours helps new plants settle.</p>
+      <span class="ev"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2D6A3A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z"/><path d="M9 9h6M9 13h6"/></svg>Based on the weather and 2 journal notes</span>
+      <div class="tags"><span class="tag">Medium impact</span><span class="tag">About 15 min</span></div>
+      <div class="acts"><span class="ok">Accept</span><span>Snooze</span><span>Dismiss</span></div>
+    </div>
+  </div>
+
+  <nav class="tabbar">
+    <span class="tab"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2"/></svg>Today</span>
+    <span class="tab"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6l6-2.5 6 2.5 6-2.5v14l-6 2.5-6-2.5-6 2.5z"/><path d="M9 3.5v14M15 6v14"/></svg>Garden</span>
+    <span class="cam"><span><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg></span></span>
+    <span class="tab"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>Plan</span>
+    <span class="tab on"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z"/><path d="M9 9h6M9 13h6"/></svg>Journal</span>
+  </nav>
+  <div class="home"></div>
+</div></div></div>
+</body>
+</html>
