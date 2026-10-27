@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>G3 Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="frame.css">
+<style>
+  .nav { height: 48px; padding: 0 12px; display: flex; align-items: center; gap: 6px; flex: none; }
+  .icon-btn { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; }
+  .icon-btn.soft { background: #E9ECE4; }
+  .nav .title { flex: 1; display: flex; flex-direction: column; align-items: center; }
+  .nav .title b { font-size: 16px; }
+  .nav .title span { font-size: 12.5px; color: var(--muted); font-weight: 600; }
+  .prog { display: flex; gap: 4px; padding: 0 20px 10px; flex: none; }
+  .prog i { flex: 1; height: 4px; border-radius: 2px; background: rgba(31,42,32,.15); }
+  .prog i.on { background: var(--green); }
+  .body { flex: 1; overflow: hidden; padding: 0 20px; display: flex; flex-direction: column; gap: 10px; }
+  .body > * { flex: none; }
+  .art { height: 120px; border-radius: 18px; overflow: hidden; }
+  .eyebrow { font-size: 13px; font-weight: 800; color: var(--green); text-transform: uppercase; letter-spacing: .06em; }
+  h1 { margin: 0; font-size: 22px; font-weight: 800; line-height: 1.2; }
+  p.do { margin: 0; font-size: 15.5px; line-height: 1.42; }
+  .facts { display: flex; gap: 8px; flex-wrap: wrap; }
+  .fact { display: flex; align-items: center; gap: 6px; height: 32px; padding: 0 10px; border-radius: 9px; background: #fff; border: 1px solid var(--line); font-size: 13.5px; font-weight: 700; }
+  .tools { display: flex; gap: 8px; }
+  .tool { flex: 1; background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 4px 4px 6px; display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 12.5px; font-weight: 700; }
+  .note { border-radius: 12px; padding: 8px 12px; display: flex; gap: 10px; font-size: 13.5px; line-height: 1.35; }
+  .note b { display: block; font-size: 12px; text-transform: uppercase; letter-spacing: .04em; }
+  .warn { background: var(--orange-soft); color: #5C3A1A; }
+  .warn b { color: var(--orange); }
+  .mist { background: #ECEDE8; color: var(--text); }
+  .ok { background: var(--green-soft); color: var(--green-ink); }
+  .bar { flex: none; padding: 10px 20px 30px; background: var(--bg); border-top: 1px solid var(--line); display: flex; flex-direction: column; gap: 10px; }
+  .ask { white-space: nowrap; display: flex; align-items: center; justify-content: center; gap: 8px; color: var(--green); font-size: 15.5px; font-weight: 700; height: 36px; }
+</style>
+<style>.stage{height:1000px}.phone{height:940px}.screen{height:900px}</style>
+</head>
+<body>
+<div class="stage"><div class="phone"><div class="screen">
+  <div class="island"></div>
+  <div class="status">
+    <span>9:41</span>
+    <span class="icons">
+      <svg width="18" height="12" viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1" fill="#1F2A20"/><rect x="5" y="5.5" width="3" height="6.5" rx="1" fill="#1F2A20"/><rect x="10" y="3" width="3" height="9" rx="1" fill="#1F2A20"/><rect x="15" y="0" width="3" height="12" rx="1" fill="#1F2A20"/></svg>
+      <svg width="16" height="12" viewBox="0 0 16 12"><path d="M8 11.5l2.2-2.6a3.2 3.2 0 0 0-4.4 0z" fill="#1F2A20"/><path d="M3.6 6.9a6.3 6.3 0 0 1 8.8 0l-1.4 1.6a4.2 4.2 0 0 0-6 0z" fill="#1F2A20"/><path d="M1.2 4.2a9.7 9.7 0 0 1 13.6 0l-1.4 1.6a7.6 7.6 0 0 0-10.8 0z" fill="#1F2A20"/></svg>
+      <svg width="27" height="13" viewBox="0 0 27 13"><rect x="0.5" y="0.5" width="23" height="12" rx="3.5" fill="none" stroke="#1F2A20" opacity=".4"/><rect x="2" y="2" width="18" height="9" rx="2" fill="#1F2A20"/><path d="M25 4.5v4a2 2 0 0 0 0-4z" fill="#1F2A20" opacity=".4"/></svg>
+    </span>
+  </div>
+  <div class="nav">
+    <div class="icon-btn" aria-label="Close"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1F2A20" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></div>
+    <div class="title"><b>Spread compost on beds</b><span>Step 3 of 8</span></div>
+    <div class="icon-btn soft" aria-label="Read aloud"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1F2A20" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16.5 8.5a5 5 0 0 1 0 7"/><path d="M19 6a8.5 8.5 0 0 1 0 12"/></svg></div>
+    <div class="icon-btn soft" aria-label="Doing mode"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1F2A20" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></div>
+  </div>
+  <div class="prog"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i><i></i></div>
+
+  <div class="body">
+    <div class="art">
+      <svg width="353" height="120" viewBox="0 38 353 120" role="img" aria-label="A raised bed seen from the side with an even layer of dark compost on top and a rake spreading it">
+        <rect width="353" height="158" fill="#F3E9D6"/>
+        <path d="M0 122 H353 V158 H0z" fill="#B8925E"/>
+        <rect x="40" y="104" width="250" height="26" fill="#A87B48" stroke="#7A5530" stroke-width="2"/>
+        <rect x="42" y="94" width="246" height="10" rx="2" fill="#4A3324"/>
+        <g fill="#5C4030"><circle cx="70" cy="95" r="3"/><circle cx="120" cy="94" r="2.5"/><circle cx="180" cy="95" r="3"/><circle cx="240" cy="94" r="2.5"/></g>
+        <path d="M300 48 L250 92" stroke="#8E6538" stroke-width="5" stroke-linecap="round"/>
+        <path d="M236 88 L262 98" stroke="#7E8890" stroke-width="5" stroke-linecap="round"/>
+        <path d="M240 90 v6 M246 92 v6 M252 94 v6 M258 96 v6" stroke="#7E8890" stroke-width="2.5" stroke-linecap="round"/>
+        <path d="M34 94 v10 M30 94 h8 M30 104 h8" stroke="#2D6A3A" stroke-width="2" stroke-linecap="round"/>
+        <text x="10" y="88" font-family="Figtree, sans-serif" font-size="12" font-weight="700" fill="#4E5A4C">About 3 cm</text>
+      </svg>
+    </div>
+    <h1>Spread the compost evenly</h1>
+    <p class="do">Tip 2 bags along bed A1, one every 3 m. Spread them with the back of the rake into an even layer about 3 cm deep. Keep it off the paths.</p>
+    <div class="facts">
+      <span class="fact"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1F2A20" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3 2"/></svg>About 25 min</span>
+      <span class="fact">Bed A1 · 2 bags</span>
+      <span class="fact" style="color: var(--muted); font-weight: 600">Source: FAO, extension guides</span>
+    </div>
+    <div class="tools">
+      <div class="tool"><svg width="40" height="30" viewBox="0 0 40 34"><rect x="18" y="2" width="4" height="22" rx="2" fill="#8E6538"/><rect x="8" y="22" width="24" height="4" rx="1.5" fill="#7E888C"/><g stroke="#7E888C" stroke-width="2.4" stroke-linecap="round"><path d="M10 26v5M15 26v5M20 26v5M25 26v5M30 26v5"/></g></svg>Rake</div>
+      <div class="tool"><svg width="40" height="30" viewBox="0 0 40 34"><rect x="18" y="2" width="4" height="20" rx="2" fill="#8E6538"/><path d="M13 20 h14 l-2 11 h-10z" fill="#9AA4A8"/></svg>Spade</div>
+      <div class="tool"><svg width="40" height="30" viewBox="0 0 40 34"><path d="M4 10 h26 l-4 12 h-18z" fill="#2D6A3A"/><circle cx="12" cy="27" r="4" fill="#4E5A4C"/><path d="M30 10 l8 -4" stroke="#8E6538" stroke-width="3" stroke-linecap="round"/></svg>Wheelbarrow</div>
+    </div>
+    <div class="note warn">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9A4A0C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex: none; margin-top: 2px"><path d="M12 3l9.5 17h-19z"/><path d="M12 10v4M12 17.5v.01"/></svg>
+      <div><b>Safety</b>Wear gloves. Lift the bags with bent knees, or slide them off the wheelbarrow.</div>
+    </div>
+    <div class="note mist">
+      <div><b>Common mistake</b>Digging it in deep. Leave it on top: rain and worms take it down over winter.</div>
+    </div>
+    <div class="note ok">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1F5A2C" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="flex: none; margin-top: 2px"><path d="M5 12l4 4 10-10"/></svg>
+      <div><b>Done right when</b>No bare soil shows, and the layer looks the same at both ends.</div>
+    </div>
+  </div>
+
+  <div class="bar">
+    <div style="display: flex; justify-content: center; gap: 22px"><div class="ask"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2D6A3A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4z"/><path d="M10 9.5a2 2 0 1 1 3 1.7c-.7.4-1 .8-1 1.6M12 14.5v.01"/></svg>Ask about this</div><div class="ask"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2D6A3A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>Photo check</div></div>
+    <div style="display: flex; gap: 10px">
+      <div class="btn secondary" style="width: 120px">Previous</div>
+      <div class="btn primary" style="flex: 1">Done, next step</div>
+    </div>
+  </div>
+  <div class="home"></div>
+</div></div></div>
+</body>
+</html>
