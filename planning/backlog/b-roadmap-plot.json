@@ -528,8 +528,9 @@
     "seq": 2,
     "story": "As a gardener, I want to mark water sources, electricity, access, buildings and trees on my map so that the app can plan irrigation and layout around them.",
     "acceptance": [
-     "The user can place points of interest of type water source (well, tap, tank), electricity, gate/access, building and tree",
-     "Trees and buildings have an optional rough height",
+     "The user can place points of interest of type water source (well, borehole, tap, rain tank), electricity, gate/access, building and tree",
+     "Each type opens a details panel; trees are picked from a regional tree catalogue with pictures, with a height slider and keep or remove",
+     "Water sources record their kind and how water comes out (electric pump, hand pump, bucket), with a \"Measure flow\" button",
      "Points can be edited, moved and deleted",
      "Water sources are available to the irrigation planner"
     ],
@@ -541,19 +542,31 @@
       "title": "Create points-of-interest data model and API",
       "area": "backend",
       "hours": 3,
-      "description": "POI entity with type, subtype, point or polygon geometry and optional height. Done when CRUD endpoints are tested."
+      "description": "POI entity with type, subtype, geometry, height, keep/remove and water-source fields. Done when CRUD endpoints are tested."
      },
      {
-      "title": "Design POI icons and type picker",
+      "title": "Build the regional tree catalogue with pictures",
+      "area": "content",
+      "hours": 4,
+      "description": "About 25 common trees for the user's region (olive, cork oak, holm oak, fig, citrus…) with PT/EN names and a reference picture each. Done when published through the content pipeline."
+     },
+     {
+      "title": "Prepare POI icons from the approved design",
       "area": "design",
-      "hours": 2,
-      "description": "Icons for each POI type that read well on satellite imagery. Done when approved by the owner."
+      "hours": 1,
+      "description": "Export the approved icons and type picker for each POI type. Done when added to the iOS asset catalogue."
      },
      {
       "title": "Place and edit points of interest on iOS",
       "area": "ios",
       "hours": 4,
-      "description": "Add, move, edit and delete POIs on the map, with height entry for trees and buildings. Done when saved through the API."
+      "description": "Add, move, edit and delete POIs on the map. Done when saved through the API."
+     },
+     {
+      "title": "Build the point details panels on iOS",
+      "area": "ios",
+      "hours": 4,
+      "description": "Tree panel (catalogue with pictures, height slider, keep or remove) and water-source panel (kind, outlet, Measure flow). Done when details save through the API."
      },
      {
       "title": "Test points of interest on the real plot",
@@ -829,6 +842,63 @@
      "3.3.1"
     ],
     "tasks": []
+   },
+   {
+    "key": "X.E03.1",
+    "title": "Garden tab, zone and bed screens",
+    "priority": "MVP",
+    "seq": 5,
+    "story": "As a gardener, I want a map of my garden and a screen for each zone and bed, so that I can see what's happening in each place at a glance.",
+    "acceptance": [
+     "The Garden tab shows the plot map with zones coloured and each zone's phase",
+     "A zone screen shows its beds and their status, the next actions, the site assessment summary and recent history",
+     "A bed screen shows what's growing and planned, the layout card, rotation by year and upcoming tasks",
+     "Every screen links to the related task, journal entry or editor"
+    ],
+    "depends_on": [
+     "3.1.3",
+     "3.3.3",
+     "3.8.1",
+     "3.9.1"
+    ],
+    "tasks": [
+     {
+      "title": "Build the Garden tab map with zones and phases",
+      "area": "ios",
+      "hours": 3,
+      "description": "Map with zone colours, legend and a zone list with phase. Done when tapping a zone opens its screen."
+     },
+     {
+      "title": "Zone summary API",
+      "area": "backend",
+      "hours": 3,
+      "description": "Beds with status, next actions, latest assessment and recent history in one call. Done when tested."
+     },
+     {
+      "title": "Build the zone screen on iOS",
+      "area": "ios",
+      "hours": 5,
+      "description": "Header, phase bar, next actions, beds, site assessment and recent history. Done when it matches the approved design on device."
+     },
+     {
+      "title": "Bed summary API",
+      "area": "backend",
+      "hours": 2,
+      "description": "Growing now, planned, rotation history and upcoming tasks for a bed. Done when tested."
+     },
+     {
+      "title": "Build the bed screen on iOS",
+      "area": "ios",
+      "hours": 5,
+      "description": "Fact chips, growing now and planned, layout card, rotation and upcoming tasks. Done when it matches the approved design on device."
+     },
+     {
+      "title": "Test the Garden tab on the real plot",
+      "area": "testing",
+      "hours": 1,
+      "description": "Open each zone and bed and check the data. Done when verified."
+     }
+    ]
    }
   ]
  },

@@ -926,6 +926,79 @@
      "E00:AI layer core"
     ],
     "tasks": []
+   },
+   {
+    "key": "X.E16.1",
+    "title": "Scan a bed with the camera",
+    "priority": "Good to have",
+    "seq": 36,
+    "story": "As a gardener, I want to take 2–3 photos along a bed and get its layout proposed, so that I don't have to draw what's already planted.",
+    "acceptance": [
+     "Opened from the bed screen, the layout editor and \"Scan a bed\" in Snap & Ask",
+     "The AI proposes rows, row direction, approximate plant counts and the crop with a confidence, fitted to the bed's size",
+     "The result is a draft the user confirms or corrects before it is saved",
+     "It compares the planting with the plan (e.g. \"planned 36, counted about 30\")",
+     "It explains that it only works once plants are visible"
+    ],
+    "depends_on": [
+     "3.16.2",
+     "X.E19.2",
+     "X.E00.13"
+    ],
+    "tasks": [
+     {
+      "title": "Bed scan prompt and structured layout output",
+      "area": "backend",
+      "hours": 4,
+      "description": "Prompt with bed size, planned crops and season; JSON output with rows, positions, counts, crop and confidence. Done when valid on sample photos."
+     },
+     {
+      "title": "Bed scan task and API, saved only on confirm",
+      "area": "backend",
+      "hours": 3,
+      "description": "Run the scan in the AI layer and return a draft layout. Done when integration tests pass with a mocked model."
+     },
+     {
+      "title": "Compare the scanned planting with the plan",
+      "area": "backend",
+      "hours": 2,
+      "description": "Plant counts and crops versus the season plan. Done when unit tested."
+     },
+     {
+      "title": "Scan flow from the bed screen, editor and Snap & Ask",
+      "area": "ios",
+      "hours": 4,
+      "description": "Guide 2–3 photos along the bed and send them. Done when a scan returns a draft on device."
+     },
+     {
+      "title": "Draft layout review: confirm or correct",
+      "area": "ios",
+      "hours": 4,
+      "description": "Show the proposed layout over the bed drawing with edit, confirm and discard. Done when a confirmed layout saves."
+     },
+     {
+      "title": "Build a bed scan test set and test on real beds",
+      "area": "testing",
+      "hours": 3,
+      "description": "Photos of the real beds with known counts; scan each and compare. Done when results are logged."
+     }
+    ]
+   },
+   {
+    "key": "X.E16.2",
+    "title": "AR walk to map a bed",
+    "priority": "Future improvement",
+    "seq": 99,
+    "story": "As a gardener, I want to walk along a bed with the camera and tap each row or plant, so that the layout is measured accurately.",
+    "acceptance": [
+     "Uses Apple's AR to measure real positions",
+     "No AI cost and works offline",
+     "Android needs its own version"
+    ],
+    "depends_on": [
+     "X.E16.1"
+    ],
+    "tasks": []
    }
   ]
  },
@@ -1600,7 +1673,7 @@
     "seq": 4,
     "story": "As a gardener, I want one screen showing what matters today so that I know what to do as soon as I open the app.",
     "acceptance": [
-     "Shows next actions, today's tasks, active weather alerts, the forecast and pending proposals",
+     "Shows the weather, active alerts, the \"Plan next week\" card, next actions, today's tasks and pending proposals",
      "Sections appear as their features are delivered",
      "Pull to refresh; tapping an item opens it",
      "Sync-conflict badge appears when relevant"
@@ -1705,7 +1778,8 @@
     "seq": 4,
     "story": "As a user, I want settings for language, units and notifications so that the app works the way I like.",
     "acceptance": [
-     "Language (PT/EN), units (metric/imperial), notification preferences, quiet hours placeholder, 'always own' tools setting",
+     "Language (PT/EN), units, morning summary, quiet hours, plan-next-week reminder day, \"always own\" tools, \"Garden\" calendar, report frequency and anonymous crash reports",
+     "A Me screen opened from the profile picture links to Guides, Tools, Weather, Garden memory and Settings, and shows the AI usage meter",
      "Settings sync to the backend",
      "Changes apply immediately"
     ],
@@ -1731,6 +1805,12 @@
       "area": "ios",
       "hours": 3,
       "description": "Format lengths, areas, volumes per setting."
+     },
+     {
+      "title": "Build the Me screen on iOS",
+      "area": "ios",
+      "hours": 3,
+      "description": "Profile, plot summary, AI usage card and links to Guides, Tools, Weather, Garden memory, Settings, Help and Privacy. Done when every link opens its screen."
      },
      {
       "title": "Test settings on iPhone",
@@ -1950,6 +2030,56 @@
      "3.8.1"
     ],
     "tasks": []
+   },
+   {
+    "key": "X.E19.2",
+    "title": "Snap & Ask camera",
+    "priority": "MVP",
+    "seq": 9,
+    "story": "As a gardener, I want one camera button that knows what I'm asking about, so that identifying, diagnosing, checking a harvest or scanning a bed all start the same way.",
+    "acceptance": [
+     "The central tab button opens a menu: Identify, Diagnose, Check harvest, Scan a bed, Assess a zone, Ask the assistant",
+     "The camera shows the mode (switchable), a tip and how many photos the mode needs, with a photo strip and the photo library",
+     "A bed chip shows the bed the app guesses from where the camera was opened; the user confirms or changes it",
+     "Photos taken offline are queued and analysed when the phone is back online"
+    ],
+    "depends_on": [
+     "X.E00.7",
+     "X.E00.11",
+     "X.E00.13"
+    ],
+    "tasks": [
+     {
+      "title": "Build the Snap & Ask menu from the centre tab button",
+      "area": "ios",
+      "hours": 3,
+      "description": "Sheet with the six modes over the current tab. Done when each mode opens its flow."
+     },
+     {
+      "title": "Build the shared camera screen with mode switcher",
+      "area": "ios",
+      "hours": 5,
+      "description": "Mode chip, per-mode tip and photo count, photo strip, library picker, flash and Done. Done when photos reach the chosen mode."
+     },
+     {
+      "title": "Bed chip: guess the bed and let the user change it",
+      "area": "ios",
+      "hours": 2,
+      "description": "Guess from the screen the camera was opened from, else the last bed used; picker to change. Done when the chosen bed goes with the photos."
+     },
+     {
+      "title": "Queue photo analyses while offline",
+      "area": "ios",
+      "hours": 3,
+      "description": "Store photos and mode locally and send them when online, with a \"waiting for connection\" state. Done when an offline capture is analysed later."
+     },
+     {
+      "title": "Test Snap & Ask on iPhone at the plot",
+      "area": "testing",
+      "hours": 2,
+      "description": "Run each mode once at the plot, including one offline capture. Done when issues are logged."
+     }
+    ]
    },
    {
     "key": "X.E19.1",

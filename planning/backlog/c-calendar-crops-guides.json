@@ -448,8 +448,9 @@
     "seq": 99,
     "story": "As a gardener, I want to add sowing and harvest dates to my phone's calendar so that I see them with my other plans.",
     "acceptance": [
-     "Selected windows can be exported to the iOS calendar",
-     "Exported events update or are removed when windows change"
+     "Planned tasks already reach the phone through the week planner's \"Garden\" calendar (3.9.6)",
+     "This row adds sowing and harvest windows to the same calendar",
+     "Events update or are removed when windows change"
     ],
     "depends_on": [
      "3.5.3"

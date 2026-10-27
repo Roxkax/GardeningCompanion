@@ -732,15 +732,16 @@
    },
    {
     "key": "3.9.6",
-    "title": "Weekend planner",
+    "title": "Week planner",
     "priority": "MVP",
     "seq": 5,
-    "story": "As a weekend gardener, I want to enter the hours I have and get the most important tasks that fit, so that I use my time well.",
+    "story": "As a gardener with limited time, I want to set the hours I have on each day of next week and get the important tasks spread across them, so that I use my time well and see it in my calendar.",
     "acceptance": [
-     "I can enter available hours for a day or weekend",
-     "The app proposes tasks that fit, by priority and window urgency",
-     "I can accept the plan, which schedules the tasks",
-     "The plan respects tasks that must happen before others"
+     "I set hours per day for next week (Mon–Sun), with \"Same as last week\" and a one-tap \"Day off\" per day",
+     "The app spreads tasks across the days by window, weather, size, priority and order dependencies",
+     "I can accept the plan, which schedules each task on its day",
+     "A Monday reminder asks me to plan next week, and a \"Plan next week\" card on Today turns green (Mon–Wed), amber (Thu–Fri) and orange (Sat–Sun) until it is planned",
+     "Planned tasks are written to a separate \"Garden\" calendar on the phone and kept in sync; the app never reads my calendar"
     ],
     "depends_on": [
      "3.9.2",
@@ -748,34 +749,58 @@
     ],
     "tasks": [
      {
-      "title": "Weekend planning algorithm",
-      "area": "backend",
-      "hours": 5,
-      "description": "Select tasks by priority, window urgency and estimate to fit available hours (knapsack-style), respecting order dependencies. Done when it produces sensible plans for test data."
-     },
-     {
-      "title": "Weekend planner API",
+      "title": "Weekly availability model: hours per day, day off, copy last week",
       "area": "backend",
       "hours": 2,
-      "description": "Endpoint taking available hours and dates, returning the proposed plan. Done when OpenAPI is updated."
+      "description": "Store hours per day for a week, with day-off flags and a copy-from-last-week action. Done when the migration applies and the API is tested."
      },
      {
-      "title": "Weekend planner tests",
+      "title": "Week planning algorithm: spread tasks across days",
+      "area": "backend",
+      "hours": 6,
+      "description": "Assign tasks to days by window, weather forecast, size, priority and dependencies within each day's hours. Done when it produces sensible plans for test weeks."
+     },
+     {
+      "title": "Week planner API",
+      "area": "backend",
+      "hours": 2,
+      "description": "Endpoints to save availability, get the proposed plan and accept it. Done when OpenAPI is updated."
+     },
+     {
+      "title": "Week planner tests",
       "area": "backend",
       "hours": 3,
-      "description": "Tests for fitting, priorities and dependencies. Done when tests pass."
+      "description": "Tests for fitting, day off, weather moves and dependencies. Done when tests pass."
      },
      {
-      "title": "Build weekend planner screen on iOS",
+      "title": "Monday reminder and \"Plan next week\" state",
+      "area": "backend",
+      "hours": 2,
+      "description": "Monday push reminder and a planned/unplanned state for next week, with the colour level by weekday. Done when the reminder fires in tests."
+     },
+     {
+      "title": "Build the Plan your week screen on iOS",
+      "area": "ios",
+      "hours": 5,
+      "description": "Day rows with hours, Day off and Same as last week, the proposed tasks per day and Accept. Done when an accepted plan schedules the tasks."
+     },
+     {
+      "title": "Add the \"Plan next week\" card to Today",
+      "area": "ios",
+      "hours": 2,
+      "description": "Card that escalates green, amber, orange until the week is planned, and disappears after. Done when it changes with the weekday on device."
+     },
+     {
+      "title": "Write planned tasks to a \"Garden\" calendar",
       "area": "ios",
       "hours": 4,
-      "description": "Hours input, proposed plan with total time, accept action. Done when an accepted plan schedules the tasks."
+      "description": "Create a separate calendar with EventKit (write-only), add, update and remove events as tasks change. Done when events stay in sync on device."
      },
      {
-      "title": "Test the weekend planner on a real weekend",
+      "title": "Test the week planner over a real week",
       "area": "testing",
       "hours": 2,
-      "description": "Use it for a real weekend at the plot. Done when the plan was realistic or adjustments are noted."
+      "description": "Plan a real week, use it at the plot and check the calendar. Done when the plan was realistic or adjustments are noted."
      }
     ]
    },
@@ -1220,7 +1245,8 @@
      "Missing tools are listed by the earliest date they're needed",
      "Each tool shows which tasks need it",
      "Each tool can be marked buy, rent or borrow",
-     "Marking a tool as got adds it to my tools"
+     "Marking a tool as got adds it to my tools",
+     "With \"always own\" on, a missing tool needed by a task is added to Tools to get automatically"
     ],
     "depends_on": [
      "3.10.3"
@@ -1249,6 +1275,12 @@
       "area": "ios",
       "hours": 4,
       "description": "List with need dates, linked tasks, choice and 'got it'. Done when working end to end."
+     },
+     {
+      "title": "Auto-add missing tools when \"always own\" is on",
+      "area": "backend",
+      "hours": 1,
+      "description": "When a task needs a tool the user does not own, add it to Tools to get with \"buy\". Done when unit tested."
      },
      {
       "title": "Test the tools-to-get list",

@@ -15,7 +15,8 @@
      "Water sources come from the points of interest on the map (well, mains tap, tank)",
      "The app guides a bucket test: start a timer, stop when 10 L is full, flow rate (L/h) is calculated and saved",
      "Each source can have several measurements; the latest is used",
-     "Flow rate can be edited by hand"
+     "Flow rate can be edited by hand",
+     "The bucket test opens from the water point details (\"Measure flow\"), the irrigation flow check (\"Measure again\") and a roadmap task \"Measure your well's flow\" created the first time irrigation is planned; until it is done the flow check shows \"Flow not measured yet\""
     ],
     "depends_on": [
      "3.3.4",
@@ -57,6 +58,18 @@
       "area": "content",
       "hours": 2,
       "description": "Short how-to text and illustration brief for the bucket test, in pt-PT and English. Done when published through the content pipeline."
+     },
+     {
+      "title": "Roadmap rule: \"Measure your well's flow\" task",
+      "area": "backend",
+      "hours": 2,
+      "description": "Create the measuring task the first time irrigation is planned for a source with no measurement. Done when the rule is unit tested."
+     },
+     {
+      "title": "Bucket test entry points and \"not measured\" state",
+      "area": "ios",
+      "hours": 2,
+      "description": "Open the bucket test from point details, the flow check and the task; show \"Flow not measured yet\" until measured. Done when all three open it on device."
      },
      {
       "title": "Test water sources and bucket test on iPhone at the plot",
@@ -909,7 +922,8 @@
      "Take or pick a photo and get the top possibilities with confidence levels",
      "Common names in PT and EN plus the scientific name",
      "Results are saved with the photo in the journal",
-     "Photos taken offline are queued and identified when back online"
+     "Photos taken offline are queued and identified when back online",
+     "A tree in the point details panel can be identified from a photo"
     ],
     "depends_on": [
      "E00:AI layer core",
@@ -963,6 +977,12 @@
       "area": "backend",
       "hours": 3,
       "description": "Script that runs the eval set through the prompt and reports accuracy. Done when it runs locally."
+     },
+     {
+      "title": "Identify a tree from the point details panel",
+      "area": "ios",
+      "hours": 2,
+      "description": "\"Not sure? Identify it with a photo\" opens the camera in Identify mode and fills the tree type. Done when it works end to end."
      },
      {
       "title": "Test identification on iPhone at the plot",

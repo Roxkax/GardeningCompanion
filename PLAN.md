@@ -74,7 +74,7 @@ All features are in scope for development. The last column only notes what could
 - **Satellite map** centred on the user's location: MapKit on iOS, Google Maps SDK on Android.
 - **Plot boundary:** draw it by tapping corners on the map, or **walk the perimeter with GPS** (accurate to about 3–5 m, enough for the plot outline).
 - **Zones and beds** drawn inside the plot, with names. Beds can also be entered with **exact dimensions** (e.g. 1.2 m × 6 m), because satellite and GPS accuracy isn't enough for small beds.
-- **Points of interest:** water sources (well, tap, tank), electricity, gates and access, buildings, and trees with a rough height.
+- **Points of interest:** water sources (well, borehole, tap, rain tank), electricity, gates and access, buildings, and trees. Each type has a **details panel**: trees are picked from a regional tree catalogue with pictures (or identified from a photo), with a height slider and keep or remove; water sources record the kind and how water comes out, with a "Measure flow" button for the bucket test.
 - **Automatic enrichment (backend):** area, sun exposure from the location, slope from elevation data, and an estimated soil type from SoilGrids.
 - **Shade:** estimated from marked trees and buildings (height plus the sun's path over the day and year), and combined with shade the user has observed and marked (e.g. "afternoon shade").
 - **Prevailing wind** from weather data, used to suggest windbreaks.
@@ -194,7 +194,7 @@ The garden to-do list: what to do and when, with reminders. It works offline.
 - **Each task has:** its zone, bed or planting; a **date range** rather than a fixed day; estimated time; priority; a link to the guide; the **tools needed, checked against the user's tools**, with a warning if one is missing; and any consumables needed, for information only.
 - **Completing tasks:** done, skipped, or couldn't do (with a reason). Each outcome goes into the activity log, so the roadmap adapts.
 - **Views:** Today, This week, and by zone.
-- **Weekend planner:** the user enters the hours available, and the app picks the most important tasks that fit, using the time estimates.
+- **Week planner ("Plan your week"):** the user sets the hours available for each day of next week (Mon–Sun), with "Same as last week" and a one-tap "Day off" per day. The app spreads the most important tasks across the days by window, weather and size. A **Monday reminder** asks the user to plan next week, and a **"Plan next week" card on Today** escalates green (Mon–Wed), amber (Thu–Fri) and orange (Sat–Sun) until it's done. Planned tasks are written to a separate **"Garden" calendar** on the phone and kept in sync; the app never reads the user's calendar.
 - **Weather-aware rescheduling:** skip watering before rain, water early in a heatwave, postpone spraying in wind.
 - **Repeating tasks.**
 - **Missed tasks:** when a time-sensitive task is missed, the roadmap engine suggests an alternative.
@@ -383,8 +383,11 @@ A regular review of how the garden is going, with concrete ideas to improve it.
 ### 3.19 App-wide features
 
 - **Home screen ("Today"):** next actions, today's tasks, active weather alerts, the forecast and pending AI proposals on one screen.
+- **Navigation:** five tabs (Today, Garden, a central **Snap & Ask** camera button, Plan, Journal). Guides, Tools, Weather, Garden memory and Settings open from the profile picture ("Me"). Sub-screens use a back button labelled with the screen they return to.
+- **Snap & Ask:** one camera for every photo feature. A menu picks the mode (identify, diagnose, check harvest, scan a bed, assess a zone, ask the assistant); the camera shows tips and how many photos each mode needs, and a bed chip the app guesses and the user confirms. Photos are queued while offline.
+- **Garden tab:** the plot map with zones and their phase, a zone screen (beds and their status, next actions, site assessment summary, recent history) and a bed screen (growing now and planned, layout, rotation, upcoming tasks).
 - **First-run setup:** a guided flow: location → draw the plot → what already exists → site assessment → choose crops → preferences. At the end, the roadmap is ready.
-- **Settings:** language, units (metric or imperial), notification preferences and quiet hours, morning summary time, the "always own" tools setting, review frequency, and an **AI usage meter**.
+- **Settings:** language, units (metric or imperial), notification preferences and quiet hours, morning summary time, the plan-next-week reminder day, the "always own" tools setting, the phone's "Garden" calendar, report frequency, anonymous crash reports, and an **AI usage meter**.
 - **Privacy:** GPS data is stripped from photos before they're uploaded or shared, and the plot's exact location is kept private.
 - **Error and crash reporting:** crash reports and basic anonymous usage statistics (Application Insights on the backend, Xcode's crash reports on iOS, Android vitals later).
 - **Accessibility:** larger text, VoiceOver and TalkBack support, and colour choices that work for colour-blind users, built in from the start.
