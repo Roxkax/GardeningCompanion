@@ -32,7 +32,8 @@ The owner is used to Azure DevOps, so the same hierarchy is used, built with sub
 - **Labels:** release tier (`MVP`, `Good to have`, `Future improvement`), `epic`, and area (`area:backend`, `area:ios`, `area:android`, `area:content`, `area:infra`, `area:design`, `area:testing`).
 - **Milestones are sprints** (`Sprint 01`, …), each with a capacity of 100 effort points, where **1 point = 1 hour** including the owner's testing time.
 - Each task's estimate is in its body. Future improvement features have no tasks until they're scheduled.
-- Labels, sprint milestones and issues are created by the **Import backlog** GitHub Actions workflow (`.github/workflows/import-backlog.yml`). An optional Project board can be added by the owner in the GitHub UI.
+- Labels, sprint milestones and issues are created by the **Import backlog** GitHub Actions workflow (`.github/workflows/import-backlog.yml`).
+- **Sprint board:** the **Set up sprint board** workflow (`.github/workflows/setup-project-board.yml`, script `planning/backlog/setup_project.py`) creates the "Gardening Companion" GitHub Project, links it to the repo, adds every backlog issue and fills each task's `Estimate (h)`. It needs the `PROJECT_TOKEN` secret (classic PAT with `project` and `repo` scopes). Views (Sprint board, All sprints, Epics and features) are created once in the GitHub UI, as described in the project README.
 
 ## Decision log
 | Date | Decision |
