@@ -2,7 +2,7 @@ name: Set up sprint board
 
 # Creates the "Gardening Companion" GitHub Project, links it to this repository,
 # adds every backlog issue and fills each task's Estimate (h). Safe to re-run.
-# Needs the PROJECT_TOKEN secret: a classic personal access token with the
+# Needs the PROJECT_TOKEN secret (or BACKLOG_ADMIN_TOKEN): a classic personal access token with the
 # `project` and `repo` scopes.
 on:
   workflow_dispatch:
@@ -23,5 +23,5 @@ jobs:
       - name: Set up the project board
         run: python3 planning/backlog/setup_project.py
         env:
-          PROJECT_TOKEN: ${{ secrets.PROJECT_TOKEN }}
+          PROJECT_TOKEN: ${{ secrets.PROJECT_TOKEN || secrets.BACKLOG_ADMIN_TOKEN }}
           PAUSE_SECONDS: "1.5"
