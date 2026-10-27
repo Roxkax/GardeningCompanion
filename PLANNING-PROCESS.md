@@ -234,3 +234,5 @@ Design changes features, so the first backlog was **deleted** once it was clear 
 8. *"I have no design experience. Create the app map with all screens, then show me a realistic phone image of each screen, one at a time, for approval."*
 9. For each screen: *"Approved, move to the next screen"*, or *"Where is this accessed from?"*, or your change.
 10. *"Design is signed off. Update the backlog fragments and rebuild the backlog."*
+
+The GitHub side of this process (work tracking, backlog as code, sprint board, pull requests, CI and deployments) is described in **`GITHUB-SETUP.md`**.

@@ -5,6 +5,7 @@ A native mobile app that guides a complete beginner from unused land to a produc
 
 - **`PLAN.md`** is the detailed execution plan: features, architecture, milestones and cost.
 - **`PLANNING-PROCESS.md`** explains the planning process used, so it can be repeated on other projects.
+- **`GITHUB-SETUP.md`** describes the GitHub configuration (work tracking, backlog as code, sprint board, branches and pull requests, CI checks, QA and prod deployment, tokens), so it can be reused in other projects.
 - **This file** holds the working agreements and the decision log. Record every decision the owner confirms here.
 
 ## Current phase: BACKLOG REBUILD (design signed off 2026-10-27)
