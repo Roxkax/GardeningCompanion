@@ -36,7 +36,7 @@
   .warn b { color: #7A3A08; }
   .space { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 12px 14px; display: flex; flex-direction: column; gap: 8px; }
   .meter { height: 10px; border-radius: 5px; background: #E6E9E0; overflow: hidden; }
-  .meter i { display: block; height: 100%; width: 78%; background: var(--green); border-radius: 5px; }
+  .meter i { display: block; height: 100%; width: 100%; background: var(--green); border-radius: 5px; }
   .tabbar { position: absolute; bottom: 0; left: 0; right: 0; background: #fff; border-top: 1px solid var(--line); padding: 8px 8px 30px; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); align-items: end; z-index: 45; }
   .tab { color: var(--muted); display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 11.5px; font-weight: 600; min-height: 48px; justify-content: flex-end; }
   .tab.on { color: var(--green); font-weight: 700; }
@@ -68,20 +68,19 @@
     <div class="gantt">
       <div class="grow mh"><span></span><span class="now">O</span><span>N</span><span>D</span><span>J</span><span>F</span><span>M</span><span>A</span><span>M</span><span>J</span><span>J</span><span>A</span><span>S</span></div>
       <div class="grow"><span class="bed">A1</span>
-        <span class="bar roo" style="grid-column: 2 / 11">Garlic</span>
+        <span class="bar roo" style="grid-column: 2 / 11">Garlic and onions</span>
         <span class="empty" style="grid-column: 11 / 14">Empty</span></div>
       <div class="grow"><span class="bed">A2</span>
-        <span class="bar leg" style="grid-column: 2 / 10">Broad beans</span>
+        <span class="bar leg" style="grid-column: 2 / 10">Broad beans, peas</span>
         <span class="bar fru" style="grid-column: 10 / 14">Tomatoes</span></div>
       <div class="grow"><span class="bed">A3</span>
-        <span class="bar bra" style="grid-column: 2 / 7; box-shadow: 0 0 0 2px #D98A43">Cabbage</span>
-        <span class="empty" style="grid-column: 7 / 9">Empty</span>
+        <span class="bar bra" style="grid-column: 2 / 6">Lettuce</span>
+        <span class="bar bra" style="grid-column: 6 / 9">Lettuce</span>
         <span class="bar fru" style="grid-column: 9 / 14">Peppers</span></div>
       <div class="grow"><span class="bed">A4</span>
         <span class="bar bra" style="grid-column: 2 / 4">Lett.</span>
-        <span class="bar roo" style="grid-column: 4 / 11">Onions</span>
-        <span class="empty" style="grid-column: 11 / 12"></span>
-        <span class="bar bra" style="grid-column: 12 / 14">Lett.</span></div>
+        <span class="empty" style="grid-column: 4 / 8">Empty</span>
+        <span class="bar fru" style="grid-column: 8 / 14">Courgettes</span></div>
       <div class="legend">
         <span><i style="background:#2D6A3A"></i>Legumes</span>
         <span><i style="background:#2F6FB0"></i>Leafy and cabbages</span>
@@ -92,13 +91,13 @@
 
     <div class="warn">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9A4A0C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex: none; margin-top: 1px"><path d="M12 3l9.5 17h-19z"/><path d="M12 10v4M12 17.5v.01"/></svg>
-      <span><b>Rotation:</b> cabbages were in bed A3 last season. Swap with A2 to avoid disease build-up. <b style="text-decoration: underline">Swap beds</b></span>
+      <span><b>Cabbage doesn’t fit:</b> all 4 beds are in use this autumn. Add a bed, or plan it for next autumn in A2, after the beans. <b style="text-decoration: underline">Add a bed</b></span>
     </div>
 
     <div class="space">
-      <div style="display: flex; justify-content: space-between; align-items: baseline"><span style="font-size: 16px; font-weight: 800">Space check</span><span style="font-size: 14px; font-weight: 700; color: var(--muted)">22 of 28.8 m²</span></div>
+      <div style="display: flex; justify-content: space-between; align-items: baseline"><span style="font-size: 16px; font-weight: 800">Space check</span><span style="font-size: 14px; font-weight: 700; color: var(--muted)">4 of 4 beds in use now</span></div>
       <div class="meter"><i></i></div>
-      <div style="font-size: 14px; color: var(--muted); line-height: 1.4">All must-haves fit. Empty months in A1, A3 and A4 could take a quick crop or green cover.</div>
+      <div style="font-size: 14px; color: var(--muted); line-height: 1.4">All must-haves fit. A4 is empty from December to March: a green cover would protect the soil. A1 is free after the garlic in July.</div>
     </div>
   </div>
 
